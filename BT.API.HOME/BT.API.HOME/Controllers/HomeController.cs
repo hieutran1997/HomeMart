@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace BT.API.HOME.Controllers
+{
+    public class HomeController : ApiController
+    {
+        public IHttpActionResult Get()
+        {
+            return Ok(new { message = "Test api" });
+        }
+
+        public HttpResponseMessage Post()
+        {
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent("POST: Test message")
+            };
+        }
+
+        public HttpResponseMessage Put()
+        {
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent("PUT: Test message")
+            };
+        }
+    }
+}
