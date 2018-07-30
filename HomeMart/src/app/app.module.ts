@@ -14,6 +14,7 @@ import { FooterComponent } from './_layout/footer/footer.component';
 import { HomeComponent } from './_layout/home/home.component';
 import { NgbdPopoverConfig } from './_layout/ngbd-popover-config/ngbd-popover-config.component';
 import { NgbdCarouselConfig } from './_layout/ngbd-carousel-config/ngbd-carousel-config.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { NgbdCarouselConfig } from './_layout/ngbd-carousel-config/ngbd-carousel
     MatPaginatorModule,
     NgbModule.forRoot(),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -20,7 +20,7 @@
                                     <p id="monney" style="color: forestgreen;">{{item.DonGia | number}} vnđ</p>
                                 </div>
                                 <div class="col-md-3">
-                                    <a href="" style="color: black" title="Thêm vào giỏ hàng"> <span class="fa fa-cart-plus fa-2x"></span></a>
+                                    <button (click)="addToCart(item)" style="color: black" title="Thêm vào giỏ hàng"> <span class="fa fa-cart-plus fa-2x"></span></button>
                                 </div>
                            </div>
                         </mat-card-footer>
