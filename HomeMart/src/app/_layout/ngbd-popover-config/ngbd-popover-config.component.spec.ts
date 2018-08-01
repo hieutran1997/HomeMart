@@ -5,7 +5,6 @@ import { NgbdPopoverConfig } from './ngbd-popover-config.component';
 describe('NgbdPopoverConfig', () => {
   let component: NgbdPopoverConfig;
   let fixture: ComponentFixture<NgbdPopoverConfig>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ NgbdPopoverConfig ]
