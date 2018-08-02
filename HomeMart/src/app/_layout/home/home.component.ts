@@ -25,11 +25,10 @@ export class HomeComponent implements OnInit {
   constructor( private _http: HttpClient, private cookieService: CookieService ,private viewCartService: ViewCartService) { }
   ngOnInit() {
     this.filterData(null);
-    this.cookieValue = this.cookieService.get('vattutronggiohang');
     if(this.cookieService.check('vattutronggiohang')){
+      this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
       //this.cookieService.delete('vattutronggiohang');
-      console.log(this.vattuSelected);
     }
   }
 
@@ -48,7 +47,6 @@ export class HomeComponent implements OnInit {
       this._http.get<VatTuDTO>('http://localhost:50595/api/home/GetListMerchanedise?pagesize=6&pagenumber=1')
       .subscribe(arr => {
         this.result = arr;
-        console.log(this.result);
         this.lstVatTu = this.result.Data;
         this.pageIndex = this.result.PageNumber;
         this.pageSize = this.result.PageSize;
@@ -78,14 +76,32 @@ export class HomeComponent implements OnInit {
     vattu.SoLuong = 1;
     lstVatTuCart.push(vattu);
     if(this.vattuSelected){
-      this.vattuSelected.arrVatTuSelected.push(vattu);
-      this.vattuSelected.tongTien += vattu.SoLuong*vattu.DonGia;
+      var j = 0;
+      if(this.vattuSelected.arrVatTuSelected){
+        for(var i = 0 ; i < this.vattuSelected.arrVatTuSelected.length ; i++){
+          if(this.vattuSelected.arrVatTuSelected[i].MaVatTu === vattu.MaVatTu){
+            this.vattuSelected.arrVatTuSelected[i].SoLuong = this.vattuSelected.arrVatTuSelected[i].SoLuong + vattu.SoLuong;
+            this.vattuSelected.tongSoLuong += 1;
+            j++;
+          }
+        }
+      }
+      if(j == 0){
+        this.vattuSelected.arrVatTuSelected.push(vattu);
+        this.vattuSelected.tongSoLuong += vattu.SoLuong;
+      }
+      var tongtien = 0;
+      for(var i = 0 ; i < this.vattuSelected.arrVatTuSelected.length ; i++){
+        tongtien = tongtien + this.vattuSelected.arrVatTuSelected[i].SoLuong *this.vattuSelected.arrVatTuSelected[i].DonGia;
+      }
+      this.vattuSelected.tongTien =tongtien;
       this.cookieService.delete('vattutronggiohang');
       this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected) );
       this.viewCartService.changedCartView(this.vattuSelected);
     }
     else{
       this.vattuSelected = new CartModel(lstVatTuCart,vattu.SoLuong,vattu.DonGia*vattu.SoLuong);
+      this.vattuSelected.tongSoLuong = vattu.SoLuong;
       this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected) );
       this.viewCartService.changedCartView(this.vattuSelected);
     }

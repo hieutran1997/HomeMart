@@ -26,7 +26,7 @@ export class NgbdCarouselConfig  implements OnInit {
   private _randomImageUrls(images: Array<{id: number}>): Array<string> {
     return [1, 2, 3, 4].map(() => {
       const randomId = images[Math.floor(Math.random() * images.length)].id;
-      return `https://picsum.photos/1366/400?image=${randomId}`;
+      return `https://picsum.photos/1903/400?image=${randomId}`;
     });
   }
   
