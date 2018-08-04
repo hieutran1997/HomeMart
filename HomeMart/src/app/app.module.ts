@@ -15,6 +15,7 @@ import { HomeComponent } from './_layout/home/home.component';
 import { NgbdPopoverConfig } from './_layout/ngbd-popover-config/ngbd-popover-config.component';
 import { NgbdCarouselConfig } from './_layout/ngbd-carousel-config/ngbd-carousel-config.component';
 import { CookieService } from 'ngx-cookie-service';
+import { ViewCartDetailComponent } from './_layout/view-cart-detail/view-cart-detail.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CookieService } from 'ngx-cookie-service';
     HomeComponent,
     NgbdPopoverConfig,
     NgbdCarouselConfig,
+    ViewCartDetailComponent,
   ],
   imports: [
     BrowserModule,

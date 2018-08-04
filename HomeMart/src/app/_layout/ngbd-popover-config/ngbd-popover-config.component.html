@@ -1,4 +1,6 @@
-<button type="button" class="btn btn-outline-secondary"
-        ngbPopover="{{contentCart}}" popoverTitle="{{titleCart}}">
-  <span class="fa fa-cart-plus"></span>&nbsp;<span class="badge badge-light" (emitCart) = "onEmitCart($event)">{{quantity}}</span>
-</button>
+<a routerLink="/chi-tiet-gio-hang" >
+  <button type="button" class="btn btn-outline-secondary"
+        ngbPopover="{{contentCart}}" popoverTitle="{{titleCart}}" >
+        <span class="fa fa-cart-plus"></span>&nbsp;<span class="badge badge-light">{{quantity}}</span>
+  </button>
+</a>

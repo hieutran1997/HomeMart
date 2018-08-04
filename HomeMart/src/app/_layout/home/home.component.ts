@@ -1,9 +1,9 @@
 import { Component, OnInit,EventEmitter, Input, Output } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import{VatTu,VatTuDTO} from './vattumodel';
+import {VatTu,VatTuDTO} from './vattumodel';
 import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
-import{CartModel} from '../../model/cartModel';
+import {CartModel} from '../../model/cartModel';
 import {ViewCartService} from '../view-cart.service';
 
 @Component({
@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit {
           event.pageSize = this.result.PageSize;
           event.length = this.result.ItemTotal;
           this.lstVatTu = this.result.Data;
+          console.log(this.lstVatTu);
         });
     }
     else{
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit {
         this.pageIndex = this.result.PageNumber;
         this.pageSize = this.result.PageSize;
         this.length = this.result.ItemTotal;
+        console.log(this.lstVatTu);
       });
     }
   }

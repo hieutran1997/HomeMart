@@ -5,6 +5,7 @@ export class VatTu{
     public  SoLuong :number;
     public  HinhAnh :Array<string>;
     public ItemTotal: number;
+    public Avartar : string;
 }
 
 export class VatTuDTO{
