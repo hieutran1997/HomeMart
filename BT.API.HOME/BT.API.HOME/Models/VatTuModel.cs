@@ -10,8 +10,9 @@ namespace BT.API.HOME.Models
         public string TenVatTu { get; set; }
         public string MaVatTu { get; set; }
         public decimal DonGia { get; set; }
-        public decimal SoLuong { get; set; }
+        public decimal SoTon { get; set; }
         public List<string> HinhAnh { get; set; }
+        public byte[] Avatar { get; set; }
     }
 
     public class VatTuDTO
@@ -24,5 +25,19 @@ namespace BT.API.HOME.Models
         {
             Data = _data;
         }
+    }
+
+    public class VatTuDetail
+    {
+        public string MaVatTu { get; set; }
+        public string TenVatTu { get; set; }
+        public string MoTa { get; set; }
+        public decimal DonGia { get; set; }
+        public decimal SoTon { get; set; }
+        public string NhaCungCap { get; set; }
+        public string[] Size { get; set; }
+        public byte[] Avatar { get; set; }
+        public List<string> HinhAnhs { get; set; }
+        public string MaDonVi { get; set; }
     }
 }

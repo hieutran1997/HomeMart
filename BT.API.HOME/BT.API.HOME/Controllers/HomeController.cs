@@ -26,7 +26,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.InitialLONGFetchSize = 1000;
-                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT , vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt INNER JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' ORDER BY vt.I_CREATE_DATE DESC ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt INNER JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' ORDER BY vt.I_CREATE_DATE DESC ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
                     command.CommandType = CommandType.Text;
                     try
                     {
@@ -42,10 +42,11 @@ namespace BT.API.HOME.Controllers
                                 decimal.TryParse(reader["GIABANLEVAT"].ToString(), out dongia);
                                 temp.DonGia = dongia;
                                 decimal.TryParse(reader["TONCUOIKYSL"].ToString(), out soluong);
-                                temp.SoLuong = soluong;
+                                temp.SoTon = soluong;
                                 string HinhAnh = reader["IMAGE"].ToString();
                                 string[] lstAnh = HinhAnh.Split(',');
                                 temp.HinhAnh = new List<string>();
+                                temp.Avatar = (byte[])reader["Avatar"];
                                 string Path = reader["PATH_IMAGE"].ToString();
                                 for (int i = 0; i < lstAnh.Length; i++)
                                 {
@@ -88,6 +89,58 @@ namespace BT.API.HOME.Controllers
         //{
             
         //}
+        public IHttpActionResult GetDetailMerchanedise(string mavattu)
+        {
+            VatTuDetail result = new VatTuDetail();
+            string table_XNT = CommonService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.Connection = connection;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt INNER JOIN " + table_XNT+" xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
+                    cmd.Parameters.Add("mavattu", OracleDbType.NVarchar2, 50).Value = mavattu;
+                    try
+                    {
+                        OracleDataReader reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                decimal dongia, soluong = 0;
+                                result.MaVatTu = reader["MAVATTU"].ToString();
+                                result.TenVatTu = reader["TENVATTU"].ToString();
+                                decimal.TryParse(reader["GIABANLEVAT"].ToString(), out dongia);
+                                result.DonGia = dongia;
+                                decimal.TryParse(reader["TONCUOIKYSL"].ToString(), out soluong);
+                                result.SoTon = soluong;
+                                string HinhAnh = reader["IMAGE"].ToString();
+                                string[] lstAnh = HinhAnh.Split(',');
+                                result.HinhAnhs = new List<string>();
+                                result.Avatar = (byte[])reader["Avatar"];
+                                string Path = reader["PATH_IMAGE"].ToString();
+                                result.MaDonVi = reader["MADONVI"].ToString();
+                                for (int i = 0; i < lstAnh.Length; i++)
+                                {
+                                    if (!string.IsNullOrEmpty(lstAnh[i]))
+                                    {
+                                        result.HinhAnhs.Add(Path + lstAnh[i]);
+                                    }
+                                }
+                                result.NhaCungCap = reader["TENNHACUNGCAP"].ToString();
+                                result.MoTa = reader["TITLE"].ToString();
+                                string[] sizes = reader["MASIZE"].ToString().Split(',');
+                                result.Size = sizes;
+                            }
+                        }
+                    }catch(Exception ex) { }
+                }
+            }
+            return Ok(result);
+        }
 
         public HttpResponseMessage Put()
         {
