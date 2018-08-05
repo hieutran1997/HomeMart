@@ -1,12 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,MatCardModule ,MatPaginatorModule} from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,MatCardModule ,MatPaginatorModule,MatSliderModule} from '@angular/material';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LayoutComponent } from './_layout/layout/layout.component';
 import { HeaderComponent } from './_layout/header/header.component';
@@ -16,6 +18,7 @@ import { NgbdPopoverConfig } from './_layout/ngbd-popover-config/ngbd-popover-co
 import { NgbdCarouselConfig } from './_layout/ngbd-carousel-config/ngbd-carousel-config.component';
 import { CookieService } from 'ngx-cookie-service';
 import { ViewCartDetailComponent } from './_layout/view-cart-detail/view-cart-detail.component';
+import { DetailMerchandiseComponent } from './_layout/detail-merchandise/detail-merchandise.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { ViewCartDetailComponent } from './_layout/view-cart-detail/view-cart-de
     NgbdPopoverConfig,
     NgbdCarouselConfig,
     ViewCartDetailComponent,
+    DetailMerchandiseComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +45,8 @@ import { ViewCartDetailComponent } from './_layout/view-cart-detail/view-cart-de
     MatListModule,
     MatCardModule,
     MatPaginatorModule,
+    MatSliderModule,
+    FormsModule,
     NgbModule.forRoot(),
   ],
   providers: [CookieService],

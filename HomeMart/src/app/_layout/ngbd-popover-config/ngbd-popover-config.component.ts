@@ -38,4 +38,8 @@ export class NgbdPopoverConfig{
       let content = '';
     });
   }
+
+  changedSort(){
+    console.log('1');
+  }
 }

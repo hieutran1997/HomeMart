@@ -1,0 +1,70 @@
+<div class="container" style="margin-top: 20px;margin-bottom: 30px;">
+        <mat-card id="cartParent">
+            <mat-card-title>Thông tin mặt hàng 
+            </mat-card-title>
+            <mat-card-content  class="container">
+               <div class="row">
+                    <div class="col-md-6">
+                        <div class="row  justify-content-around">
+                            <div class="col-5">
+                                <img *ngIf="vattu.Avatar" src="data:image/JPEG;base64,{{vattu.Avatar}}" class="img-fluid" alt="{{vattu.TenVatTu}}">
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="container" *ngIf="vattu.HinhAnhs">
+                            <div class="row justify-content-start">
+                                <div class="col-3" *ngFor="let image of vattu.HinhAnhs">
+                                    <img src="http://btsoftvn.com:8080/{{image}}"  class="img-thumbnail" style="max-height: 100px;" alt="{{vattu.TenVatTu}}">
+                                </div>
+                            </div>
+                            
+                        </div>            
+                    </div>
+                    <div class="col-md-6">
+                        <p style="text-align: right;font-weight: bold;font-size: 16px;">{{vattu.TenVatTu}}</p>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <span  style="padding-top: 10px;font-size: 20px;">Giá bán : </span>
+                            </div>
+                            <div class="col-md-5">
+                                <span id="monney" style="color: red;font-size: 25px">{{vattu.DonGia | number}} ₫</span>
+                            </div>
+                            <div class="col-md-2" style="font-size: 20px;">Còn : </div>
+                            <div class="col-md-2"> 
+                                <span id="monney" style="color: red;font-size: 25px">{{vattu.SoTon | number}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top: 10px;font-size: 20px;">Số lượng : </div>
+                            <div class="col-xs-4" style="padding-top: 15px">
+                                <div class="input-group">
+                                    <button><span class="fa fa-minus"></span></button>
+                                    <input type="number" [(ngModel)]="soLuong" style="width: 40px;">
+                                    <button><span class="fa fa-plus"></span></button>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <button (click)="addToCart(item)" title="Thêm vào giỏ hàng" mat-fab color="primary">
+                                <span class="fa fa-shopping-basket fa-2x"></span>
+                            </button>
+                        </div>
+                        <br/>
+                        <div class="row" style="font-size: 20px;padding-left:3% ">
+                            <span *ngFor="let score of scoreFavorites">
+                                <i (click)="vattu.selectFavorite = score" class="fa fa-heart" *ngIf="score<=vattu.selectFavorite" style="color: brown"></i>
+                                <i (click)="vattu.selectFavorite = score" class="fa fa-heart-o" *ngIf="score>vattu.selectFavorite"></i>
+                            </span>
+                        </div>
+                        <br/>
+                        <u style="font-size: 20px;">Chi tiết sản phẩm : </u>
+                        <br/>
+                        <span [innerHTML]="vattu.MoTa"></span>
+                        
+                    </div>
+               </div>
+            </mat-card-content>
+            <mat-card-footer> 
+            </mat-card-footer>
+        </mat-card>
+    </div>

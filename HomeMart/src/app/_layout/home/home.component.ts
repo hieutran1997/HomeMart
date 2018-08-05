@@ -21,7 +21,10 @@ export class HomeComponent implements OnInit {
   length:number;
   cookieValue = 'UNKNOWN';
   vattuSelected : CartModel = null;
-  
+  sortOrders: string[] = ["Theo tên", "Theo giá bán", "Theo độ ưa thích"];
+  scoreFavorites : number[] = [1,2,3,4,5];
+  viewer : string = 'table';
+  sortAsc: Boolean = true;
   constructor( private _http: HttpClient, private cookieService: CookieService ,private viewCartService: ViewCartService) { }
   ngOnInit() {
     this.filterData(null);
@@ -41,7 +44,9 @@ export class HomeComponent implements OnInit {
           event.pageSize = this.result.PageSize;
           event.length = this.result.ItemTotal;
           this.lstVatTu = this.result.Data;
-          console.log(this.lstVatTu);
+          this.lstVatTu.forEach(function(obj){
+              obj.selectFavorite = 0;
+          });
         });
     }
     else{
@@ -52,13 +57,14 @@ export class HomeComponent implements OnInit {
         this.pageIndex = this.result.PageNumber;
         this.pageSize = this.result.PageSize;
         this.length = this.result.ItemTotal;
-        console.log(this.lstVatTu);
+        this.lstVatTu.forEach(function(obj){
+          obj.selectFavorite = 0;
+        });
       });
     }
   }
 
   public getServerData(event?:PageEvent){
-    console.log(event);
     this.filterData(event);
   }
 
@@ -108,4 +114,60 @@ export class HomeComponent implements OnInit {
       this.viewCartService.changedCartView(this.vattuSelected);
     }
   }
+
+  //sắp xếp 
+  compareValues(key, order='asc') {
+    return function(a, b) {
+      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+        // property doesn't exist on either object
+          return 0; 
+      }
+  
+      const varA = (typeof a[key] === 'string') ? 
+        a[key].toUpperCase() : a[key];
+      const varB = (typeof b[key] === 'string') ? 
+        b[key].toUpperCase() : b[key];
+  
+      let comparison = 0;
+      if (varA > varB) {
+        comparison = 1;
+      } else if (varA < varB) {
+        comparison = -1;
+      }
+      return (
+        (order == 'desc') ? (comparison * -1) : comparison
+      );
+    }
+  }
+  ChangeSortOrder(order){
+    if(order ==="Theo tên"){
+      if(this.sortAsc){
+        this.sortAsc = false;
+        this.lstVatTu.sort(this.compareValues('TenVatTu','desc'));
+      }
+      else{
+        this.sortAsc = true;
+        this.lstVatTu.sort(this.compareValues('TenVatTu','asc'));
+      }
+    }if(order === "Theo giá bán"){
+      if(this.sortAsc){
+        this.sortAsc = false;
+        this.lstVatTu.sort(this.compareValues('DonGia','desc'));
+      }
+      else{
+        this.sortAsc = true;
+        this.lstVatTu.sort(this.compareValues('DonGia','asc'));
+      }
+    }if(order ==="Theo độ ưa thích"){
+      if(this.sortAsc){
+        this.sortAsc = false;
+        this.lstVatTu.sort(this.compareValues('DonGia','desc'));
+      }
+      else{
+        this.sortAsc = true;
+        this.lstVatTu.sort(this.compareValues('DonGia','asc'));
+      }
+    }
+  }
+  //đóng sắp xếp
 }
