@@ -5,13 +5,14 @@ import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
 import {CartModel} from '../../model/cartModel';
 import {ViewCartService} from '../view-cart.service';
+import{MatPaginatorIntl} from '@angular/material';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent  implements OnInit {
   result : VatTuDTO = null;
   lstVatTu : Array<VatTu>;
   pageEvent: PageEvent;
@@ -25,12 +26,18 @@ export class HomeComponent implements OnInit {
   scoreFavorites : number[] = [1,2,3,4,5];
   viewer : string = 'table';
   sortAsc: Boolean = true;
-  constructor( private _http: HttpClient, private cookieService: CookieService ,private viewCartService: ViewCartService) { }
+  constructor( 
+    private _http: HttpClient, 
+    private cookieService: CookieService ,
+    private viewCartService: ViewCartService,
+    private initPaging : MatPaginatorIntl
+  ) { }
   ngOnInit() {
     this.filterData(null);
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
+      this.initPaging.itemsPerPageLabel = 'Số sản phẩm';
       //this.cookieService.delete('vattutronggiohang');
     }
   }

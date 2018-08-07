@@ -5,14 +5,15 @@
 #cartParent{
     margin-bottom: 50px;
 }
-.img-fluid {transform: scale(1.25);max-height: 300px;}
+.img-fluid {
+    transform: scale(1.5);max-height: 300px;min-height: 200px;
+}
 
 .fa-cart-plus:hover{
     color:brown;
 }
 
 .img-thumbnail{
-    transform: scale(0.75);
     padding: 10px !important;
     max-height: 200px;
 }
@@ -38,5 +39,10 @@
 }
 
 #zoom:hover {
-    transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    transform: scale(1.75); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+#pointer {
+    padding-top: 30px;
+    cursor: pointer;
 }
