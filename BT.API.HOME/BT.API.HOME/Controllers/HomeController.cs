@@ -26,7 +26,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.InitialLONGFetchSize = 1000;
-                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt INNER JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' ORDER BY vt.I_CREATE_DATE DESC ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' ORDER BY vt.I_CREATE_DATE DESC ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
                     command.CommandType = CommandType.Text;
                     try
                     {
@@ -101,7 +101,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt INNER JOIN " + table_XNT+" xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
+                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT+" xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
                     cmd.Parameters.Add("mavattu", OracleDbType.NVarchar2, 50).Value = mavattu;
                     try
                     {
@@ -140,6 +140,38 @@ namespace BT.API.HOME.Controllers
                 }
             }
             return Ok(result);
+        }
+
+        public IHttpActionResult GetListMerchanediseType(string madonvi)
+        {
+            List<MerchanediseType> lstMerchanediseType = new List<MerchanediseType>();
+            using (
+                OracleConnection connection =
+                    new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT * FROM DM_LOAIVATTU WHERE UNITCODE = :madonvi";
+                    command.Parameters.Add("madonvi", OracleDbType.NVarchar2,10).Value = madonvi;
+                    OracleDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            MerchanediseType merchanediseType = new MerchanediseType();
+                            merchanediseType.MaLoaiVatTu = reader["MALOAIVATTU"].ToString();
+                            merchanediseType.TenLoaiVatTu = reader["TENLOAIVT"].ToString();
+                            merchanediseType.UnitCode = reader["UNITCODE"].ToString();
+                            lstMerchanediseType.Add(merchanediseType);
+                        }
+                    }
+                }
+            }
+            return Ok(lstMerchanediseType);
         }
 
         public HttpResponseMessage Put()

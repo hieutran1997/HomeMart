@@ -5,8 +5,8 @@ import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
 import {CartModel} from '../../model/cartModel';
 import {ViewCartService} from '../view-cart.service';
-import{MatPaginatorIntl} from '@angular/material';
-
+import {MatPaginatorIntl} from '@angular/material';
+import {CommonServiceService} from '../../service/common-service.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -30,45 +30,36 @@ export class HomeComponent  implements OnInit {
     private _http: HttpClient, 
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
-    private initPaging : MatPaginatorIntl
+    private initPaging : MatPaginatorIntl,
+    private commonService :CommonServiceService
   ) { }
   ngOnInit() {
     this.filterData(null);
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
-      this.initPaging.itemsPerPageLabel = 'Số sản phẩm';
       //this.cookieService.delete('vattutronggiohang');
     }
   }
 
   filterData(event?:PageEvent){
-    if(event){
-      this._http.get<VatTuDTO>('http://localhost:50595/api/home/GetListMerchanedise?pagesize='+event.pageSize+'&pagenumber='+event.pageIndex)
-        .subscribe(arr => {
-          this.result = arr;
+    this.commonService.getDataPaging(event).subscribe(arr=>{
+        this.result = arr;
+        if(event){
           event.pageIndex = this.result.PageNumber;
           event.pageSize = this.result.PageSize;
           event.length = this.result.ItemTotal;
-          this.lstVatTu = this.result.Data;
-          this.lstVatTu.forEach(function(obj){
-              obj.selectFavorite = 0;
-          });
-        });
-    }
-    else{
-      this._http.get<VatTuDTO>('http://localhost:50595/api/home/GetListMerchanedise?pagesize=6&pagenumber=1')
-      .subscribe(arr => {
-        this.result = arr;
+        }
+        else{
+          this.pageIndex = this.result.PageNumber;
+          this.pageSize = this.result.PageSize;
+          this.length = this.result.ItemTotal;
+        }
         this.lstVatTu = this.result.Data;
-        this.pageIndex = this.result.PageNumber;
-        this.pageSize = this.result.PageSize;
-        this.length = this.result.ItemTotal;
         this.lstVatTu.forEach(function(obj){
-          obj.selectFavorite = 0;
+            obj.selectFavorite = 0;
         });
-      });
-    }
+    })
   }
 
   public getServerData(event?:PageEvent){
