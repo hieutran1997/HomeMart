@@ -4,22 +4,19 @@
     <div class="row">
         <div class="col-lg-3">
             <mat-card>
-                <span style="font-size: 15px;font-weight: bold;">Nhóm sản phẩm</span>
-                <hr/>
-                <ul>
-                    <li>Áo</li>
-                    <li>Quần</li>
-                    <li>Váy đầm</li>
-                    <li>Đồ bộ</li>
-                </ul>
-                <span style="font-size: 15px;font-weight: bold;">Nhà sản xuất</span>
-                <hr/>
-                <ul>
-                    <li>ASOS</li>
-                    <li>ZARA</li>
-                </ul>
-                <span style="font-size: 15px;font-weight: bold;">Sản phẩm vừa xem</span>
-                <hr/>
+                <div *ngFor="let item of lstSideBar">
+                    <span style="font-size: 15px;font-weight: bold;">{{item.TenLoaiVatTu}}</span>
+                    <hr/>
+                    <ul>
+                        <li *ngFor="let subItem of item.ListNhomVatTu">
+                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}">{{subItem.TENNHOMVATTU}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <span style="font-size: 15px;font-weight: bold;">Sản phẩm vừa xem</span>
+                    <hr/>
+                </div>
                 
             </mat-card>
         </div>

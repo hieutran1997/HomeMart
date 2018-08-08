@@ -1,12 +1,11 @@
 import { Component, OnInit,enableProdMode } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import {HttpClient} from '@angular/common/http';
 import {VatTu,VatTuDTO,VatTuDetail} from '../home/vattumodel';
 import {CookieService} from 'ngx-cookie-service';
 import {CartModel} from '../../model/cartModel';
 import {ViewCartService} from '../view-cart.service';
-
+import {CommonServiceService} from '../../service/common-service.service';
 
 enableProdMode();
 
@@ -24,9 +23,9 @@ export class DetailMerchandiseComponent implements OnInit {
   constructor( 
     private route: ActivatedRoute,
     private location: Location,
-    private _http: HttpClient, 
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
+    private commonService :CommonServiceService,
   ) {}
 
   ngOnInit() {
@@ -35,8 +34,7 @@ export class DetailMerchandiseComponent implements OnInit {
     
   }
   filterData(mavattu){
-    this._http.get<VatTuDetail>('http://localhost:50595/api/home/GetDetailMerchanedise?mavattu='+mavattu)
-    .subscribe(
+   this.commonService.getDataDetail<VatTuDetail>(mavattu).subscribe(
       data =>{
         if(data){
           this.vattu = data;

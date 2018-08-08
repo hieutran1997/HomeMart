@@ -85,10 +85,79 @@ namespace BT.API.HOME.Controllers
             return Ok(vattu);
         }
 
-        //public IHttpActionResult GetAllLoaiHangHoa()
-        //{
-            
-        //}
+        public IHttpActionResult GetListMerchanediseByCategory(decimal pagenumber, decimal pagesize,string merchanedisetype)
+        {
+            List<VatTuModel> lstVatTu = new List<VatTuModel>();
+            VatTuDTO vattu = new VatTuDTO(lstVatTu);
+            string table_XNT = CommonService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    decimal P_PAGENUMBER = pagenumber;
+                    decimal P_PAGESIZE = pagesize;
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.InitialLONGFetchSize = 1000;
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL'  AND vt.MANHOMVATTU=" + merchanedisetype + " OR vt.MALOAIVATTU = "+ merchanedisetype + " ORDER BY vt.I_CREATE_DATE DESC ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandType = CommandType.Text;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            decimal dongia, soluong = 0;
+                            while (reader.Read())
+                            {
+                                VatTuModel temp = new VatTuModel();
+                                temp.MaVatTu = reader["MAVATTU"].ToString();
+                                temp.TenVatTu = reader["TENVATTU"].ToString();
+                                decimal.TryParse(reader["GIABANLEVAT"].ToString(), out dongia);
+                                temp.DonGia = dongia;
+                                decimal.TryParse(reader["TONCUOIKYSL"].ToString(), out soluong);
+                                temp.SoTon = soluong;
+                                string HinhAnh = reader["IMAGE"].ToString();
+                                string[] lstAnh = HinhAnh.Split(',');
+                                temp.HinhAnh = new List<string>();
+                                temp.Avatar = (byte[])reader["Avatar"];
+                                string Path = reader["PATH_IMAGE"].ToString();
+                                for (int i = 0; i < lstAnh.Length; i++)
+                                {
+                                    if (!string.IsNullOrEmpty(lstAnh[i]))
+                                    {
+                                        temp.HinhAnh.Add(Path + lstAnh[i]);
+                                    }
+                                }
+                                lstVatTu.Add(temp);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.Connection = connection;
+                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_VATTU_GIABAN vt WHERE vt.MADONVI ='DV1-CH1'";
+                    cmd.CommandType = CommandType.Text;
+                    OracleDataReader dataReader = cmd.ExecuteReader();
+                    if (dataReader.HasRows)
+                    {
+                        decimal totalitem = 0;
+                        while (dataReader.Read())
+                        {
+                            decimal.TryParse(dataReader["TOTALITEM"].ToString(), out totalitem);
+                            vattu.ItemTotal = totalitem;
+                            vattu.PageSize = pagesize;
+                            vattu.PageNumber = pagenumber;
+                        }
+                    }
+                }
+            }
+            return Ok(vattu);
+        }
         public IHttpActionResult GetDetailMerchanedise(string mavattu)
         {
             VatTuDetail result = new VatTuDetail();
@@ -172,6 +241,40 @@ namespace BT.API.HOME.Controllers
                 }
             }
             return Ok(lstMerchanediseType);
+        }
+
+        public IHttpActionResult GetAllGroupMerchanedise(string unitcode)
+        {
+            List<NhomVatTuModel> lstNhomVatTu = new List<NhomVatTuModel>();
+            using (
+                OracleConnection connection =
+                    new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT * FROM DM_NHOMVATTU WHERE UNITCODE = :madonvi ";
+                    command.Parameters.Add("madonvi", OracleDbType.NVarchar2, 10).Value = unitcode;
+                    OracleDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            NhomVatTuModel temp = new NhomVatTuModel();
+                            temp.MALOAIVATTU = reader["MALOAIVATTU"].ToString();
+                            temp.MANHOMVATTU = reader["MANHOMVTU"].ToString();
+                            temp.TENNHOMVATTU = reader["TENNHOMVT"].ToString();
+                            temp.MADONVI = reader["UNITCODE"].ToString();
+                            temp.MACHA = reader["MACHA"].ToString();
+                            lstNhomVatTu.Add(temp);
+                        }
+                    }
+                }
+            }
+            return Ok(lstNhomVatTu);
         }
 
         public HttpResponseMessage Put()

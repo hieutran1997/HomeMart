@@ -1,12 +1,13 @@
 import { Component, OnInit,EventEmitter, Input, Output } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {VatTu,VatTuDTO} from './vattumodel';
 import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
 import {CartModel} from '../../model/cartModel';
 import {ViewCartService} from '../view-cart.service';
-import {MatPaginatorIntl} from '@angular/material';
 import {CommonServiceService} from '../../service/common-service.service';
+import { LoaiVatTu } from '../../model/LoaiVatTu';
+import { NhomVatTu } from '../../model/nhomVatTu';
+import {sideBarShow} from '../../model/sideBarShowModel';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -15,6 +16,9 @@ import {CommonServiceService} from '../../service/common-service.service';
 export class HomeComponent  implements OnInit {
   result : VatTuDTO = null;
   lstVatTu : Array<VatTu>;
+  lstLoaiVatTu : Array<LoaiVatTu>;
+  lstNhomVatTu : Array<NhomVatTu>;
+  lstSideBar : Array<sideBarShow> = [];
   pageEvent: PageEvent;
   datasource: null;
   pageIndex:number;
@@ -27,19 +31,44 @@ export class HomeComponent  implements OnInit {
   viewer : string = 'table';
   sortAsc: Boolean = true;
   constructor( 
-    private _http: HttpClient, 
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
-    private initPaging : MatPaginatorIntl,
     private commonService :CommonServiceService
   ) { }
   ngOnInit() {
     this.filterData(null);
+    this.commonService.getAllMerchanediseType<Array<LoaiVatTu>>().subscribe(
+      data=>{
+        this.lstLoaiVatTu = data;
+        this.getAllGroupMerchanedise();
+      });
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
       //this.cookieService.delete('vattutronggiohang');
     }
+  }
+
+  getAllGroupMerchanedise(){
+    this.commonService.getAllGroupMerchanedise<Array<NhomVatTu>>().subscribe(
+      res=>{
+        this.lstNhomVatTu = res;
+        for(let i = 0 ; i < this.lstLoaiVatTu.length ; i++){
+          let temp= new sideBarShow() ;
+          temp.MaLoaiVatTu = this.lstLoaiVatTu[i].MaLoaiVatTu;
+          temp.TenLoaiVatTu = this.lstLoaiVatTu[i].TenLoaiVatTu;
+          if(this.lstNhomVatTu){
+            for(let j = 0 ; j < this.lstNhomVatTu.length ; j++){
+              if(temp.MaLoaiVatTu === this.lstNhomVatTu[j].MALOAIVATTU){
+                temp.ListNhomVatTu.push(this.lstNhomVatTu[j]);
+              }
+            }
+          }
+          this.lstSideBar.push(temp);
+        }
+        console.log('Nhóm vật tư',this.lstSideBar);
+      }
+    );
   }
 
   filterData(event?:PageEvent){

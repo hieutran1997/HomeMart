@@ -4,6 +4,7 @@ import { LayoutComponent } from './_layout/layout/layout.component';
 import { HomeComponent } from './_layout/home/home.component';
 import {ViewCartDetailComponent} from './_layout/view-cart-detail/view-cart-detail.component';
 import {DetailMerchandiseComponent} from './_layout/detail-merchandise/detail-merchandise.component';
+import {CategoryDetailsComponent} from './_layout/category-details/category-details.component';
 
 const routes: Routes = [
     {
@@ -12,7 +13,8 @@ const routes: Routes = [
       children:[
         {path:'',component:HomeComponent,pathMatch:'full'},
         {path:'chi-tiet-gio-hang',component:ViewCartDetailComponent},
-        {path:'chi-tiet-hang-hoa/:mavattu',component : DetailMerchandiseComponent}
+        {path:'chi-tiet-hang-hoa/:mavattu',component : DetailMerchandiseComponent},
+        {path:'loai-hang/:maloaivattu',component : CategoryDetailsComponent}
       ]
     }
 ];

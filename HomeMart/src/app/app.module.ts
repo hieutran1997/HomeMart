@@ -21,6 +21,7 @@ import { ViewCartDetailComponent } from './_layout/view-cart-detail/view-cart-de
 import { DetailMerchandiseComponent } from './_layout/detail-merchandise/detail-merchandise.component';
 import {MatPaginatorIntlCro} from './MatPaginatorIntlCro';
 import { CommonServiceService } from './service/common-service.service';
+import { CategoryDetailsComponent } from './_layout/category-details/category-details.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CommonServiceService } from './service/common-service.service';
     NgbdCarouselConfig,
     ViewCartDetailComponent,
     DetailMerchandiseComponent,
+    CategoryDetailsComponent,
   ],
   imports: [
     BrowserModule,
