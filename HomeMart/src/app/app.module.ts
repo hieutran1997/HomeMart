@@ -22,6 +22,7 @@ import { DetailMerchandiseComponent } from './_layout/detail-merchandise/detail-
 import {MatPaginatorIntlCro} from './MatPaginatorIntlCro';
 import { CommonServiceService } from './service/common-service.service';
 import { CategoryDetailsComponent } from './_layout/category-details/category-details.component';
+import { ContentHomeComponent } from './_layout/content-home/content-home.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { CategoryDetailsComponent } from './_layout/category-details/category-de
     ViewCartDetailComponent,
     DetailMerchandiseComponent,
     CategoryDetailsComponent,
+    ContentHomeComponent,
   ],
   imports: [
     BrowserModule,

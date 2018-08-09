@@ -1,0 +1,91 @@
+<mat-card id="cartParent">
+  <mat-card-title>
+      <div class="row">
+          <div class="col-md-6">Hàng mới về </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-2" style="text-align: right">
+              <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                  <div ngbDropdown class="d-inline-block">
+                      <button class="btn btn-outline-primary" id="sortMenu" ngbDropdownToggle>
+                          Sắp xếp</button>
+                      <!-- Missing tag added below -->
+                      <div class="dropdown-menu" aria-labelledby="sortMenu" ngbDropdownMenu>
+                          <button class="dropdown-item" 
+                                  *ngFor="let sortOrder of sortOrders" 
+                                  (click)="ChangeSortOrder(sortOrder)">{{sortOrder}}
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-2">
+              <button class="btn btn-outline-primary" (click)="viewer='list'"><span class="fa fa-list-ul"></span></button>
+              <button class="btn btn-outline-primary" (click)="viewer='table'"><span class="fa fa-table"></span></button>
+          </div>
+      </div>
+  </mat-card-title>
+  <mat-card-content  class="container">
+          <!-- chọn show bảng -->
+      <div class="row" *ngIf="viewer=='table'">
+          <div class="col-md-4" *ngFor="let item of lstVatTu">
+              <mat-card id="imageNew" style="margin-top: 15px;">
+                  <mat-card-content>
+                      <div class="text-center">
+                          <a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}" title="{{item.TenVatTu}}"><img src="data:image/JPEG;base64,{{item.Avatar}}" class="img-fluid" id="zoom" alt="{{item.TenVatTu}}"></a>
+                      </div>
+                  </mat-card-content>
+                  <mat-card-footer style="text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em">
+                      <div class="row">
+                          <div class="col-md-9">
+                              <span>{{display(item.TenVatTu)}}</span>
+                              <br/>
+                              <span id="monney" style="color: forestgreen;">{{item.DonGia | number}} ₫</span>
+                              <br/>
+                              <span style="font-size: 13px">Còn lại :&nbsp;<span class="badge badge-light">{{item.SoTon}}</span> </span>
+                          </div>
+                          <div class="col-md-3">
+                              <span (click)="addToCart(item)" id="pointer" title="Thêm vào giỏ hàng" class="fa fa-shopping-basket fa-2x"></span>
+                          </div>
+                      </div>
+                      <div class="row" style="font-size: 15px;margin-left: 30%;">
+                          <span *ngFor="let score of scoreFavorites">
+                              <i (click)="item.selectFavorite = score" class="fa fa-heart" *ngIf="score<=item.selectFavorite" style="color: brown"></i>
+                              <i (click)="item.selectFavorite = score" class="fa fa-heart-o" *ngIf="score>item.selectFavorite"></i>
+                          </span>
+                      </div>
+                  </mat-card-footer>
+              </mat-card>
+          </div>
+      </div>
+      <!-- chọn show danh sách -->
+      <div class="container" *ngIf="viewer=='list'">
+              <div class="row"  *ngFor="let item of lstVatTu">
+                  <div class="col-md-3" style="text-align: center"><a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}"  title="{{item.TenVatTu}}"><img src="data:image/JPEG;base64,{{item.Avatar}}" class="img-thumbnail" id="zoomList" alt="{{item.TenVatTu}}"></a></div>
+                  <div class="col" style="margin-top: 30px;">
+                      <span style="font-size: 1.3em;">{{item.TenVatTu}}</span>
+                      <br/>
+                      <span id="monney" style="color: forestgreen;">{{item.DonGia | number}} ₫</span>
+                      <br/>
+                      <span style="font-size: 13px">Còn lại :&nbsp;<span class="badge badge-light">{{item.SoTon}}</span> </span>
+                      <div class="row" style="font-size: 15px;margin-left: 1%;">
+                          <span *ngFor="let score of scoreFavorites">
+                              <i (click)="item.selectFavorite = score" class="fa fa-heart" *ngIf="score<=item.selectFavorite" style="color: brown"></i>
+                              <i (click)="item.selectFavorite = score" class="fa fa-heart-o" *ngIf="score>item.selectFavorite"></i>
+                          </span>
+                      </div>
+                      <button (click)="addToCart(item)" title="Thêm vào giỏ hàng" mat-fab color="primary">
+                          <span class="fa fa-shopping-basket fa-1x"></span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+  </mat-card-content>
+  <mat-card-footer> 
+      <mat-paginator  [length]="length"
+                      [pageIndex]="pageIndex"
+                      [pageSize]="pageSize"
+                      [pageSizeOptions]="[3,6,9,12]"
+                      (page)="pageEvent = getServerData($event)">
+      </mat-paginator>
+  </mat-card-footer>
+</mat-card>
