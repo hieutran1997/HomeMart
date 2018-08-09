@@ -6,7 +6,7 @@
     margin-bottom: 50px;
 }
 .img-fluid {
-    transform: scale(1.5);max-height: 300px;min-height: 200px;
+    transform: scale(1.25);max-height: 300px;min-height: 200px;
 }
 
 .fa-cart-plus:hover{
@@ -25,7 +25,7 @@
 }
 
 #zoomList:hover {
-    transform: scale(1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
 
 #monney{
@@ -45,4 +45,8 @@
 #pointer {
     padding-top: 30px;
     cursor: pointer;
+}
+
+ngb-rating{
+    color: crimson;
 }

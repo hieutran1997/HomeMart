@@ -8,10 +8,13 @@ import {CommonServiceService} from '../../service/common-service.service';
 import { NhomVatTu } from '../../model/nhomVatTu';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-content-home',
   templateUrl: './content-home.component.html',
   styleUrls: ['./content-home.component.css'],
+  providers: [NgbRatingConfig] 
 })
 export class ContentHomeComponent implements OnInit {
   maloaivattu : string = '';
@@ -26,16 +29,19 @@ export class ContentHomeComponent implements OnInit {
   cookieValue = 'UNKNOWN';
   vattuSelected : CartModel = null;
   sortOrders: string[] = ["Theo tên", "Theo giá bán", "Theo độ ưa thích"];
-  scoreFavorites : number[] = [1,2,3,4,5];
   viewer : string = 'table';
   sortAsc: Boolean = true;
+  isLoading : Boolean = false;
   constructor(
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
     private commonService :CommonServiceService,
     private route: ActivatedRoute,
     private location: Location,
-  ) { }
+    config: NgbRatingConfig
+  ) { 
+    config.max = 5;
+  }
 
   ngOnInit() {
     this.filterData(null);
@@ -56,7 +62,9 @@ export class ContentHomeComponent implements OnInit {
   }
 
   filterData(event?:PageEvent){
+    this.isLoading = true;
     this.commonService.getDataPaging(event).subscribe(arr=>{
+        this.isLoading = false;
         this.result = arr;
         if(event){
           event.pageIndex = this.result.PageNumber;

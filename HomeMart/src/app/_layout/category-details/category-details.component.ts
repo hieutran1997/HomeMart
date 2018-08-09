@@ -5,12 +5,16 @@ import { CommonServiceService } from '../../service/common-service.service';
 import {PageEvent} from '@angular/material';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
 import {Router,NavigationEnd} from '@angular/router';
-
+import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
+import {CartModel} from '../../model/cartModel';
+import { CookieService } from 'ngx-cookie-service';
+import {ViewCartService} from '../view-cart.service';
 
 @Component({
   selector: 'app-category-details',
   templateUrl: './category-details.component.html',
-  styleUrls: ['./category-details.component.css']
+  styleUrls: ['./category-details.component.css'],
+  providers: [NgbRatingConfig] 
 })
 export class CategoryDetailsComponent implements OnInit,OnDestroy {
   maloaivattu: string='';
@@ -21,17 +25,22 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   length:number;
   result : VatTuDTO = null;
   sortOrders: string[] = ["Theo tên", "Theo giá bán", "Theo độ ưa thích"];
-  scoreFavorites : number[] = [1,2,3,4,5];
   viewer : string = 'table';
   sortAsc: Boolean = true;
   lstVatTu : Array<VatTu>;
   navigationSubscription;
+  isLoading : Boolean = false;
+  vattuSelected : CartModel = null;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private commonService : CommonServiceService,
     private router: Router,
+    config: NgbRatingConfig,
+    private cookieService: CookieService ,
+    private viewCartService: ViewCartService,
   ) {
+    config.max = 5;
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd ) {
         let url:string = e.urlAfterRedirects; 
@@ -43,7 +52,6 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.maloaivattu= this.route.snapshot.paramMap.get('maloaivattu');
-    console.log(this.maloaivattu);
     this.filterData(null,this.maloaivattu);
   }
 
@@ -54,7 +62,9 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   }
 
   filterData(event?:PageEvent,manhom?:string){
+    this.isLoading = true;
     this.commonService.getListMerchanediseByCategory(event,manhom).subscribe(arr=>{
+      this.isLoading = false;
       this.result = arr;
       if(event){
         event.pageIndex = this.result.PageNumber;
@@ -83,6 +93,44 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
 
   public getServerData(event?:PageEvent){
     this.filterData(event,this.maloaivattu);
+  }
+
+  addToCart(item){
+    let lstVatTuCart :Array<VatTu> = [];
+    let vattu : VatTu = null;
+    vattu = item;
+    vattu.SoLuong = 1;
+    lstVatTuCart.push(vattu);
+    if(this.vattuSelected){
+      var j = 0;
+      if(this.vattuSelected.arrVatTuSelected){
+        for(var i = 0 ; i < this.vattuSelected.arrVatTuSelected.length ; i++){
+          if(this.vattuSelected.arrVatTuSelected[i].MaVatTu === vattu.MaVatTu){
+            this.vattuSelected.arrVatTuSelected[i].SoLuong = this.vattuSelected.arrVatTuSelected[i].SoLuong + vattu.SoLuong;
+            this.vattuSelected.tongSoLuong += 1;
+            j++;
+          }
+        }
+      }
+      if(j == 0){
+        this.vattuSelected.arrVatTuSelected.push(vattu);
+        this.vattuSelected.tongSoLuong += vattu.SoLuong;
+      }
+      var tongtien = 0;
+      for(var i = 0 ; i < this.vattuSelected.arrVatTuSelected.length ; i++){
+        tongtien = tongtien + this.vattuSelected.arrVatTuSelected[i].SoLuong *this.vattuSelected.arrVatTuSelected[i].DonGia;
+      }
+      this.vattuSelected.tongTien =tongtien;
+      this.cookieService.delete('vattutronggiohang');
+      this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected) );
+      this.viewCartService.changedCartView(this.vattuSelected);
+    }
+    else{
+      this.vattuSelected = new CartModel(lstVatTuCart,vattu.SoLuong,vattu.DonGia*vattu.SoLuong);
+      this.vattuSelected.tongSoLuong = vattu.SoLuong;
+      this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected) );
+      this.viewCartService.changedCartView(this.vattuSelected);
+    }
   }
 
     //sắp xếp 

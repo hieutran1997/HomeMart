@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,MatCardModule ,MatPaginatorModule,MatSliderModule,MatPaginatorIntl,} from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,MatCardModule ,MatPaginatorModule,MatSliderModule,MatPaginatorIntl} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutComponent } from './_layout/layout/layout.component';
 import { HeaderComponent } from './_layout/header/header.component';
@@ -23,6 +23,7 @@ import {MatPaginatorIntlCro} from './MatPaginatorIntlCro';
 import { CommonServiceService } from './service/common-service.service';
 import { CategoryDetailsComponent } from './_layout/category-details/category-details.component';
 import { ContentHomeComponent } from './_layout/content-home/content-home.component';
+import {SelfBuildingSquareSpinnerModule} from 'angular-epic-spinners'
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ContentHomeComponent } from './_layout/content-home/content-home.compon
     MatPaginatorModule,
     MatSliderModule,
     FormsModule,
+    SelfBuildingSquareSpinnerModule,
     NgbModule.forRoot(),
   ],
   providers: [CookieService,{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro},CommonServiceService],

@@ -1,7 +1,7 @@
 <mat-card id="cartParent">
     <mat-card-title>
         <div class="row">
-            <div class="col-md-6">Hàng mới về </div>
+            <div class="col-md-6">Danh sách mặt hàng theo loại : {{category}} </div>
             <div class="col-md-2"></div>
             <div class="col-md-2" style="text-align: right">
                 <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
@@ -24,8 +24,23 @@
             </div>
         </div>
     </mat-card-title>
-    <mat-card-content  class="container">
-            <!-- chọn show bảng -->
+    <mat-card-content  *ngIf="isLoading">
+        <br/>
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col align-self-center">
+                <app-self-building-square-spinner 
+                [animationDuration]="3000"
+                [size]="40"
+                [color]="'#441d72'"
+                ></app-self-building-square-spinner>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <br/>
+    </mat-card-content>
+    <mat-card-content  class="container" *ngIf="!isLoading">
+        <!-- chọn show bảng -->
         <div class="row" *ngIf="viewer=='table'">
             <div class="col-md-4" *ngFor="let item of lstVatTu">
                 <mat-card id="imageNew" style="margin-top: 15px;">
@@ -48,10 +63,7 @@
                             </div>
                         </div>
                         <div class="row" style="font-size: 15px;margin-left: 30%;">
-                            <span *ngFor="let score of scoreFavorites">
-                                <i (click)="item.selectFavorite = score" class="fa fa-heart" *ngIf="score<=item.selectFavorite" style="color: brown"></i>
-                                <i (click)="item.selectFavorite = score" class="fa fa-heart-o" *ngIf="score>item.selectFavorite"></i>
-                            </span>
+                            <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
                         </div>
                     </mat-card-footer>
                 </mat-card>
@@ -68,10 +80,7 @@
                         <br/>
                         <span style="font-size: 13px">Còn lại :&nbsp;<span class="badge badge-light">{{item.SoTon}}</span> </span>
                         <div class="row" style="font-size: 15px;margin-left: 1%;">
-                            <span *ngFor="let score of scoreFavorites">
-                                <i (click)="item.selectFavorite = score" class="fa fa-heart" *ngIf="score<=item.selectFavorite" style="color: brown"></i>
-                                <i (click)="item.selectFavorite = score" class="fa fa-heart-o" *ngIf="score>item.selectFavorite"></i>
-                            </span>
+                            <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
                         </div>
                         <button (click)="addToCart(item)" title="Thêm vào giỏ hàng" mat-fab color="primary">
                             <span class="fa fa-shopping-basket fa-1x"></span>
