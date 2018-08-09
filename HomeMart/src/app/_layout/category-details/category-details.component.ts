@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { CommonServiceService } from '../../service/common-service.service';
 import {PageEvent} from '@angular/material';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
+import {Router,NavigationEnd} from '@angular/router';
+
+
 @Component({
   selector: 'app-category-details',
   templateUrl: './category-details.component.html',
   styleUrls: ['./category-details.component.css']
 })
-export class CategoryDetailsComponent implements OnInit {
+export class CategoryDetailsComponent implements OnInit,OnDestroy {
   maloaivattu: string='';
   pageEvent: PageEvent;
   datasource: null;
@@ -22,11 +25,21 @@ export class CategoryDetailsComponent implements OnInit {
   viewer : string = 'table';
   sortAsc: Boolean = true;
   lstVatTu : Array<VatTu>;
+  navigationSubscription;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private commonService : CommonServiceService,
-  ) { }
+    private router: Router,
+  ) {
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd ) {
+        let url:string = e.urlAfterRedirects; 
+        let manhomhang = url.split('/');
+        this.filterData(null,manhomhang[manhomhang.length-1]);
+      }
+    });
+   }
 
   ngOnInit() {
     this.maloaivattu= this.route.snapshot.paramMap.get('maloaivattu');
@@ -34,10 +47,15 @@ export class CategoryDetailsComponent implements OnInit {
     this.filterData(null,this.maloaivattu);
   }
 
+  ngOnDestroy() {
+    if (this.navigationSubscription) {  
+       this.navigationSubscription.unsubscribe();
+    }
+  }
+
   filterData(event?:PageEvent,manhom?:string){
     this.commonService.getListMerchanediseByCategory(event,manhom).subscribe(arr=>{
       this.result = arr;
-      
       if(event){
         event.pageIndex = this.result.PageNumber;
         event.pageSize = this.result.PageSize;
@@ -49,7 +67,6 @@ export class CategoryDetailsComponent implements OnInit {
         this.length = this.result.ItemTotal;
       }
       this.lstVatTu = this.result.Data;
-      console.log(this.lstVatTu);
       this.lstVatTu.forEach(function(obj){
           obj.selectFavorite = 0;
       });
