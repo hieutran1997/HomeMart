@@ -22,7 +22,7 @@ export class VatTuDetail{
     public  MaVatTu :string;
     public  DonGia : number;
     public  SoTon :number;
-    public  HinhAnh :Array<string>;
+    public  HinhAnhs :Array<string>;
     public ItemTotal: number;
     public Avartar : Array<number>;
     public selectFavorite : number;

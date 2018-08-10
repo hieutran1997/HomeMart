@@ -28,3 +28,19 @@
       </div>
     </ng-template>
   </ngb-carousel>
+
+  <ngb-carousel *ngIf="isLoading">
+      <br/>
+      <div class="row">
+          <div class="col-md-5"></div>
+          <div class="col align-self-center">
+              <app-self-building-square-spinner 
+              [animationDuration]="3000"
+              [size]="40"
+              [color]="'#441d72'"
+              ></app-self-building-square-spinner>
+          </div>
+          <div class="col-md-4"></div>
+      </div>
+      <br/>
+  </ngb-carousel>

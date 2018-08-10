@@ -11,7 +11,6 @@ export class HeaderComponent implements OnInit {
   lstLoaiVatTu : Array<LoaiVatTu>;
 
   listMenu = new Array();
-
   constructor(
     private commonService : CommonServiceService,
   ) { }

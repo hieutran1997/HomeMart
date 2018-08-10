@@ -11,6 +11,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class NgbdCarouselConfig  implements OnInit {
   images: Array<string>;
+  isLoading : Boolean = false;
   constructor(config: NgbCarouselConfig, private _http: HttpClient) {
     // customize default values of carousels used by this component tree
     config.interval = 10000;
@@ -19,9 +20,10 @@ export class NgbdCarouselConfig  implements OnInit {
     config.pauseOnHover = false;
   }
   ngOnInit() {
+    this.isLoading = true;
     this._http.get('https://picsum.photos/list')
         .pipe(map((images: Array<{id: number}>) => this._randomImageUrls(images)))
-        .subscribe(images => this.images = images);
+        .subscribe(images =>{this.isLoading = false;this.images = images;} );
   }
   private _randomImageUrls(images: Array<{id: number}>): Array<string> {
     return [1, 2, 3, 4].map(() => {

@@ -23,8 +23,8 @@ import {MatPaginatorIntlCro} from './MatPaginatorIntlCro';
 import { CommonServiceService } from './service/common-service.service';
 import { CategoryDetailsComponent } from './_layout/category-details/category-details.component';
 import { ContentHomeComponent } from './_layout/content-home/content-home.component';
-import {SelfBuildingSquareSpinnerModule} from 'angular-epic-spinners'
-
+import {SelfBuildingSquareSpinnerModule} from 'angular-epic-spinners';
+import { NgxGalleryModule } from 'ngx-gallery';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +55,7 @@ import {SelfBuildingSquareSpinnerModule} from 'angular-epic-spinners'
     MatSliderModule,
     FormsModule,
     SelfBuildingSquareSpinnerModule,
+    NgxGalleryModule,
     NgbModule.forRoot(),
   ],
   providers: [CookieService,{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro},CommonServiceService],
