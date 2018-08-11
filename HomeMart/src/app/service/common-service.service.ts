@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { VatTu , VatTuDetail , VatTuDTO} from '../_layout/home/vattumodel';
-import {LoaiVatTu} from '../model/LoaiVatTu';
-import { NhomVatTu } from '../model/nhomVatTu'
+import { VatTuDTO} from '../_layout/home/vattumodel';
 import {HttpClient} from '@angular/common/http';
 import {PageEvent} from '@angular/material';
 
@@ -10,6 +8,7 @@ import {PageEvent} from '@angular/material';
 })
 export class CommonServiceService {
 
+  madonvi:string = 'DV1-CH1';
   host:string = 'http://localhost:50595/';
 
   constructor(
@@ -35,14 +34,18 @@ export class CommonServiceService {
   }
 
   getDataDetail<VatTuDetail>(mavattu :string){
-    return this._http.get<VatTuDetail>(this.host+'api/home/GetDetailMerchanedise?mavattu='+mavattu);
+    return this._http.get<VatTuDetail>(this.host+'api/home/GetDetailMerchanedise?mavattu='+mavattu+'&madonvi='+this.madonvi+'');
   }
 
   getAllMerchanediseType<LoaiVatTu>(){
-    return this._http.get<LoaiVatTu>(this.host+'api/home/GetListMerchanediseType?madonvi=DV1-CH1');
+    return this._http.get<LoaiVatTu>(this.host+'api/home/GetListMerchanediseType?madonvi='+this.madonvi);
   }
 
   getAllGroupMerchanedise<NhomVatTu>(){
-    return this._http.get<NhomVatTu>(this.host + 'api/home/GetAllGroupMerchanedise?unitcode=DV1-CH1');
+    return this._http.get<NhomVatTu>(this.host + 'api/home/GetAllGroupMerchanedise?unitcode='+this.madonvi);
+  }
+
+  getMerchanediseByCode<viewDetailCart>(mavattu:string){
+    return this._http.get<viewDetailCart>(this.host +"api/home/GetMerchanediseByCode?mavattuselect="+mavattu+"&madonvi="+this.madonvi);
   }
 }

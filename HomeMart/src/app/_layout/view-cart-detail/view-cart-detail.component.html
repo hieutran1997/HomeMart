@@ -1,3 +1,50 @@
-<p>
-  view-cart-detail works!
-</p>
+<div class="container" style="padding-bottom: 40px;">
+  <div class="row">
+    <div class="col-md-8">
+      <mat-card>
+        <mat-card-title>Danh sách hàng đã chọn</mat-card-title>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Số lượng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lstViewVatTu;let idx = index">
+                <td style="width: 5%;">{{idx+1}}</td>
+                <td style="width: 50%;">
+                  <img src="data:image/JPEG;base64,{{item.Avatar}}" *ngIf="item.Avatar" class="img-fluid" style="width: 50px;height: 50px;">
+                  &nbsp;&nbsp;&nbsp;
+                  <a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}"><span>{{item.TenVatTu}}</span></a>
+                </td>
+                <td style="width: 20%;">{{item.GiaBanLeVat| number}}</td>
+                <td style="width: 10%;">{{item.SoLuong| number}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-4">
+      <mat-card>
+        <mat-card-content>
+          <span>Địa điểm</span>
+          <hr/>
+          <h6>Thông tin đơn hàng</h6>
+          <br/>
+          <div>
+            <span style="float: left;">Tạm tính ( {{lstViewVatTu.length}} sản phẩm )</span>
+            <span style="float: right;font-weight: bold">{{vattuSelected.tongTien|number}} vnđ</span>
+          </div>
+          <br/>
+          <br/>
+          <button class="btn btn-primary">Thanh toán</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

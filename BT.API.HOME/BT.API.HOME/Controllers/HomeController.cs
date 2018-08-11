@@ -158,7 +158,8 @@ namespace BT.API.HOME.Controllers
             }
             return Ok(vattu);
         }
-        public IHttpActionResult GetDetailMerchanedise(string mavattu)
+
+        public IHttpActionResult GetDetailMerchanedise(string mavattu , string madonvi)
         {
             VatTuDetail result = new VatTuDetail();
             string table_XNT = CommonService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
@@ -170,7 +171,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT+" xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
+                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT+" xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='"+ madonvi + "' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
                     cmd.Parameters.Add("mavattu", OracleDbType.NVarchar2, 50).Value = mavattu;
                     try
                     {
@@ -275,6 +276,42 @@ namespace BT.API.HOME.Controllers
                 }
             }
             return Ok(lstNhomVatTu);
+        }
+
+        public IHttpActionResult GetMerchanediseByCode(string mavattuselect,string madonvi)
+        {
+            VatTuViewCart result = new VatTuViewCart();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.Connection = connection;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"SELECT vt.AVATAR,vt.TENHANG,vt.GIABANLEVAT FROM V_VATTU_GIABAN vt WHERE vt.MAVATTU=:mavattu AND vt.UNITCODE = :madonvi";
+                    cmd.Parameters.Add("mavattu", OracleDbType.NVarchar2, 50).Value = mavattuselect;
+                    cmd.Parameters.Add("madonvi", OracleDbType.NVarchar2, 50).Value = madonvi;
+                    try
+                    {
+                        OracleDataReader reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                decimal dongia= 0;
+                                result.TenVatTu = reader["TENHANG"].ToString();
+                                decimal.TryParse(reader["GIABANLEVAT"].ToString(), out dongia);
+                                result.GiaBanLeVat = dongia;
+                                result.Avatar = (byte[])reader["Avatar"];
+                                result.SoLuong = 0;
+                            }
+                        }
+                    }
+                    catch (Exception ex) { }
+                }
+            }
+            return Ok(result);
         }
 
         public HttpResponseMessage Put()

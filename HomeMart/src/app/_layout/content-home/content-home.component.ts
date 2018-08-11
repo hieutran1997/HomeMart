@@ -2,7 +2,7 @@ import { Component, OnInit,EventEmitter, Input, Output } from '@angular/core';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
 import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
-import {CartModel} from '../../model/cartModel';
+import {CartModel,VatTuCart} from '../../model/cartModel';
 import {ViewCartService} from '../view-cart.service';
 import {CommonServiceService} from '../../service/common-service.service';
 import { NhomVatTu } from '../../model/nhomVatTu';
@@ -47,8 +47,8 @@ export class ContentHomeComponent implements OnInit {
     this.filterData(null);
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
-      this.vattuSelected =JSON.parse(this.cookieValue);
-      //this.cookieService.delete('vattutronggiohang');
+      this.vattuSelected =JSON.parse(this.cookieValue);   
+      console.log('aaaa',this.vattuSelected);
     }
   }
   
@@ -88,39 +88,37 @@ export class ContentHomeComponent implements OnInit {
   }
 
   addToCart(item){
-    let lstVatTuCart :Array<VatTu> = [];
+    let lstVatTuCart :Array<VatTuCart> = [];
     let vattu : VatTu = null;
     vattu = item;
     vattu.SoLuong = 1;
-    lstVatTuCart.push(vattu);
+    let vattuCart = new VatTuCart(vattu.MaVatTu,vattu.SoLuong);
+    lstVatTuCart.push(vattuCart);
     if(this.vattuSelected){
-      var j = 0;
+      var j = 0;//Kiểm tra trùng
       if(this.vattuSelected.arrVatTuSelected){
         for(var i = 0 ; i < this.vattuSelected.arrVatTuSelected.length ; i++){
           if(this.vattuSelected.arrVatTuSelected[i].MaVatTu === vattu.MaVatTu){
             this.vattuSelected.arrVatTuSelected[i].SoLuong = this.vattuSelected.arrVatTuSelected[i].SoLuong + vattu.SoLuong;
             this.vattuSelected.tongSoLuong += 1;
+            this.vattuSelected.tongTien += vattu.DonGia*vattu.SoLuong;
             j++;
           }
         }
       }
-      if(j == 0){
-        this.vattuSelected.arrVatTuSelected.push(vattu);
+      if(j == 0){//Không trùng thì thêm mới
+        this.vattuSelected.arrVatTuSelected.push(vattuCart);
         this.vattuSelected.tongSoLuong += vattu.SoLuong;
+        this.vattuSelected.tongTien +=vattu.DonGia*vattu.SoLuong;
       }
-      var tongtien = 0;
-      for(var i = 0 ; i < this.vattuSelected.arrVatTuSelected.length ; i++){
-        tongtien = tongtien + this.vattuSelected.arrVatTuSelected[i].SoLuong *this.vattuSelected.arrVatTuSelected[i].DonGia;
-      }
-      this.vattuSelected.tongTien =tongtien;
       this.cookieService.delete('vattutronggiohang');
-      this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected) );
+      this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
       this.viewCartService.changedCartView(this.vattuSelected);
     }
     else{
       this.vattuSelected = new CartModel(lstVatTuCart,vattu.SoLuong,vattu.DonGia*vattu.SoLuong);
       this.vattuSelected.tongSoLuong = vattu.SoLuong;
-      this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected) );
+      this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
       this.viewCartService.changedCartView(this.vattuSelected);
     }
   }

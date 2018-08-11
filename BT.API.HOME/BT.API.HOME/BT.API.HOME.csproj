@@ -138,6 +138,7 @@
     <Compile Include="Models\MerchanediseType.cs" />
     <Compile Include="Models\NhomVatTuModel.cs" />
     <Compile Include="Models\VatTuModel.cs" />
+    <Compile Include="Models\VatTuViewCart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
