@@ -314,6 +314,84 @@ namespace BT.API.HOME.Controllers
             return Ok(result);
         }
 
+        public IHttpActionResult GetListMerchanediseKhuyenMai(decimal pagenumber, decimal pagesize,string makho,string madonvi)
+        {
+            List<VatTuModel> lstVatTu = new List<VatTuModel>();
+            VatTuDTO vattu = new VatTuDTO(lstVatTu);
+            string table_XNT = CommonService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    decimal P_PAGENUMBER = pagenumber;
+                    decimal P_PAGESIZE = pagesize;
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.InitialLONGFetchSize = 1000;
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT km.MACHUONGTRINH,km.TUNGAY,DENNGAY,km.TUGIO,km.DENGIO,km.MAVATTU,km.SOLUONG,km.TYLEKHUYENMAICHILDREN AS TYLE,km.GIATRIKHUYENMAICHILDREN AS GIATRI,vt.GIABANLEVAT,vt.AVATAR,vt.TENHANG,xnt.TONCUOIKYSL SOTON FROM V_VATTU_GIABAN vt RIGHT JOIN V_CHUONGTRINH_KHUYENMAI km ON vt.MAVATTU = km.MAVATTU LEFT JOIN "+ table_XNT + " xnt ON xnt.MAVATTU= km.MAVATTU WHERE km.UNITCODE = '"+ madonvi + "' AND km.TRANGTHAI = 10 AND vt.UNITCODE ='"+ madonvi + "' AND xnt.MAKHO ='"+makho+"' AND km.TUNGAY >=TO_DATE(SYSDATE,'DD/MM/YY') AND km.DENNGAY <= TO_DATE(SYSDATE,'DD/MM/YY') ORDER BY vt.I_CREATE_DATE DESC ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandType = CommandType.Text;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            decimal dongia, soluong ,khuyenmai,tyle= 0;
+                            while (reader.Read())
+                            {
+                                VatTuModel temp = new VatTuModel();
+                                temp.MaVatTu = reader["MAVATTU"].ToString();
+                                temp.TenVatTu = reader["TENVATTU"].ToString();
+                                decimal.TryParse(reader["GIABANLEVAT"].ToString(), out dongia);
+                                temp.DonGia = dongia;
+                                decimal.TryParse(reader["TONCUOIKYSL"].ToString(), out soluong);
+                                temp.SoTon = soluong;
+                                string HinhAnh = reader["IMAGE"].ToString();
+                                string[] lstAnh = HinhAnh.Split(',');
+                                temp.HinhAnh = new List<string>();
+                                temp.Avatar = (byte[])reader["Avatar"];
+                                string Path = reader["PATH_IMAGE"].ToString();
+                                decimal.TryParse(reader["GIATRI"].ToString(), out khuyenmai);
+                                temp.DonGiaKhuyenMai = khuyenmai;
+                                decimal.TryParse(reader["TYLE"].ToString(), out tyle);
+                                temp.TyLeKhuyeMai = tyle;
+                                for (int i = 0; i < lstAnh.Length; i++)
+                                {
+                                    if (!string.IsNullOrEmpty(lstAnh[i]))
+                                    {
+                                        temp.HinhAnh.Add(Path + lstAnh[i]);
+                                    }
+                                }
+                                lstVatTu.Add(temp);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.Connection = connection;
+                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_CHUONGTRINH_KHUYENMAI vt WHERE vt.UNITCODE ='" + madonvi+ "' AND vt.TUNGAY >=TO_DATE(SYSDATE,'DD/MM/YY') AND vt.DENNGAY <= TO_DATE(SYSDATE,'DD/MM/YY') ";
+                    cmd.CommandType = CommandType.Text;
+                    OracleDataReader dataReader = cmd.ExecuteReader();
+                    if (dataReader.HasRows)
+                    {
+                        decimal totalitem = 0;
+                        while (dataReader.Read())
+                        {
+                            decimal.TryParse(dataReader["TOTALITEM"].ToString(), out totalitem);
+                            vattu.ItemTotal = totalitem;
+                            vattu.PageSize = pagesize;
+                            vattu.PageNumber = pagenumber;
+                        }
+                    }
+                }
+            }
+            return Ok(vattu);
+        }
+
         public HttpResponseMessage Put()
         {
             return new HttpResponseMessage()

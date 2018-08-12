@@ -13,6 +13,8 @@ namespace BT.API.HOME.Models
         public decimal SoTon { get; set; }
         public List<string> HinhAnh { get; set; }
         public byte[] Avatar { get; set; }
+        public decimal DonGiaKhuyenMai { get; set; }
+        public decimal TyLeKhuyeMai { get; set; }
     }
 
     public class VatTuDTO

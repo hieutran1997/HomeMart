@@ -10,6 +10,7 @@ export class CommonServiceService {
 
   madonvi:string = 'DV1-CH1';
   host:string = 'http://localhost:50595/';
+  makho :string= 'DV1-CH1-KBL';
 
   constructor(
     private _http: HttpClient, 
@@ -47,5 +48,13 @@ export class CommonServiceService {
 
   getMerchanediseByCode<viewDetailCart>(mavattu:string){
     return this._http.get<viewDetailCart>(this.host +"api/home/GetMerchanediseByCode?mavattuselect="+mavattu+"&madonvi="+this.madonvi);
+  }
+  getListMerchanediseKhuyenMai<VatTuDTO>(event? :PageEvent){
+    if(event){
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseKhuyenMai?pagesize='+event.pageSize+'&pagenumber='+event.pageIndex+'&makho='+this.makho+'&madonvi='+this.madonvi);
+    }
+    else{
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseKhuyenMai?pagesize=6&pagenumber=1&makho='+this.makho+'&madonvi='+this.madonvi);
+    }
   }
 }

@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let arrTemp = new Array({ Title : 'Trang chủ' , url : '/'});
+    let arrTemp = new Array({ Title : 'Trang chủ' , url : '/'},{Title:'Khuyến mãi',url:'/chuong-trinh-khuyen-mai'});
     this.commonService.getAllMerchanediseType<Array<LoaiVatTu>>().subscribe(
       data=>{
         this.lstLoaiVatTu = data;

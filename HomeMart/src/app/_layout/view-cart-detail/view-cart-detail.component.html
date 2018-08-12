@@ -11,18 +11,33 @@
                 <th scope="col">Sản phẩm</th>
                 <th scope="col">Giá</th>
                 <th scope="col">Số lượng</th>
+                <th scope="col"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="lstViewVatTu.length===0">
+                <td colspan="5" style="text-align: center;font-size: 20px;"><span>Bạn chưa chọn sản phẩm nào !</span></td>
+            </tbody>
+            <tbody *ngIf="lstViewVatTu.length>0">
               <tr *ngFor="let item of lstViewVatTu;let idx = index">
                 <td style="width: 5%;">{{idx+1}}</td>
-                <td style="width: 50%;">
+                <td style="width: 40%;">
                   <img src="data:image/JPEG;base64,{{item.Avatar}}" *ngIf="item.Avatar" class="img-fluid" style="width: 50px;height: 50px;">
                   &nbsp;&nbsp;&nbsp;
                   <a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}"><span>{{item.TenVatTu}}</span></a>
                 </td>
                 <td style="width: 20%;">{{item.GiaBanLeVat| number}}</td>
-                <td style="width: 10%;">{{item.SoLuong| number}}</td>
+                <td style="width: 30%;">
+                  <div class="row">
+                    <button class="btn btn-default" (click)="SubtractionItem(item)"><span class="fa fa fa-minus-circle"></span></button>
+                    <input [(ngModel)]="item.SoLuong" (ngModelChange)="ChangedQuatity(item)" class="form-control" style="width: 50px !important"/>
+                    <button class="btn btn-default" (click)="PlusItem(item)"><span class="fa fa-plus-circle"></span></button>
+                  </div>
+                  </td>
+                <td style="width: 5%;">
+                  <button type="button" class="close" aria-label="Close" (click)="DeleteItem(item)" title="Xóa bỏ">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>

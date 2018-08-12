@@ -4,6 +4,7 @@ import{CartModel} from '../../model/cartModel';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
 import {CommonServiceService} from '../../service/common-service.service';
 import {viewDetailCart} from '../../model/viewDetailCart';
+import {ViewCartService} from '../view-cart.service';
 @Component({
   selector: 'app-view-cart-detail',
   templateUrl: './view-cart-detail.component.html',
@@ -17,6 +18,7 @@ export class ViewCartDetailComponent implements OnInit {
   constructor(
     private cookieService : CookieService,
     private commonService :CommonServiceService,
+    private viewCartService: ViewCartService,
   ) { }
 
   ngOnInit() {
@@ -41,5 +43,64 @@ export class ViewCartDetailComponent implements OnInit {
         this.lstViewVatTu =[dataTemp];
       }
     })
+  }
+
+  DeleteItem(item){
+    let index = this.lstViewVatTu.indexOf(item);
+    this.lstViewVatTu.splice(index,1);
+    this.vattuSelected.arrVatTuSelected.splice(index,1);
+    this.vattuSelected.tongSoLuong -= item.SoLuong;
+    this.vattuSelected.tongTien -= item.GiaBanLeVat * item.SoLuong;
+    this.cookieService.delete('vattutronggiohang');
+    this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
+    this.viewCartService.changedCartView(this.vattuSelected);
+  }
+
+  SubtractionItem(item){
+    item.SoLuong --;
+    this.vattuSelected.tongSoLuong = this.vattuSelected.tongSoLuong - 1;
+    this.vattuSelected.tongTien = this.vattuSelected.tongTien - item.GiaBanLeVat;
+    this.vattuSelected.arrVatTuSelected.forEach(function(obj){
+      if(obj.MaVatTu === item.MaVatTu){ //cập nhật lại số lượng trong cart
+        obj.SoLuong = item.SoLuong;
+      }
+    });
+    this.cookieService.delete('vattutronggiohang');
+    this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
+    this.viewCartService.changedCartView(this.vattuSelected);
+  }
+  ChangedQuatity(item){
+    let giaBanOld = 0;
+    let soLuongOld = 0;
+    this.lstViewVatTu.forEach(function(obj){
+      if(obj.MaVatTu === item.MaVatTu){
+        giaBanOld = obj.SoLuong*obj.GiaBanLeVat;
+        soLuongOld = obj.SoLuong;
+      }
+    });
+    //cập nhật lại cart
+    this.vattuSelected.tongSoLuong = this.vattuSelected.tongSoLuong + item.SoLuong - soLuongOld;
+    this.vattuSelected.tongTien = this.vattuSelected.tongTien + item.GiaBanLeVat*item.SoLuong - giaBanOld;
+    this.vattuSelected.arrVatTuSelected.forEach(function(obj){
+      if(obj.MaVatTu === item.MaVatTu){ //cập nhật lại số lượng trong cart
+        obj.SoLuong = item.SoLuong;
+      }
+    });
+    this.cookieService.delete('vattutronggiohang');
+    this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
+    this.viewCartService.changedCartView(this.vattuSelected);
+  }
+  PlusItem(item){
+    item.SoLuong ++;
+    this.vattuSelected.tongSoLuong = this.vattuSelected.tongSoLuong + 1;
+    this.vattuSelected.tongTien = this.vattuSelected.tongTien + item.GiaBanLeVat;
+    this.vattuSelected.arrVatTuSelected.forEach(function(obj){
+      if(obj.MaVatTu === item.MaVatTu){ //cập nhật lại số lượng trong cart
+        obj.SoLuong = item.SoLuong;
+      }
+    });
+    this.cookieService.delete('vattutronggiohang');
+    this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
+    this.viewCartService.changedCartView(this.vattuSelected);
   }
 }

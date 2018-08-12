@@ -1,4 +1,5 @@
-import { Component, OnInit,EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
 import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
@@ -8,15 +9,14 @@ import {CommonServiceService} from '../../service/common-service.service';
 import { NhomVatTu } from '../../model/nhomVatTu';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
-  selector: 'app-content-home',
-  templateUrl: './content-home.component.html',
-  styleUrls: ['./content-home.component.css'],
+  selector: 'app-sales',
+  templateUrl: './sales.component.html',
+  styles: [],
   providers: [NgbRatingConfig] 
 })
-export class ContentHomeComponent implements OnInit {
+export class SalesComponent implements OnInit {
+
   maloaivattu : string = '';
   result : VatTuDTO = null;
   lstVatTu : Array<VatTu>;
@@ -62,7 +62,8 @@ export class ContentHomeComponent implements OnInit {
 
   filterData(event?:PageEvent){
     this.isLoading = true;
-    this.commonService.getDataPaging(event).subscribe(arr=>{
+    this.commonService.getListMerchanediseKhuyenMai<VatTuDTO>(event).subscribe(arr=>{
+        console.log(arr);
         this.isLoading = false;
         this.result = arr;
         if(event){
@@ -177,4 +178,5 @@ export class ContentHomeComponent implements OnInit {
     }
   }
   //đóng sắp xếp
+
 }

@@ -8,6 +8,8 @@ export class VatTu{
     public ItemTotal: number;
     public Avartar : Array<number>;
     public selectFavorite : number;
+    public DonGiaKhuyenMai :number;
+    public TyLeKhuyeMai : number;
 }
 
 export class VatTuDTO{

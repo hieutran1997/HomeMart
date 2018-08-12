@@ -25,6 +25,9 @@ import { CategoryDetailsComponent } from './_layout/category-details/category-de
 import { ContentHomeComponent } from './_layout/content-home/content-home.component';
 import {SelfBuildingSquareSpinnerModule} from 'angular-epic-spinners';
 import { NgxGalleryModule } from 'ngx-gallery';
+import { SalesComponent } from './_layout/sales/sales.component';
+import { LoginComponent } from './_layout/login/login.component';
+import { RegisterComponent } from './_layout/register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +41,9 @@ import { NgxGalleryModule } from 'ngx-gallery';
     DetailMerchandiseComponent,
     CategoryDetailsComponent,
     ContentHomeComponent,
+    SalesComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
