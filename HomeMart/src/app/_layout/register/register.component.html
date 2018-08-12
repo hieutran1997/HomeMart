@@ -24,29 +24,43 @@
                     <input matInput placeholder="Nhập số điện thoại" formControlName="SoDienThoai" required>
                   </mat-form-field>
                 <div>
-                  <button mat-button matStepperNext>Tiếp theo</button>
+                  <button class="btn btn-primary" matStepperNext [disabled]="!firstFormGroup.valid">Tiếp theo</button>
                 </div>
               </form>
             </mat-step>
             <mat-step [stepControl]="secondFormGroup">
               <form [formGroup]="secondFormGroup">
-                <ng-template matStepLabel>Nhập địa chỉ</ng-template>
+                <ng-template matStepLabel>Địa chỉ</ng-template>
                 <mat-form-field>
-                  <input matInput placeholder="Address" formControlName="secondCtrl" required>
+                  <input matInput placeholder="Nhập địa chỉ của bạn" formControlName="DiaChi" required>
+                </mat-form-field>
+                &nbsp;&nbsp;
+                <mat-form-field>
+                  <input matInput placeholder="Chọn tỉnh , thành phố" formControlName="TinhTP" required>
                 </mat-form-field>
                 <div>
-                  <button mat-button matStepperPrevious>Back</button>
-                  <button mat-button matStepperNext>Next</button>
+                  <button class="btn btn-default" matStepperPrevious>Back</button>
+                  &nbsp;&nbsp;
+                  <button  [disabled]="!secondFormGroup.valid" class="btn btn-primary" matStepperNext>Next</button>
                 </div>
               </form>
             </mat-step>
             <mat-step>
-              <ng-template matStepLabel>Done</ng-template>
-              You are now done.
-              <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button (click)="stepper.reset()">Reset</button>
-              </div>
+              <form [formGroup]="lastFormGroup">
+                  <ng-template matStepLabel>Cuối cùng</ng-template>
+                  <mat-form-field>
+                    <input matInput type="password" placeholder="Nhập mật khẩu" formControlName="MatKhau" required>
+                  </mat-form-field>
+                  &nbsp;&nbsp;
+                  <mat-form-field>
+                    <input matInput type="password" placeholder="Nhập lại mật khẩu" formControlName="NhapLaiMatKhau" required>
+                  </mat-form-field>
+                  <div>
+                    <button class="btn btn-default" matStepperPrevious>Back</button>
+                    &nbsp;&nbsp;
+                    <button  [disabled]="!lastFormGroup.valid" class="btn btn-primary" (click)="save()">Đăng ký</button>
+                  </div>
+                </form>
             </mat-step>
           </mat-horizontal-stepper>
     </mat-card-content>

@@ -4,10 +4,11 @@ import { Location } from '@angular/common';
 import {VatTu,VatTuDTO,VatTuDetail} from '../home/vattumodel';
 import {CookieService} from 'ngx-cookie-service';
 import {CartModel,VatTuCart} from '../../model/cartModel';
-import {ViewCartService} from '../view-cart.service';
-import {CommonServiceService} from '../../service/common-service.service';
+import { ViewCartService } from '../view-cart.service';
+import { CommonServiceService } from '../../service/common-service.service';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
-import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
+
 enableProdMode();
 
 @Component({
@@ -44,9 +45,9 @@ export class DetailMerchandiseComponent implements OnInit {
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
-      console.log(this.vattuSelected);
       //this.cookieService.delete('vattutronggiohang');
     }
+
      this.galleryOptions = [
         {
             width: '500px',

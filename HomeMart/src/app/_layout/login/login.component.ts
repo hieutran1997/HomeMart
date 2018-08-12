@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CommonServiceService } from '../../service/common-service.service';
+import { loginModel } from '../../model/loginModel';
+import { objectResult } from '../../model/objectResult';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -8,14 +12,34 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
 
   user:string;
-  pass:string;
-  constructor() { }
+  password:string;
+  constructor(
+    private commonService :CommonServiceService,
+    private router:Router,
+    private cookieService :CookieService,
+  ) { }
 
   ngOnInit() {
   }
+  
   Login(){
-    console.log('user',this.user);
-    console.log('pass',this.pass);
+    if(!this.user || !this.password){
+      alert('Vui lòng nhập lại thông tin tài khoản');
+      return;
+    }
+    else{
+      let obj:loginModel = {
+        username:this.user,
+        password:this.password,
+        unitcode:""
+      }
+      this.commonService.login<objectResult>(obj).subscribe(data=>{
+        if(data.Result){
+          this.cookieService.set('taikhoanbanhang', JSON.stringify(obj),10);
+          this.router.navigateByUrl('/');
+        }
+      });
+    }
   }
 
 }

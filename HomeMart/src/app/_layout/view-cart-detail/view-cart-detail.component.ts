@@ -5,6 +5,9 @@ import {VatTu,VatTuDTO} from '../home/vattumodel';
 import {CommonServiceService} from '../../service/common-service.service';
 import {viewDetailCart} from '../../model/viewDetailCart';
 import {ViewCartService} from '../view-cart.service';
+import { khachHangModel } from '../../model/khachHangModel';
+import { loginModel } from '../../model/loginModel';
+
 @Component({
   selector: 'app-view-cart-detail',
   templateUrl: './view-cart-detail.component.html',
@@ -12,9 +15,14 @@ import {ViewCartService} from '../view-cart.service';
 })
 export class ViewCartDetailComponent implements OnInit {
   cookieValue = 'UNKNOWN';
+  cookie ='UNKNOWN';
   vattuSelected : CartModel = null;
   lstVatTu : Array<VatTu>;
   lstViewVatTu = [];
+  khachHang :khachHangModel = null;
+  loginModel : loginModel =null;
+  TenKH:string = '';
+
   constructor(
     private cookieService : CookieService,
     private commonService :CommonServiceService,
@@ -22,6 +30,15 @@ export class ViewCartDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.cookieService.getAll());
+    if(this.cookieService.check('taikhoanbanhang')){
+      this.cookie= this.cookieService.get('taikhoanbanhang')
+      this.loginModel =JSON.parse(this.cookie);
+      this.commonService.getUserByPhone<khachHangModel>(this.loginModel.username).subscribe(data=>{
+        this.khachHang= data;
+        this.TenKH = this.khachHang.TenKH;
+      })
+    }
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
@@ -31,6 +48,7 @@ export class ViewCartDetailComponent implements OnInit {
     }
   }
   filterData(vattu){
+    
     this.commonService.getMerchanediseByCode<viewDetailCart>(vattu.MaVatTu).subscribe(data=>{
       let dataTemp = new viewDetailCart();
       dataTemp=data;
