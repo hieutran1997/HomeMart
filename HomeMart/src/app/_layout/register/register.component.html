@@ -1,3 +1,54 @@
-<p>
-  register works!
-</p>
+<div class="container" id="contentRegis">
+  <mat-card>
+    <mat-card-title>Đăng ký tài khoản</mat-card-title>
+    <mat-card-content>
+        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+            <mat-step [stepControl]="firstFormGroup">
+              <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Thông tin cá nhân</ng-template>
+                  <mat-form-field>
+                    <input matInput placeholder="Nhập họ tên" formControlName="TenKH" required>
+                  </mat-form-field>
+                  &nbsp;&nbsp;
+                  <mat-form-field>
+                    <input matInput [matDatepicker]="picker" formControlName="NgaySinh" placeholder="Chọn ngày sinh">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                  &nbsp;&nbsp;
+                  <mat-form-field>
+                    <input matInput placeholder="Địa chỉ email" formControlName="Email">
+                  </mat-form-field>
+                  &nbsp;&nbsp;
+                  <mat-form-field>
+                    <input matInput placeholder="Nhập số điện thoại" formControlName="SoDienThoai" required>
+                  </mat-form-field>
+                <div>
+                  <button mat-button matStepperNext>Tiếp theo</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup">
+              <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Nhập địa chỉ</ng-template>
+                <mat-form-field>
+                  <input matInput placeholder="Address" formControlName="secondCtrl" required>
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Back</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Done</ng-template>
+              You are now done.
+              <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="stepper.reset()">Reset</button>
+              </div>
+            </mat-step>
+          </mat-horizontal-stepper>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,MatCardModule ,MatPaginatorModule,MatSliderModule,MatPaginatorIntl} from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,MatCardModule ,MatPaginatorModule,MatSliderModule,MatPaginatorIntl,MatFormFieldModule ,MatInputModule ,MatDatepickerModule,MatNativeDateModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutComponent } from './_layout/layout/layout.component';
 import { HeaderComponent } from './_layout/header/header.component';
@@ -28,6 +28,7 @@ import { NgxGalleryModule } from 'ngx-gallery';
 import { SalesComponent } from './_layout/sales/sales.component';
 import { LoginComponent } from './_layout/login/login.component';
 import { RegisterComponent } from './_layout/register/register.component';
+import {MatStepperModule} from '@angular/material/stepper';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,9 +60,15 @@ import { RegisterComponent } from './_layout/register/register.component';
     MatCardModule,
     MatPaginatorModule,
     MatSliderModule,
+    MatStepperModule,
+    MatDatepickerModule,
     FormsModule,
     SelfBuildingSquareSpinnerModule,
     NgxGalleryModule,
+    ReactiveFormsModule,
+    MatFormFieldModule ,
+    MatInputModule ,
+    MatNativeDateModule,
     NgbModule.forRoot(),
   ],
   providers: [CookieService,{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro},CommonServiceService],
