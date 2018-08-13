@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import{CartModel} from '../../model/cartModel';
-import {VatTu,VatTuDTO} from '../home/vattumodel';
-import {CommonServiceService} from '../../service/common-service.service';
-import {viewDetailCart} from '../../model/viewDetailCart';
-import {ViewCartService} from '../view-cart.service';
+import { CartModel } from '../../model/cartModel';
+import { VatTu,VatTuDTO } from '../home/vattumodel';
+import { CommonServiceService } from '../../service/common-service.service';
+import { viewDetailCart } from '../../model/viewDetailCart';
+import { ViewCartService } from '../view-cart.service';
 import { khachHangModel } from '../../model/khachHangModel';
 import { loginModel } from '../../model/loginModel';
-import { ObjectCartModel ,DetailsCart} from '../../model/ObjectCartDTO';
+import { ObjectCartModel ,DetailsCart } from '../../model/ObjectCartDTO';
+import { objectResult } from '../../model/objectResult';
 
 @Component({
   selector: 'app-view-cart-detail',
@@ -36,7 +37,6 @@ export class ViewCartDetailComponent implements OnInit {
       this.cookie= this.cookieService.get('taikhoanbanhang')
       this.loginModel =JSON.parse(this.cookie);
       this.commonService.getUserByPhone<khachHangModel>(this.loginModel.username).subscribe(data=>{
-        console.log(data);
         this.khachHang= data;
         this.TenKH = this.khachHang.TenKH;
       })
@@ -152,7 +152,16 @@ export class ViewCartDetailComponent implements OnInit {
       this.DataDTO.SOPHIEUCON = this.vattuSelected.arrVatTuSelected.length;
       this.DataDTO.SOLUONG = tongsoluong;
       this.DataDTO.THANHTIENSAUVAT = tongtien;
-      console.log(this.DataDTO);
+      if(this.DataDTO){
+        this.commonService.checkOut<objectResult>(this.DataDTO).subscribe(result=>{
+            if(result.Result){
+              alert("Đặt hàng thành công ! Vui lòng chờ liên hệ từ chúng tôi ");
+              this.cookieService.delete('vattutronggiohang');//refresh cart
+              this.vattuSelected = new CartModel([],0,0);
+              this.viewCartService.changedCartView(this.vattuSelected);
+            }
+        });
+      }
     }
   }
 }

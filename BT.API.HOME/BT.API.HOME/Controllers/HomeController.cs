@@ -10,6 +10,7 @@ using OracleInternal.Secure.Network;
 
 namespace BT.API.HOME.Controllers
 {
+    [RoutePrefix("api/home")]
     public class HomeController : ApiController
     {
         public IHttpActionResult GetListMerchanedise(decimal pagenumber , decimal pagesize)
@@ -392,6 +393,8 @@ namespace BT.API.HOME.Controllers
             return Ok(vattu);
         }
 
+        [HttpPost]
+        [Route("RegisKhachHang")]
         public IHttpActionResult RegisKhachHang(KhachHangModel obj)
         {
             string newID = CommonService.GET_NEW_ID("KH");
@@ -539,12 +542,95 @@ namespace BT.API.HOME.Controllers
             return Ok(dataResult);
         }
 
-
-        //[HttpPost]
-        //public IHttpActionResult CheckOut()
-        //{
-            
-        //}
+        [HttpPost]
+        [Route("CheckOut")]
+        public IHttpActionResult CheckOut(ObjectCartModel data)
+        {
+            ObjectResult dataResult = new ObjectResult();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    DateTime time = DateTime.Now;
+                    string soPhieu = data.SDTNN + "_" + time.Minute + time.Hour + time.Day;
+                    string soPhieuPK = data.SDTNN + "_" + time.Minute + time.Hour + time.Day + "_" + data.UNITCODE;
+                    OracleTransaction txn = connection.BeginTransaction(IsolationLevel.ReadCommitted);
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"INSERT INTO NVDATHANG (ID,SOPHIEU,MAHD,SOPHIEUPK,LOAI,NGAY,MAKHACHHANG,THANHTIENSAUVAT,TRANGTHAI,TENNN,SDTNN,DIACHINN,TRANGTHAITT,ISBANBUON,I_CREATE_DATE,UNITCODE,SOPHIEUCON)
+                                            VALUES (:ID,:SOPHIEU,:MAHD,:SOPHIEUPK,:LOAI,:NGAY,:MAKHACHHANG,:THANHTIENSAUVAT,:TRANGTHAI,:TENNN,:SDTNN,:DIACHINN,:TRANGTHAITT,:ISBANBUON,:I_CREATE_DATE,:UNITCODE,:SOPHIEUCON)";
+                    command.Parameters.Add("ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid();
+                    command.Parameters.Add("SOPHIEU", OracleDbType.NVarchar2, 50).Value = soPhieu;
+                    command.Parameters.Add("MAHD",OracleDbType.NVarchar2,50).Value = soPhieu;
+                    command.Parameters.Add("SOPHIEUPK", OracleDbType.NVarchar2, 50).Value = soPhieuPK;
+                    command.Parameters.Add("LOAI", OracleDbType.Decimal).Value = 10;
+                    command.Parameters.Add("NGAY", OracleDbType.Date).Value = time;
+                    command.Parameters.Add("MAKHACHHANG", OracleDbType.NVarchar2, 50).Value = data.SDTNN;
+                    command.Parameters.Add("THANHTIENSAUVAT", OracleDbType.NVarchar2, 50).Value =data.THANHTIENSAUVAT;
+                    command.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
+                    command.Parameters.Add("TENNN", OracleDbType.NVarchar2, 50).Value = data.TENNN;
+                    command.Parameters.Add("SDTNN", OracleDbType.NVarchar2, 50).Value = data.SDTNN;
+                    command.Parameters.Add("DIACHINN", OracleDbType.NVarchar2, 50).Value = data.DIACHINN;
+                    command.Parameters.Add("TRANGTHAITT", OracleDbType.Decimal).Value = 0;
+                    command.Parameters.Add("ISBANBUON", OracleDbType.Decimal).Value = 0;
+                    command.Parameters.Add("I_CREATE_DATE", OracleDbType.Date).Value = time;
+                    command.Parameters.Add("UNITCODE", OracleDbType.NVarchar2, 50).Value = data.UNITCODE;
+                    command.Parameters.Add("SOPHIEUCON", OracleDbType.Decimal).Value = data.SOPHIEUCON;
+                    try
+                    {
+                        int result = command.ExecuteNonQuery();
+                        if(result > 0)
+                        {
+                            int itemp =0, itemp2= 0;
+                            data.Details.ForEach(x =>
+                            {
+                                OracleCommand cmd = new OracleCommand();
+                                cmd.Connection = connection;
+                                cmd.CommandType = CommandType.Text;
+                                itemp2++;
+                                cmd.CommandText = @"INSERT INTO NVDATHANGCHITIET (ID,SOPHIEU,SOPHIEUPK,MAHD,MAHANG,TENHANG,SOLUONG,DONGIA,THANHTIEN)
+                                                    VALUES (:ID,:SOPHIEU,:SOPHIEUPK,:MAHD,:MAHANG,:TENHANG,:SOLUONG,:DONGIA,:THANHTIEN)";
+                                cmd.Parameters.Add("ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid();
+                                cmd.Parameters.Add("SOPHIEU", OracleDbType.NVarchar2, 50).Value = soPhieu;
+                                cmd.Parameters.Add("SOPHIEUPK", OracleDbType.NVarchar2, 50).Value = soPhieuPK;
+                                cmd.Parameters.Add("MAHD", OracleDbType.NVarchar2, 50).Value = soPhieu;
+                                cmd.Parameters.Add("MAHANG", OracleDbType.NVarchar2, 50).Value = x.MAHANG;
+                                cmd.Parameters.Add("TENHANG", OracleDbType.NVarchar2, 50).Value = x.TENHANG;
+                                cmd.Parameters.Add("SOLUONG", OracleDbType.Decimal).Value = x.SOLUONG;
+                                cmd.Parameters.Add("DONGIA", OracleDbType.Decimal).Value = x.DONGIA ;
+                                cmd.Parameters.Add("THANHTIEN", OracleDbType.Decimal).Value = x.DONGIA *x.SOLUONG;
+                                int resultDetail = cmd.ExecuteNonQuery();
+                                if(resultDetail > 0)
+                                {
+                                    itemp++;
+                                }
+                            });
+                            if(itemp == itemp2)
+                            {
+                                dataResult.Message = "Thanh toán thành công !";
+                                dataResult.Result = true;
+                                txn.Commit();
+                            }
+                            else
+                            {
+                                txn.Rollback();
+                                dataResult.Message = "Thanh toán thất bại vui lòng kiểm tra lại !";
+                                dataResult.Result = false;
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        dataResult.Message = "Thanh toán thất bại vui lòng kiểm tra lại !";
+                        dataResult.Result = false;
+                        txn.Rollback();
+                    }
+                }
+            }
+            return Ok(dataResult);
+        }
 
         public HttpResponseMessage Put()
         {

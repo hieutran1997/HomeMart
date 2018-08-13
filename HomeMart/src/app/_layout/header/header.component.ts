@@ -7,7 +7,7 @@ import { loginModel } from '../../model/loginModel';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styles: []
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
 

@@ -36,6 +36,7 @@
     padding: 50px;
     transition: transform .2s; /* Animation */
     margin: 0 auto;
+    transform: scale(1.5);
 }
 
 #zoom:hover {

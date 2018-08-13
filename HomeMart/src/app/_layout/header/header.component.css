@@ -1,0 +1,11 @@
+#menuBar{
+    color:black;font-weight: bold
+}
+
+#menuBar:hover{
+    color: brown;
+}
+
+#navbarTogglerDemo03{
+    text-align:center;
+}

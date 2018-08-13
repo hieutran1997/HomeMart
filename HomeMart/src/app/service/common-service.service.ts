@@ -4,7 +4,8 @@ import {HttpClient} from '@angular/common/http';
 import {PageEvent} from '@angular/material';
 import { khachHangModel } from '../model/khachHangModel';
 import { loginModel } from '../model/loginModel';
-import { post } from '../../../node_modules/@types/selenium-webdriver/http';
+import { ObjectCartModel } from '../model/ObjectCartDTO';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -64,5 +65,8 @@ export class CommonServiceService {
   }
   getUserByPhone<khachHangModel>(phone?:string){
     return this._http.get<khachHangModel>(this.host +'api/home/GetUserByPhone?sodienthoai='+phone+'&unitcode2='+this.madonvi);
+  }
+  checkOut<objectResult>(data?:ObjectCartModel){
+    return this._http.post<objectResult>(this.host+'api/home/CheckOut',data);
   }
 }

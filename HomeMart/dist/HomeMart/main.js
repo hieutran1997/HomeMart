@@ -321,7 +321,7 @@ var CategoryDetailsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#imageNew:hover{\r\n    background-color: #4cb1ca;\r\n    color: aliceblue !important;\r\n}\r\n#cartParent{\r\n    margin-bottom: 50px;\r\n}\r\n.img-fluid {\r\n    -webkit-transform: scale(1.25);\r\n            transform: scale(1.25);max-height: 300px;min-height: 200px;\r\n}\r\n.fa-cart-plus:hover{\r\n    color:brown;\r\n}\r\n.img-thumbnail{\r\n    padding: 10px !important;\r\n    max-height: 200px;\r\n}\r\n#zoomList {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoomList:hover {\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#monney{\r\n    font-size: 1em;\r\n}\r\n#zoom {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoom:hover {\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#pointer {\r\n    padding-top: 30px;\r\n    cursor: pointer;\r\n}\r\nngb-rating{\r\n    color: crimson;\r\n}\r\n"
+module.exports = "#imageNew:hover{\r\n    background-color: #4cb1ca;\r\n    color: aliceblue !important;\r\n}\r\n#cartParent{\r\n    margin-bottom: 50px;\r\n}\r\n.img-fluid {\r\n    -webkit-transform: scale(1.25);\r\n            transform: scale(1.25);max-height: 300px;min-height: 200px;\r\n}\r\n.fa-cart-plus:hover{\r\n    color:brown;\r\n}\r\n.img-thumbnail{\r\n    padding: 10px !important;\r\n    max-height: 200px;\r\n}\r\n#zoomList {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoomList:hover {\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#monney{\r\n    font-size: 1em;\r\n}\r\n#zoom {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5);\r\n}\r\n#zoom:hover {\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#pointer {\r\n    padding-top: 30px;\r\n    cursor: pointer;\r\n}\r\nngb-rating{\r\n    color: crimson;\r\n}\r\n"
 
 /***/ }),
 
@@ -332,7 +332,7 @@ module.exports = "#imageNew:hover{\r\n    background-color: #4cb1ca;\r\n    colo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card id=\"cartParent\">\r\n  <mat-card-title>\r\n      <div class=\"row\">\r\n          <div class=\"col-md-6\">Hàng mới về </div>\r\n          <div class=\"col-md-2\"></div>\r\n          <div class=\"col-md-2\" style=\"text-align: right\">\r\n              <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                  <div ngbDropdown class=\"d-inline-block\">\r\n                      <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                          Sắp xếp</button>\r\n                      <!-- Missing tag added below -->\r\n                      <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                          <button class=\"dropdown-item\" \r\n                                  *ngFor=\"let sortOrder of sortOrders\" \r\n                                  (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                          </button>\r\n                      </div>\r\n                  </div>\r\n              </div>\r\n          </div>\r\n          <div class=\"col-md-2\">\r\n              <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n              <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n          </div>\r\n      </div>\r\n  </mat-card-title>\r\n  <br/>\r\n  <mat-card-content  *ngIf=\"isLoading\">\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"col-md-5\"></div>\r\n        <div class=\"col align-self-center\">\r\n            <app-self-building-square-spinner \r\n            [animationDuration]=\"3000\"\r\n            [size]=\"40\"\r\n            [color]=\"'#441d72'\"\r\n            ></app-self-building-square-spinner>\r\n        </div>\r\n        <div class=\"col-md-4\"></div>\r\n    </div>\r\n    <br/>\r\n  </mat-card-content>\r\n  <mat-card-content class=\"container\" *ngIf=\"!isLoading\">\r\n    <!-- chọn show bảng -->\r\n      <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n          <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n              <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                  <mat-card-content>\r\n                      <div class=\"text-center\">\r\n                          <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" id=\"zoom\" alt=\"{{item.TenVatTu}}\"></a>\r\n                      </div>\r\n                  </mat-card-content>\r\n                  <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em\">\r\n                      <div class=\"row\">\r\n                          <div class=\"col-md-9\">\r\n                              <span>{{display(item.TenVatTu)}}</span>\r\n                              <br/>\r\n                              <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                              <br/>\r\n                              <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                          </div>\r\n                          <div class=\"col-md-3\">\r\n                              <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span>\r\n                          </div>\r\n                      </div>\r\n                      <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                        <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                      </div>\r\n                  </mat-card-footer>\r\n              </mat-card>\r\n          </div>\r\n      </div>\r\n      <!-- chọn show danh sách -->\r\n      <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n              <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                  <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                  <div class=\"col\" style=\"margin-top: 30px;\">\r\n                      <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                      <br/>\r\n                      <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                      <br/>\r\n                      <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                      <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                        <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                      </div>\r\n                      <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                  </div>\r\n              </div>\r\n          </div>\r\n  </mat-card-content>\r\n  <mat-card-footer> \r\n      <mat-paginator  [length]=\"length\"\r\n                      [pageIndex]=\"pageIndex\"\r\n                      [pageSize]=\"pageSize\"\r\n                      [pageSizeOptions]=\"[3,6,9,12]\"\r\n                      (page)=\"pageEvent = getServerData($event)\">\r\n      </mat-paginator>\r\n  </mat-card-footer>\r\n</mat-card>"
+module.exports = "<mat-card id=\"cartParent\">\r\n  <mat-card-title>\r\n      <div class=\"row\">\r\n          <div class=\"col-md-6\">Hàng mới về </div>\r\n          <div class=\"col-md-2\"></div>\r\n          <div class=\"col-md-2\" style=\"text-align: right\">\r\n              <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                  <div ngbDropdown class=\"d-inline-block\">\r\n                      <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                          Sắp xếp</button>\r\n                      <!-- Missing tag added below -->\r\n                      <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                          <button class=\"dropdown-item\" \r\n                                  *ngFor=\"let sortOrder of sortOrders\" \r\n                                  (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                          </button>\r\n                      </div>\r\n                  </div>\r\n              </div>\r\n          </div>\r\n          <div class=\"col-md-2\">\r\n              <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n              <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n          </div>\r\n      </div>\r\n  </mat-card-title>\r\n  <br/>\r\n  <mat-card-content  *ngIf=\"isLoading\">\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"col-md-5\"></div>\r\n        <div class=\"col align-self-center\">\r\n            <app-self-building-square-spinner \r\n            [animationDuration]=\"3000\"\r\n            [size]=\"40\"\r\n            [color]=\"'#441d72'\"\r\n            ></app-self-building-square-spinner>\r\n        </div>\r\n        <div class=\"col-md-4\"></div>\r\n    </div>\r\n    <br/>\r\n  </mat-card-content>\r\n  <mat-card-content class=\"container\" *ngIf=\"!isLoading\">\r\n    <!-- chọn show bảng -->\r\n      <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n          <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n              <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                  <mat-card-content>\r\n                      <div class=\"text-center\">\r\n                          <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" style=\"padding-top:20px;max-height: 90px!important \" width=\"150\" alt=\"{{item.TenVatTu}}\"></a>\r\n                      </div>\r\n                  </mat-card-content>\r\n                  <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; \">\r\n                      <div class=\"row\">\r\n                          <div class=\"col-md-9\">\r\n                              <span>{{display(item.TenVatTu)}}</span>\r\n                              <br/>\r\n                              <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                              <br/>\r\n                              <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                          </div>\r\n                          <div class=\"col-md-3\">\r\n                              <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span>\r\n                          </div>\r\n                      </div>\r\n                      <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                        <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                      </div>\r\n                  </mat-card-footer>\r\n              </mat-card>\r\n          </div>\r\n      </div>\r\n      <!-- chọn show danh sách -->\r\n      <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n              <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                  <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                  <div class=\"col\" style=\"margin-top: 30px;\">\r\n                      <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                      <br/>\r\n                      <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                      <br/>\r\n                      <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                      <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                        <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                      </div>\r\n                      <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                  </div>\r\n              </div>\r\n          </div>\r\n  </mat-card-content>\r\n  <mat-card-footer> \r\n      <mat-paginator  [length]=\"length\"\r\n                      [pageIndex]=\"pageIndex\"\r\n                      [pageSize]=\"pageSize\"\r\n                      [pageSizeOptions]=\"[3,6,9,12]\"\r\n                      (page)=\"pageEvent = getServerData($event)\">\r\n      </mat-paginator>\r\n  </mat-card-footer>\r\n</mat-card>"
 
 /***/ }),
 
@@ -792,6 +792,17 @@ var FooterComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/_layout/header/header.component.css":
+/*!*****************************************************!*\
+  !*** ./src/app/_layout/header/header.component.css ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "#menuBar{\r\n    color:black;font-weight: bold\r\n}\r\n\r\n#menuBar:hover{\r\n    color: brown;\r\n}\r\n\r\n#navbarTogglerDemo03{\r\n    text-align:center;\r\n}"
+
+/***/ }),
+
 /***/ "./src/app/_layout/header/header.component.html":
 /*!******************************************************!*\
   !*** ./src/app/_layout/header/header.component.html ***!
@@ -799,7 +810,7 @@ var FooterComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light fixed-top\" style=\"background-color: beige\">\r\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo03\" aria-controls=\"navbarTogglerDemo03\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\">Navbar</a>\r\n\r\n  <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n    <ul class=\"navbar-nav mr-auto mt-2 mt-lg-0\">\r\n    </ul>\r\n    \r\n    <ul class=\"navbar-nav mt-2 mt-lg-0\" style=\"margin-right: 10px;\">\r\n      <li class=\"nav-item\" style=\"padding-right: 15px\">\r\n          <app-ngbd-popover-config></app-ngbd-popover-config>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-ky\">Đăng ký</a>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-nhap\">Đăng nhập</a>\r\n      </li>\r\n    </ul>\r\n    \r\n  </div>\r\n</nav>\r\n<div class=\"navbar navbar-expand-lg navbar-light bg-light mt-5 \">\r\n    <div class=\"navbar-expand navbar-text\">\r\n        <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo03\" aria-controls=\"navbarTogglerDemo03\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n            <span class=\"navbar-toggler-icon\"></span>\r\n          </button>\r\n          <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n            <ul class=\"navbar-nav mt-2 mt-lg-0\">\r\n                <li *ngFor=\"let item of listMenu\">\r\n                    <a class=\"nav-link\" routerLink=\"/{{item.url}}\"> {{item.Title}} </a>\r\n                 </li>\r\n            </ul>\r\n            \r\n          </div>\r\n    </div>\r\n  </div>\r\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light fixed-top\" style=\"background-color: beige\">\r\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo03\" aria-controls=\"navbarTogglerDemo03\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\">I <i class=\"fa fa-heart\" style=\"color: brown;\"></i> Việt Nam</a>\r\n\r\n  <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n    <ul class=\"navbar-nav mr-auto mt-2 mt-lg-0\">\r\n    </ul>\r\n    \r\n    <ul class=\"navbar-nav mt-2 mt-lg-0\" style=\"margin-right: 10px;\">\r\n      <li class=\"nav-item\" style=\"padding-right: 15px\">\r\n          <app-ngbd-popover-config></app-ngbd-popover-config>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-ky\">Đăng ký</a>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-nhap\">Đăng nhập</a>\r\n      </li>\r\n    </ul>\r\n    \r\n  </div>\r\n</nav>\r\n<div class=\"navbar navbar-expand-lg navbar-light bg-light mt-5 \">\r\n    <div class=\"navbar-expand navbar-text\">\r\n        <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo03\" aria-controls=\"navbarTogglerDemo03\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n            <span class=\"navbar-toggler-icon\"></span>\r\n        </button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n          <ul class=\"navbar-nav mt-2 mt-lg-0\">\r\n              <li *ngFor=\"let item of listMenu\">\r\n                  <a class=\"nav-link\" routerLink=\"/{{item.url}}\"> <span id=\"menuBar\">{{item.Title}}</span></a>\r\n                </li>\r\n          </ul>\r\n        </div>\r\n    </div>\r\n  </div>\r\n"
 
 /***/ }),
 
@@ -861,7 +872,7 @@ var HeaderComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-header',
             template: __webpack_require__(/*! ./header.component.html */ "./src/app/_layout/header/header.component.html"),
-            styles: []
+            styles: [__webpack_require__(/*! ./header.component.css */ "./src/app/_layout/header/header.component.css")]
         }),
         __metadata("design:paramtypes", [_service_common_service_service__WEBPACK_IMPORTED_MODULE_1__["CommonServiceService"],
             ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"]])
@@ -948,7 +959,7 @@ var HomeComponent = /** @class */ (function () {
         if (this.cookieService.check('vattutronggiohang')) {
             this.cookieValue = this.cookieService.get('vattutronggiohang');
             this.vattuSelected = JSON.parse(this.cookieValue);
-            //this.cookieService.delete('vattutronggiohang');
+            //this.cookieService.delete('taikhoanbanhang');
         }
     };
     HomeComponent.prototype.getAllGroupMerchanedise = function () {
@@ -1257,7 +1268,7 @@ var NgbdCarouselConfig = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<a routerLink=\"/chi-tiet-gio-hang\" >\r\n  <button type=\"button\" class=\"btn btn-outline-secondary\"\r\n        ngbPopover=\"{{contentCart}}\" popoverTitle=\"{{titleCart}}\" >\r\n        <span class=\"fa fa-cart-plus\"></span>&nbsp;<span class=\"badge badge-light\" *ngIf=\"quantity!==0\">{{quantity}}</span>\r\n  </button>\r\n</a>"
+module.exports = "<a routerLink=\"/chi-tiet-gio-hang\" >\r\n  <button type=\"button\" class=\"btn btn-outline-secondary\"\r\n        ngbPopover=\"{{contentCart}}\" popoverTitle=\"{{titleCart}}\" >\r\n        <span class=\"fa fa-cart-plus\"></span>&nbsp;<span class=\"badge badge-light\" *ngIf=\"quantity!==0\">{{quantity}}</span>\r\n        Giỏ hàng\r\n  </button>\r\n</a>"
 
 /***/ }),
 
@@ -1674,7 +1685,7 @@ var SalesComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\" style=\"padding-bottom: 40px;\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-8\">\r\n      <mat-card>\r\n        <mat-card-title>Danh sách hàng đã chọn</mat-card-title>\r\n        <mat-card-content>\r\n          <table class=\"table\">\r\n            <thead>\r\n              <tr>\r\n                <th scope=\"col\">#</th>\r\n                <th scope=\"col\">Sản phẩm</th>\r\n                <th scope=\"col\">Giá</th>\r\n                <th scope=\"col\">Số lượng</th>\r\n                <th scope=\"col\"></th>\r\n              </tr>\r\n            </thead>\r\n            <tbody *ngIf=\"lstViewVatTu.length===0\">\r\n                <td colspan=\"5\" style=\"text-align: center;font-size: 20px;\"><span>Bạn chưa chọn sản phẩm nào !</span></td>\r\n            </tbody>\r\n            <tbody *ngIf=\"lstViewVatTu.length>0\">\r\n              <tr *ngFor=\"let item of lstViewVatTu;let idx = index\">\r\n                <td style=\"width: 5%;\">{{idx+1}}</td>\r\n                <td style=\"width: 40%;\">\r\n                  <img src=\"data:image/JPEG;base64,{{item.Avatar}}\" *ngIf=\"item.Avatar\" class=\"img-fluid\" style=\"width: 50px;height: 50px;\">\r\n                  &nbsp;&nbsp;&nbsp;\r\n                  <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"><span>{{item.TenVatTu}}</span></a>\r\n                </td>\r\n                <td style=\"width: 20%;\">{{item.GiaBanLeVat| number}}</td>\r\n                <td style=\"width: 30%;\">\r\n                  <div class=\"row\">\r\n                    <button class=\"btn btn-default\" (click)=\"SubtractionItem(item)\"><span class=\"fa fa fa-minus-circle\"></span></button>\r\n                    <input [(ngModel)]=\"item.SoLuong\" (ngModelChange)=\"ChangedQuatity(item)\" class=\"form-control\" style=\"width: 50px !important\"/>\r\n                    <button class=\"btn btn-default\" (click)=\"PlusItem(item)\"><span class=\"fa fa-plus-circle\"></span></button>\r\n                  </div>\r\n                  </td>\r\n                <td style=\"width: 5%;\">\r\n                  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"DeleteItem(item)\" title=\"Xóa bỏ\">\r\n                    <span aria-hidden=\"true\">&times;</span>\r\n                  </button>\r\n                </td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </mat-card-content>\r\n      </mat-card>\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n      <mat-card>\r\n        <mat-card-content>\r\n          <span>Xin chào : {{TenKH}}</span>\r\n          <hr/>\r\n          <span>Địa điểm</span>\r\n          <hr/>\r\n          <h6>Thông tin đơn hàng</h6>\r\n          <br/>\r\n          <div>\r\n            <span style=\"float: left;\">Tạm tính ( {{lstViewVatTu.length}} sản phẩm )</span>\r\n            <span style=\"float: right;font-weight: bold\">{{vattuSelected.tongTien|number}} vnđ</span>\r\n          </div>\r\n          <br/>\r\n          <br/>\r\n          <button class=\"btn btn-primary\">Thanh toán</button>\r\n        </mat-card-content>\r\n      </mat-card>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"container\" style=\"padding-bottom: 40px;\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-8\">\r\n      <mat-card>\r\n        <mat-card-title>Danh sách hàng đã chọn</mat-card-title>\r\n        <mat-card-content>\r\n          <table class=\"table\">\r\n            <thead>\r\n              <tr>\r\n                <th scope=\"col\">#</th>\r\n                <th scope=\"col\">Sản phẩm</th>\r\n                <th scope=\"col\">Giá</th>\r\n                <th scope=\"col\">Số lượng</th>\r\n                <th scope=\"col\"></th>\r\n              </tr>\r\n            </thead>\r\n            <tbody *ngIf=\"lstViewVatTu.length===0\">\r\n                <td colspan=\"5\" style=\"text-align: center;font-size: 20px;\"><span>Bạn chưa chọn sản phẩm nào !</span></td>\r\n            </tbody>\r\n            <tbody *ngIf=\"lstViewVatTu.length>0\">\r\n              <tr *ngFor=\"let item of lstViewVatTu;let idx = index\">\r\n                <td style=\"width: 5%;\">{{idx+1}}</td>\r\n                <td style=\"width: 40%;\">\r\n                  <img src=\"data:image/JPEG;base64,{{item.Avatar}}\" *ngIf=\"item.Avatar\" class=\"img-fluid\" style=\"width: 50px;height: 50px;\">\r\n                  &nbsp;&nbsp;&nbsp;\r\n                  <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"><span>{{item.TenVatTu}}</span></a>\r\n                </td>\r\n                <td style=\"width: 20%;\">{{item.GiaBanLeVat| number}}</td>\r\n                <td style=\"width: 30%;\">\r\n                  <div class=\"row\">\r\n                    <button class=\"btn btn-default\" (click)=\"SubtractionItem(item)\"><span class=\"fa fa fa-minus-circle\"></span></button>\r\n                    <input [(ngModel)]=\"item.SoLuong\" (ngModelChange)=\"ChangedQuatity(item)\" class=\"form-control\" style=\"width: 50px !important\"/>\r\n                    <button class=\"btn btn-default\" (click)=\"PlusItem(item)\"><span class=\"fa fa-plus-circle\"></span></button>\r\n                  </div>\r\n                  </td>\r\n                <td style=\"width: 5%;\">\r\n                  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"DeleteItem(item)\" title=\"Xóa bỏ\">\r\n                    <span aria-hidden=\"true\">&times;</span>\r\n                  </button>\r\n                </td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </mat-card-content>\r\n      </mat-card>\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n      <mat-card>\r\n        <mat-card-content>\r\n          <span>Xin chào : {{TenKH}}</span>\r\n          <hr/>\r\n          <span>Địa điểm</span>\r\n          <hr/>\r\n          <h6>Thông tin đơn hàng</h6>\r\n          <br/>\r\n          <div>\r\n            <span style=\"float: left;\">Tạm tính ( {{lstViewVatTu.length}} sản phẩm )</span>\r\n            <span style=\"float: right;font-weight: bold\">{{vattuSelected.tongTien|number}} vnđ</span>\r\n          </div>\r\n          <br/>\r\n          <br/>\r\n          <button (click)=\"CheckOut()\" class=\"btn btn-primary\">Thanh toán</button>\r\n        </mat-card-content>\r\n      </mat-card>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -1690,9 +1701,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ViewCartDetailComponent", function() { return ViewCartDetailComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
-/* harmony import */ var _service_common_service_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/common-service.service */ "./src/app/service/common-service.service.ts");
-/* harmony import */ var _model_viewDetailCart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../model/viewDetailCart */ "./src/app/model/viewDetailCart.ts");
-/* harmony import */ var _view_cart_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../view-cart.service */ "./src/app/_layout/view-cart.service.ts");
+/* harmony import */ var _model_cartModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/cartModel */ "./src/app/model/cartModel.ts");
+/* harmony import */ var _service_common_service_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/common-service.service */ "./src/app/service/common-service.service.ts");
+/* harmony import */ var _model_viewDetailCart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../model/viewDetailCart */ "./src/app/model/viewDetailCart.ts");
+/* harmony import */ var _view_cart_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../view-cart.service */ "./src/app/_layout/view-cart.service.ts");
+/* harmony import */ var _model_ObjectCartDTO__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/ObjectCartDTO */ "./src/app/model/ObjectCartDTO.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1702,6 +1715,8 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+
 
 
 
@@ -1722,7 +1737,6 @@ var ViewCartDetailComponent = /** @class */ (function () {
     }
     ViewCartDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log(this.cookieService.getAll());
         if (this.cookieService.check('taikhoanbanhang')) {
             this.cookie = this.cookieService.get('taikhoanbanhang');
             this.loginModel = JSON.parse(this.cookie);
@@ -1742,7 +1756,7 @@ var ViewCartDetailComponent = /** @class */ (function () {
     ViewCartDetailComponent.prototype.filterData = function (vattu) {
         var _this = this;
         this.commonService.getMerchanediseByCode(vattu.MaVatTu).subscribe(function (data) {
-            var dataTemp = new _model_viewDetailCart__WEBPACK_IMPORTED_MODULE_3__["viewDetailCart"]();
+            var dataTemp = new _model_viewDetailCart__WEBPACK_IMPORTED_MODULE_4__["viewDetailCart"]();
             dataTemp = data;
             dataTemp.MaVatTu = vattu.MaVatTu;
             dataTemp.SoLuong = vattu.SoLuong;
@@ -1811,6 +1825,49 @@ var ViewCartDetailComponent = /** @class */ (function () {
         this.cookieService.set('vattutronggiohang', JSON.stringify(this.vattuSelected), 10);
         this.viewCartService.changedCartView(this.vattuSelected);
     };
+    ViewCartDetailComponent.prototype.CheckOut = function () {
+        var _this = this;
+        var Detail = [];
+        if (this.vattuSelected.arrVatTuSelected.length === 0) {
+            alert("Quý khách vui lòng chọn hàng thanh toán !");
+            return;
+        }
+        else {
+            var tongtien_1 = 0;
+            var tongsoluong_1 = 0;
+            this.lstViewVatTu.forEach(function (obj) {
+                var objectDetail = new _model_ObjectCartDTO__WEBPACK_IMPORTED_MODULE_6__["DetailsCart"]();
+                objectDetail.DONGIA = obj.GiaBanLeVat;
+                objectDetail.DONGIADEXUAT = obj.GiaBanLeVat;
+                objectDetail.MAHANG = obj.MaVatTu;
+                objectDetail.SOLUONG = obj.SoLuong;
+                objectDetail.SOLUONGLE = obj.SoLuong;
+                objectDetail.TENHANG = obj.TenVatTu;
+                tongtien_1 += obj.SoLuong * obj.GiaBanLeVat;
+                tongsoluong_1 += obj.SoLuong;
+                Detail.push(objectDetail);
+            });
+            this.DataDTO = new _model_ObjectCartDTO__WEBPACK_IMPORTED_MODULE_6__["ObjectCartModel"](Detail);
+            this.DataDTO.DIACHINN = this.khachHang.DiaChi;
+            this.DataDTO.TENNN = this.khachHang.TenKH;
+            this.DataDTO.UNITCODE = this.khachHang.MaDonVi;
+            this.DataDTO.SDTNN = this.khachHang.DienThoai;
+            this.DataDTO.MAKHACHHANG = this.khachHang.DienThoai;
+            this.DataDTO.SOPHIEUCON = this.vattuSelected.arrVatTuSelected.length;
+            this.DataDTO.SOLUONG = tongsoluong_1;
+            this.DataDTO.THANHTIENSAUVAT = tongtien_1;
+            if (this.DataDTO) {
+                this.commonService.checkOut(this.DataDTO).subscribe(function (result) {
+                    if (result.Result) {
+                        alert("Đặt hàng thành công ! Vui lòng chờ liên hệ từ chúng tôi ");
+                        _this.cookieService.delete('vattutronggiohang'); //refresh cart
+                        _this.vattuSelected = new _model_cartModel__WEBPACK_IMPORTED_MODULE_2__["CartModel"]([], 0, 0);
+                        _this.viewCartService.changedCartView(_this.vattuSelected);
+                    }
+                });
+            }
+        }
+    };
     ViewCartDetailComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-view-cart-detail',
@@ -1818,8 +1875,8 @@ var ViewCartDetailComponent = /** @class */ (function () {
             styles: []
         }),
         __metadata("design:paramtypes", [ngx_cookie_service__WEBPACK_IMPORTED_MODULE_1__["CookieService"],
-            _service_common_service_service__WEBPACK_IMPORTED_MODULE_2__["CommonServiceService"],
-            _view_cart_service__WEBPACK_IMPORTED_MODULE_4__["ViewCartService"]])
+            _service_common_service_service__WEBPACK_IMPORTED_MODULE_3__["CommonServiceService"],
+            _view_cart_service__WEBPACK_IMPORTED_MODULE_5__["ViewCartService"]])
     ], ViewCartDetailComponent);
     return ViewCartDetailComponent;
 }());
@@ -2123,6 +2180,34 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/model/ObjectCartDTO.ts":
+/*!****************************************!*\
+  !*** ./src/app/model/ObjectCartDTO.ts ***!
+  \****************************************/
+/*! exports provided: ObjectCartModel, DetailsCart */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ObjectCartModel", function() { return ObjectCartModel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DetailsCart", function() { return DetailsCart; });
+var ObjectCartModel = /** @class */ (function () {
+    function ObjectCartModel(dataDetail) {
+        this.Details = dataDetail;
+    }
+    return ObjectCartModel;
+}());
+
+var DetailsCart = /** @class */ (function () {
+    function DetailsCart() {
+    }
+    return DetailsCart;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/model/cartModel.ts":
 /*!************************************!*\
   !*** ./src/app/model/cartModel.ts ***!
@@ -2225,7 +2310,7 @@ var CommonServiceService = /** @class */ (function () {
     function CommonServiceService(_http) {
         this._http = _http;
         this.madonvi = 'DV1-CH1';
-        this.host = 'http://btsoftvn.com:50595/';
+        this.host = 'http://localhost:50595/';
         this.makho = 'DV1-CH1-KBL';
     }
     CommonServiceService.prototype.getDataPaging = function (event) {
@@ -2274,6 +2359,9 @@ var CommonServiceService = /** @class */ (function () {
     };
     CommonServiceService.prototype.getUserByPhone = function (phone) {
         return this._http.get(this.host + 'api/home/GetUserByPhone?sodienthoai=' + phone + '&unitcode2=' + this.madonvi);
+    };
+    CommonServiceService.prototype.checkOut = function (data) {
+        return this._http.post(this.host + 'api/home/CheckOut', data);
     };
     CommonServiceService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
