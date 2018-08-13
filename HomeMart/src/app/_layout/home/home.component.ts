@@ -58,7 +58,7 @@ export class HomeComponent  implements OnInit {
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
-      //this.cookieService.delete('vattutronggiohang');
+      //this.cookieService.delete('taikhoanbanhang');
     }
   }
 

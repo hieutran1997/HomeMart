@@ -7,6 +7,7 @@ import {viewDetailCart} from '../../model/viewDetailCart';
 import {ViewCartService} from '../view-cart.service';
 import { khachHangModel } from '../../model/khachHangModel';
 import { loginModel } from '../../model/loginModel';
+import { ObjectCartModel ,DetailsCart} from '../../model/ObjectCartDTO';
 
 @Component({
   selector: 'app-view-cart-detail',
@@ -22,6 +23,7 @@ export class ViewCartDetailComponent implements OnInit {
   khachHang :khachHangModel = null;
   loginModel : loginModel =null;
   TenKH:string = '';
+  DataDTO: ObjectCartModel;
 
   constructor(
     private cookieService : CookieService,
@@ -30,11 +32,11 @@ export class ViewCartDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.cookieService.getAll());
     if(this.cookieService.check('taikhoanbanhang')){
       this.cookie= this.cookieService.get('taikhoanbanhang')
       this.loginModel =JSON.parse(this.cookie);
       this.commonService.getUserByPhone<khachHangModel>(this.loginModel.username).subscribe(data=>{
+        console.log(data);
         this.khachHang= data;
         this.TenKH = this.khachHang.TenKH;
       })
@@ -48,7 +50,6 @@ export class ViewCartDetailComponent implements OnInit {
     }
   }
   filterData(vattu){
-    
     this.commonService.getMerchanediseByCode<viewDetailCart>(vattu.MaVatTu).subscribe(data=>{
       let dataTemp = new viewDetailCart();
       dataTemp=data;
@@ -120,5 +121,38 @@ export class ViewCartDetailComponent implements OnInit {
     this.cookieService.delete('vattutronggiohang');
     this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
     this.viewCartService.changedCartView(this.vattuSelected);
+  }
+  CheckOut(){
+    let Detail = [];
+    if(this.vattuSelected.arrVatTuSelected.length === 0){
+      alert("Quý khách vui lòng chọn hàng thanh toán !");
+      return;
+    }
+    else{
+      let tongtien = 0;
+      let tongsoluong = 0 ;
+      this.lstViewVatTu.forEach(function(obj){
+        let objectDetail = new DetailsCart();
+        objectDetail.DONGIA = obj.GiaBanLeVat;
+        objectDetail.DONGIADEXUAT = obj.GiaBanLeVat;
+        objectDetail.MAHANG = obj.MaVatTu;
+        objectDetail.SOLUONG = obj.SoLuong;
+        objectDetail.SOLUONGLE =  obj.SoLuong;
+        objectDetail.TENHANG = obj.TenVatTu;
+        tongtien +=  obj.SoLuong*obj.GiaBanLeVat;
+        tongsoluong +=obj.SoLuong;
+        Detail.push(objectDetail);
+      });
+      this.DataDTO = new ObjectCartModel(Detail);
+      this.DataDTO.DIACHINN = this.khachHang.DiaChi;
+      this.DataDTO.TENNN = this.khachHang.TenKH;
+      this.DataDTO.UNITCODE = this.khachHang.MaDonVi;
+      this.DataDTO.SDTNN = this.khachHang.DienThoai;
+      this.DataDTO.MAKHACHHANG = this.khachHang.DienThoai;
+      this.DataDTO.SOPHIEUCON = this.vattuSelected.arrVatTuSelected.length;
+      this.DataDTO.SOLUONG = tongsoluong;
+      this.DataDTO.THANHTIENSAUVAT = tongtien;
+      console.log(this.DataDTO);
+    }
   }
 }

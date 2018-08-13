@@ -6,6 +6,7 @@ using System.Data;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using BT.API.HOME.Models;
+using OracleInternal.Secure.Network;
 
 namespace BT.API.HOME.Controllers
 {
@@ -137,7 +138,6 @@ namespace BT.API.HOME.Controllers
                     {
 
                     }
-
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
                     cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_VATTU_GIABAN vt WHERE vt.MADONVI ='DV1-CH1' AND vt.MANHOMVATTU='" + merchanedisetype + "' OR vt.MALOAIVATTU = '" + merchanedisetype + "'";
@@ -391,6 +391,160 @@ namespace BT.API.HOME.Controllers
             }
             return Ok(vattu);
         }
+
+        public IHttpActionResult RegisKhachHang(KhachHangModel obj)
+        {
+            string newID = CommonService.GET_NEW_ID("KH");
+            ObjectResult dataResult = new ObjectResult();
+            string data = "";
+            using (OracleConnection connection =new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"INSERT INTO DM_KHACHHANG (ID,MAKH,TENKH,TENKHAC,DIACHI,TRANGTHAI,DIENTHOAI,EMAIL,NGAYSINH,I_CREATE_DATE,UNITCODE)
+                                            VALUES (:ID,:MAKH,:TENKH,:TENKHAC,:DIACHI,:TRANGTHAI,:DIENTHOAI,:EMAIL,:NGAYSINH,:CREATEDATE,:UNITCODE)";
+                    command.Parameters.Add("ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid();
+                    command.Parameters.Add("MAKH", OracleDbType.NVarchar2, 50).Value = "KH";
+                    command.Parameters.Add("TENKH", OracleDbType.NVarchar2, 500).Value = obj.TenKH;
+                    command.Parameters.Add("TENKHAC", OracleDbType.NVarchar2, 500).Value = obj.TenKhac;
+                    command.Parameters.Add("DIACHI", OracleDbType.NVarchar2, 500).Value = obj.DiaChi;
+                    //command.Parameters.Add("TINH", OracleDbType.NVarchar2, 50).Value = obj.TinhTP;
+                    command.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
+                    command.Parameters.Add("DIENTHOAI", OracleDbType.NVarchar2,50).Value = obj.DienThoai;
+                    command.Parameters.Add("EMAIL", OracleDbType.NVarchar2, 100).Value = obj.Email;
+                    command.Parameters.Add("NGAYSINH", OracleDbType.Date).Value = obj.NgaySinh;
+                    command.Parameters.Add("CREATEDATE", OracleDbType.Date).Value = DateTime.Now;
+                    command.Parameters.Add("UNITCODE", OracleDbType.NVarchar2, 50).Value = obj.MaDonVi;
+                    try
+                    {
+                        int result = command.ExecuteNonQuery();
+                        if (result > 0)
+                        {
+                            OracleCommand cmd = new OracleCommand();
+                            cmd.Connection = connection;
+                            cmd.CommandType = CommandType.Text;
+                            cmd.CommandText =
+                                @"INSERT INTO AU_NGUOIDUNG (ID , USERNAME, PASSWORD ,MANHANVIEN,SODIENTHOAI,TRANGTHAI,I_CREATE_DATE,UNITCODE)
+                                   VALUES (:ID , :USERNAME , :PASSWORD , :MANHANVIEN , :SODIENTHOAI , :TRANGTHAI , :CREATEDATE ,:UNITCODE)";
+                            cmd.Parameters.Add("ID",OracleDbType.NVarchar2,50).Value = Guid.NewGuid();
+                            cmd.Parameters.Add("USERNAME", OracleDbType.NVarchar2, 50).Value = obj.DienThoai;
+                            cmd.Parameters.Add("PASSWORD", OracleDbType.NVarchar2, 100).Value =CommonService.MD5Hash(obj.MatKhau);
+                            cmd.Parameters.Add("MANHANVIEN", OracleDbType.NVarchar2, 50).Value = "KH";
+                            cmd.Parameters.Add("SODIENTHOAI", OracleDbType.NVarchar2, 50).Value = obj.DienThoai;
+                            cmd.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
+                            cmd.Parameters.Add("CREATEDATE", OracleDbType.Date).Value = DateTime.Now;
+                            cmd.Parameters.Add("UNITCODE", OracleDbType.NVarchar2, 50).Value = obj.MaDonVi;
+                            result = cmd.ExecuteNonQuery();
+                            if (result > 0)
+                            {
+                                data = "Thêm mới thành công ";
+                                dataResult.Message = data;
+                                dataResult.Result = true;
+                            }
+                        }
+                        else
+                        {
+                            data = " Thêm mới thất bại vui lòng kiểm tra lại !";
+                            dataResult.Message = data;
+                            dataResult.Result = false;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        data = " Thêm mới thất bại vui lòng kiểm tra lại !";
+                        dataResult.Message = data;
+                        dataResult.Result = false;
+                    }
+                }
+            }
+
+            return Ok(dataResult);
+        }
+
+        [HttpGet]
+        public IHttpActionResult Login(string username,string pass, string donvi)
+        {
+            ObjectResult dataResult = new ObjectResult();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    string password = CommonService.MD5Hash(pass);
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT * FROM AU_NGUOIDUNG WHERE USERNAME = '"+ username + "' AND PASSWORD='"+ password + "' AND UNITCODE ='"+ donvi + "'";
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                dataResult.Result = true;
+                                dataResult.Message = "Đăng nhập thành công !";
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dataResult.Result = false;
+                        dataResult.Message = "Đăng nhập thất bại!";
+                    }
+                }
+            }
+            return Ok(dataResult);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetUserByPhone(string sodienthoai,string unitcode2)
+        {
+            KhachHangModel dataResult = new KhachHangModel();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT * FROM DM_KHACHHANG WHERE DIENTHOAI= :dienthoai AND UNITCODE=:unitcode";
+                    command.Parameters.Add("dienthoai", OracleDbType.NVarchar2, 50).Value = sodienthoai;
+                    command.Parameters.Add("unitcode", OracleDbType.NVarchar2, 50).Value = unitcode2;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                dataResult.TenKH = reader["TENKH"].ToString();
+                                dataResult.DienThoai = reader["DIENTHOAI"].ToString();
+                                dataResult.DiaChi = reader["DIACHI"].ToString();
+                                dataResult.MaDonVi = reader["UNITCODE"].ToString();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                    }
+                }
+            }
+            return Ok(dataResult);
+        }
+
+
+        //[HttpPost]
+        //public IHttpActionResult CheckOut()
+        //{
+            
+        //}
 
         public HttpResponseMessage Put()
         {

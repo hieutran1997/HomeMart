@@ -135,8 +135,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\KhachHangModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MerchanediseType.cs" />
     <Compile Include="Models\NhomVatTuModel.cs" />
+    <Compile Include="Models\ObjectCartModel.cs" />
+    <Compile Include="Models\ObjectResult.cs" />
     <Compile Include="Models\VatTuModel.cs" />
     <Compile Include="Models\VatTuViewCart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
