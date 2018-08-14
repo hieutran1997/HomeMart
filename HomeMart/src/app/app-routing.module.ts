@@ -7,6 +7,9 @@ import { DetailMerchandiseComponent } from './_layout/detail-merchandise/detail-
 import { SalesComponent } from './_layout/sales/sales.component';
 import { LoginComponent } from './_layout/login/login.component';
 import { RegisterComponent } from './_layout/register/register.component';
+import { InfoPageComponent } from './_layout/info-page/info-page.component';
+import {ShippingComponent} from './_layout/shipping/shipping.component';
+import { ContactComponent } from './_layout/contact/contact.component';
 
 const routes: Routes = [
     {
@@ -17,7 +20,10 @@ const routes: Routes = [
         {path:'chi-tiet-gio-hang',component:ViewCartDetailComponent},
         {path:'chi-tiet-hang-hoa/:mavattu',component : DetailMerchandiseComponent},
         {path:'loai-hang/:maloaivattu',component : HomeComponent},
-        {path:'chuong-trinh-khuyen-mai',component:SalesComponent}
+        {path:'chuong-trinh-khuyen-mai',component:SalesComponent},
+        {path:'gioi-thieu',component : InfoPageComponent},
+        {path:'giao-hang',component:ShippingComponent},
+        {path:'lien-he',component: ContactComponent}
       ]
     },
     {

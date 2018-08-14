@@ -91,7 +91,7 @@ module.exports = "#imageNew:hover{\r\n    background-color: #4cb1ca;\r\n    colo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card id=\"cartParent\">\r\n    <mat-card-title>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-6\">Danh sách mặt hàng theo loại : {{category}} </div>\r\n            <div class=\"col-md-2\"></div>\r\n            <div class=\"col-md-2\" style=\"text-align: right\">\r\n                <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                    <div ngbDropdown class=\"d-inline-block\">\r\n                        <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                            Sắp xếp</button>\r\n                        <!-- Missing tag added below -->\r\n                        <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                            <button class=\"dropdown-item\" \r\n                                    *ngFor=\"let sortOrder of sortOrders\" \r\n                                    (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                            </button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-2\">\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n            </div>\r\n        </div>\r\n    </mat-card-title>\r\n    <mat-card-content  *ngIf=\"isLoading\">\r\n        <br/>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-5\"></div>\r\n            <div class=\"col align-self-center\">\r\n                <app-self-building-square-spinner \r\n                [animationDuration]=\"3000\"\r\n                [size]=\"40\"\r\n                [color]=\"'#441d72'\"\r\n                ></app-self-building-square-spinner>\r\n            </div>\r\n            <div class=\"col-md-4\"></div>\r\n        </div>\r\n        <br/>\r\n    </mat-card-content>\r\n    <mat-card-content  class=\"container\" *ngIf=\"!isLoading\">\r\n        <!-- chọn show bảng -->\r\n        <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n            <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n                <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                    <mat-card-content>\r\n                        <div class=\"text-center\">\r\n                            <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" id=\"zoom\" alt=\"{{item.TenVatTu}}\"></a>\r\n                        </div>\r\n                    </mat-card-content>\r\n                    <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-md-9\">\r\n                                <span>{{display(item.TenVatTu)}}</span>\r\n                                <br/>\r\n                                <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                                <br/>\r\n                                <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                            </div>\r\n                            <div class=\"col-md-3\">\r\n                                <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                            <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                    </mat-card-footer>\r\n                </mat-card>\r\n            </div>\r\n        </div>\r\n        <!-- chọn show danh sách -->\r\n        <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n                <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                    <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                    <div class=\"col\" style=\"margin-top: 30px;\">\r\n                        <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                        <br/>\r\n                        <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                        <br/>\r\n                        <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                            <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                        <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n    </mat-card-content>\r\n    <mat-card-footer> \r\n        <mat-paginator  [length]=\"length\"\r\n                        [pageIndex]=\"pageIndex\"\r\n                        [pageSize]=\"pageSize\"\r\n                        [pageSizeOptions]=\"[3,6,9,12]\"\r\n                        (page)=\"pageEvent = getServerData($event)\">\r\n        </mat-paginator>\r\n    </mat-card-footer>\r\n  </mat-card>"
+module.exports = "<mat-card id=\"cartParent\">\r\n    <mat-card-title>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-6\">Danh sách mặt hàng theo loại : {{category}} </div>\r\n            <div class=\"col-md-2\"></div>\r\n            <div class=\"col-md-2\" style=\"text-align: right\">\r\n                <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                    <div ngbDropdown class=\"d-inline-block\">\r\n                        <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                            Sắp xếp</button>\r\n                        <!-- Missing tag added below -->\r\n                        <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                            <button class=\"dropdown-item\" \r\n                                    *ngFor=\"let sortOrder of sortOrders\" \r\n                                    (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                            </button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-2\">\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n            </div>\r\n        </div>\r\n    </mat-card-title>\r\n    <mat-card-content  *ngIf=\"isLoading\">\r\n        <br/>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-5\"></div>\r\n            <div class=\"col align-self-center\">\r\n                <app-self-building-square-spinner \r\n                [animationDuration]=\"3000\"\r\n                [size]=\"40\"\r\n                [color]=\"'#441d72'\"\r\n                ></app-self-building-square-spinner>\r\n            </div>\r\n            <div class=\"col-md-4\"></div>\r\n        </div>\r\n        <br/>\r\n    </mat-card-content>\r\n    <mat-card-content  class=\"container\" *ngIf=\"!isLoading\">\r\n        <!-- chọn show bảng -->\r\n        <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n            <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n                <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                    <mat-card-content>\r\n                        <div class=\"text-center\">\r\n                            <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" style=\"padding-top:20px;max-height: 90px!important \" width=\"150\" alt=\"{{item.TenVatTu}}\"></a>\r\n                        </div>\r\n                    </mat-card-content>\r\n                    <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; \">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-md-9\">\r\n                                <span>{{display(item.TenVatTu)}}</span>\r\n                                <br/>\r\n                                <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                                <br/>\r\n                                <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                            </div>\r\n                            <div class=\"col-md-3\">\r\n                                <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                            <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                    </mat-card-footer>\r\n                </mat-card>\r\n            </div>\r\n        </div>\r\n        <!-- chọn show danh sách -->\r\n        <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n                <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                    <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                    <div class=\"col\" style=\"margin-top: 30px;\">\r\n                        <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                        <br/>\r\n                        <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                        <br/>\r\n                        <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                            <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                        <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n    </mat-card-content>\r\n    <mat-card-footer> \r\n        <mat-paginator  [length]=\"length\"\r\n                        [pageIndex]=\"pageIndex\"\r\n                        [pageSize]=\"pageSize\"\r\n                        [pageSizeOptions]=\"[3,6,9,12]\"\r\n                        (page)=\"pageEvent = getServerData($event)\">\r\n        </mat-paginator>\r\n    </mat-card-footer>\r\n  </mat-card>"
 
 /***/ }),
 
@@ -308,6 +308,58 @@ var CategoryDetailsComponent = /** @class */ (function () {
             _view_cart_service__WEBPACK_IMPORTED_MODULE_7__["ViewCartService"]])
     ], CategoryDetailsComponent);
     return CategoryDetailsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/_layout/contact/contact.component.html":
+/*!********************************************************!*\
+  !*** ./src/app/_layout/contact/contact.component.html ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\r\n    <div class=\"page-title\">\r\n        <h1>Liên hệ</h1>\r\n    </div>\r\n    <div class=\"page-body\">\r\n            <div class=\"topic-block\">\r\n        <div class=\"topic-block-body\">\r\n            <p><strong><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\">VNXK - Bán Buôn Bán Lẻ - I ❤️ Viet Nam Shop </span></strong><br /><strong><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\">☛ Số 8 Ngõ Phan Chu Trinh, Hoàn Kiếm, HN ( Ngõ ở số nhà 51 PCT) BUÔN LẺ SLL </span></strong><br /><strong><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\">❤️: 0948994000 - 0916374000</span></strong></p>\r\n    <p><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\"><a href=\"https://www.facebook.com/pg/vnxkbanbuonbanle123/\">https://www.facebook.com/pg/vnxkbanbuonbanle123/</a></span></p>\r\n        </div>\r\n    </div>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/_layout/contact/contact.component.ts":
+/*!******************************************************!*\
+  !*** ./src/app/_layout/contact/contact.component.ts ***!
+  \******************************************************/
+/*! exports provided: ContactComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContactComponent", function() { return ContactComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ContactComponent = /** @class */ (function () {
+    function ContactComponent() {
+    }
+    ContactComponent.prototype.ngOnInit = function () {
+    };
+    ContactComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-contact',
+            template: __webpack_require__(/*! ./contact.component.html */ "./src/app/_layout/contact/contact.component.html"),
+            styles: []
+        }),
+        __metadata("design:paramtypes", [])
+    ], ContactComponent);
+    return ContactComponent;
 }());
 
 
@@ -740,6 +792,17 @@ module.exports = ".img-fluid{\r\n    max-height: 400px;\r\n    float:right;\r\n}
 
 /***/ }),
 
+/***/ "./src/app/_layout/footer/footer.component.css":
+/*!*****************************************************!*\
+  !*** ./src/app/_layout/footer/footer.component.css ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".footer-above{\r\n    background-color: beige;\r\n    margin-bottom: 60px;\r\n}\r\n.title-footer{\r\n    font-weight: bold;\r\n\r\n}"
+
+/***/ }),
+
 /***/ "./src/app/_layout/footer/footer.component.html":
 /*!******************************************************!*\
   !*** ./src/app/_layout/footer/footer.component.html ***!
@@ -747,7 +810,7 @@ module.exports = ".img-fluid{\r\n    max-height: 400px;\r\n    float:right;\r\n}
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-light bg-light mt-5 fixed-bottom\">\r\n  <div class=\"navbar-expand m-auto navbar-text\">\r\n    I <i class=\"fa fa-heart\" style=\"color: brown;\"></i> <a href=\"http://btsoftvn.com/\">VietNam</a>\r\n  </div>\r\n</nav>"
+module.exports = "<div class=\"footer-above\">\r\n  <div class=\"container\" style=\"padding-top: 20px;\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-4\" style=\"text-align: center\">\r\n        <span class=\"title-footer\">Thông tin</span>\r\n        <hr/>\r\n        <a routerLink=\"/gioi-thieu\">Giới thiệu</a><br/>\r\n        <a routerLink=\"/giao-hang\">Giao hàng( shipping )</a><br/>\r\n        <a routerLink=\"/lien-he\">Liên hệ</a>\r\n      </div>\r\n      <div class=\"col-md-4\" style=\"text-align: center\">\r\n        <span class=\"title-footer\">Tài khoản của tôi</span>\r\n        <hr/>\r\n        <a href=\"#\">Tài khoản của tôi</a><br/>\r\n        <a href=\"#\">Đơn đặt hàng</a><br/>\r\n        <a href=\"#\">Giỏ hàng</a><br/>\r\n        <a href=\"#\">Sản phẩm yêu thích</a><br/>\r\n        <a href=\"#\">Đăng ký nhà phân phối</a>\r\n      </div>\r\n      <div class=\"col-md-4\" style=\"text-align: center\">\r\n        <span class=\"title-footer\">Kết nối</span>\r\n        <hr/>\r\n        <button (click)=\"redirectFB()\" mat-mini-fab style=\"background-color: royalblue\" >\r\n          <mat-icon aria-label=\"Liên kết facebook\"><i class=\"fa fa-facebook-f\"></i></mat-icon>\r\n        </button>\r\n        &nbsp;\r\n        <button mat-mini-fab>\r\n          <mat-icon aria-label=\"Liên kết facebook\"><i class=\"fa fa-google-plus\"></i></mat-icon>\r\n        </button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<nav class=\"navbar navbar-light bg-light fixed-bottom\">\r\n  <div class=\"navbar-expand m-auto navbar-text\">\r\n    I <i class=\"fa fa-heart\" style=\"color: brown;\"></i> <a href=\"http://btsoftvn.com/\">VietNam</a>\r\n  </div>\r\n</nav>"
 
 /***/ }),
 
@@ -777,11 +840,15 @@ var FooterComponent = /** @class */ (function () {
     }
     FooterComponent.prototype.ngOnInit = function () {
     };
+    FooterComponent.prototype.redirectFB = function () {
+        var url = "https://www.facebook.com/vnxkbanbuonbanle123/";
+        window.open(url, '_blank');
+    };
     FooterComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-footer',
             template: __webpack_require__(/*! ./footer.component.html */ "./src/app/_layout/footer/footer.component.html"),
-            styles: []
+            styles: [__webpack_require__(/*! ./footer.component.css */ "./src/app/_layout/footer/footer.component.css")]
         }),
         __metadata("design:paramtypes", [])
     ], FooterComponent);
@@ -810,7 +877,7 @@ module.exports = "#menuBar{\r\n    color:black;font-weight: bold\r\n}\r\n\r\n#me
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light fixed-top\" style=\"background-color: beige\">\r\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo03\" aria-controls=\"navbarTogglerDemo03\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\">I <i class=\"fa fa-heart\" style=\"color: brown;\"></i> Việt Nam</a>\r\n\r\n  <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n    <ul class=\"navbar-nav mr-auto mt-2 mt-lg-0\">\r\n    </ul>\r\n    \r\n    <ul class=\"navbar-nav mt-2 mt-lg-0\" style=\"margin-right: 10px;\">\r\n      <li class=\"nav-item\" style=\"padding-right: 15px\">\r\n          <app-ngbd-popover-config></app-ngbd-popover-config>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-ky\">Đăng ký</a>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-nhap\">Đăng nhập</a>\r\n      </li>\r\n    </ul>\r\n    \r\n  </div>\r\n</nav>\r\n<div class=\"navbar navbar-expand-lg navbar-light bg-light mt-5 \">\r\n    <div class=\"navbar-expand navbar-text\">\r\n        <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo03\" aria-controls=\"navbarTogglerDemo03\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n            <span class=\"navbar-toggler-icon\"></span>\r\n        </button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n          <ul class=\"navbar-nav mt-2 mt-lg-0\">\r\n              <li *ngFor=\"let item of listMenu\">\r\n                  <a class=\"nav-link\" routerLink=\"/{{item.url}}\"> <span id=\"menuBar\">{{item.Title}}</span></a>\r\n                </li>\r\n          </ul>\r\n        </div>\r\n    </div>\r\n  </div>\r\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light fixed-top\" style=\"background-color: beige\">\r\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo03\" aria-controls=\"navbarTogglerDemo03\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\">I <i class=\"fa fa-heart\" style=\"color: brown;\"></i> Việt Nam</a>\r\n\r\n  <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n    <ul class=\"navbar-nav mr-auto mt-2 mt-lg-0\">\r\n    </ul>\r\n    \r\n    <ul class=\"navbar-nav mt-2 mt-lg-0\" style=\"margin-right: 10px;\">\r\n      <li class=\"nav-item\" style=\"padding-right: 15px\">\r\n          <app-ngbd-popover-config></app-ngbd-popover-config>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-ky\">Đăng ký</a>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-nhap\">Đăng nhập</a>\r\n      </li>\r\n    </ul>\r\n    \r\n  </div>\r\n</nav>\r\n<div class=\"navbar navbar-expand-lg navbar-light bg-light mt-5 \">\r\n    <div class=\"navbar-expand navbar-text\">\r\n        <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo03\" aria-controls=\"navbarTogglerDemo03\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n            <span class=\"navbar-toggler-icon\"></span>\r\n        </button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n          <ul class=\"nav navbar-nav\">\r\n              <li *ngFor=\"let item of listMenu\">\r\n                <a class=\"nav-link\" routerLink=\"/{{item.url}}\"> <span id=\"menuBar\">{{item.Title}}</span></a>\r\n              </li>\r\n          </ul>\r\n        </div>\r\n    </div>\r\n  </div>\r\n"
 
 /***/ }),
 
@@ -1032,6 +1099,58 @@ var VatTuDetail = /** @class */ (function () {
         this.Avartar = null;
     }
     return VatTuDetail;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/_layout/info-page/info-page.component.html":
+/*!************************************************************!*\
+  !*** ./src/app/_layout/info-page/info-page.component.html ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\r\n  <p style=\"font-size: 20px;text-align: center\">Giới thiệu</p>\r\n  <hr/>\r\n  <p><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\">Hàng có sẵn, có sl sỉ và bán lẻ! Giá lẻ dc puplic trên mỗi caption kèm ảnh, gồm tất cả thông tin màu size, khách iu đọc kĩ giùm Ad ak!</span><br /><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\">------------------------------------------------</span><br /><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\">✔️ SHIP HÀNG TOÀN QUỐC, SHOP CHỈ NHẬN SHIP COD NỘI THÀNH HN, NGOẠI THÀNH HN VUI LÒNG CK TIỀN HÀNG VÀ THANH TOÁN TIỀN SHIP KHI NHẬN HÀNG</span><br /><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\">I ❤️ Vietnam - Số 8 ngõ Phan Chu Trinh, Hoàn Kiếm, HN</span><br /><span style=\"font-family: arial, helvetica, sans-serif; font-size: 12pt;\">( Ngõ cạnh số nhà 51 PCT, <span class=\"text_exposed_show\">đi từ hướng Lò Đúc đi xuống ngõ bên phải đầu đường PCT)<br />☎️ 0948994000 -0916374000 (viber, zalo, imess) Shop mở cửa từ 8h-6h30 hằng ngày! <br />✔️ Shop k nhận giữ hàng, ko ship thử hàng, k đổi hàng vì lí do k thích, k hợp, HÀNG SALE KO ĐỔI TRẢ DƯỚI MỌI HÌNH THỨC, chỉ đổi do lỗi sản xuất trong vòng 48h kể từ ngày nhận hàng!<br />-------------------------------------<br />⚠️Lưu ý: Mua nhanh các nàng call hoặc sms cho hai số đt 0948994000 ( hoặc 0916374000 CHỈ NHẬN SMS)<br />Thời gian trả lời inbox và nhận điện thoại, sms từ 9h -20h30 TẤT CẢ các ngày trong tuần.<br />-------------------------------------<br />✔️ Hàng mua tại shop vui lòng không đổi/trả, kính đề nghị quý khách kiểm tra kỹ trước khi mua.<br />✔️Hàng ship ngoại thành: khách hàng nhận sản phẩm không đúng theo mẫu đặt, hàng lỗi do shop, khách hàng có thể đổi/trả trong vòng 48h. Trong trường hợp khách đặt size bị chật/rộng, shop sẽ đổi size, nếu mẫu hết size khách có thể đổi sang món khác bằng tiền hoặc cao hơn, shop ko nhận trả lại, phí ship đổi khách chịu.<br />---------------------<br /><br /><span style=\"color: #ff0000;\"><strong>❤️ ❤️❤️Thông tin chuyển khoản❤️❤️❤️</strong></span><br /><span style=\"color: #ff0000;\"><strong>☀️ Vietcombank: 0021001470177 Vũ Thị Phương Thuỳ Vietcombank chi nhánh HN </strong></span><br /><span style=\"color: #ff0000;\"><strong>☀️ Viettinbank: 101010007871578 Nguyễn Tiến Tuấn Bình NHTMCPCT Thanh Xuân</strong></span><br /><span style=\"color: #ff0000;\"><strong>☀️ BIDV: 21110000674651 Vũ Thị Phương Thuỳ BIDV Hà Nội</strong></span><br /><span style=\"color: #ff0000;\"><strong>☀️ Agribank: 1483205212029 Vũ Ngọc Anh Chi nhánh Thủ Đô</strong></span><br /><br />Nội dung ck ghi rõ tên FB, sđt để tránh nhầm lẫn và sót đơn, ck xong khách thông báo cho shop qua FB và nt đến sđt shop 0948994000-0916374000 để shop xác nhận đơn hàng! Khách đã ck nhắn rõ Tên- địa chỉ- số điện thoại để shop gửi hàng! Nhận dc hàng hay ko nhận dc hàng trong tối đa 3 ngày phải inbox lại để shop biết check hàng cho khách nhé! Tks!<br />Khách có nhu cầu gửi xe ck thêm 30k phí shop thuê shipper gửi ra bến xe! ( Xe do khách chỉ định, hàng hoá trong quá trình vận chuyển có vấn đề gì shop k chịu trách nhiệm)<br />- NỘI THÀNH HN ĐỔI HÀNG TRONG 2 NGÀY, NGOẠI THÀNH ĐỔI HÀNG TRONG 3 NGÀY ( do lỗi sản xuất, ko vừa size)<br />-------TKS------<br /><br />CÁCH THỨC MUA SỈ (BUÔN)<br /><br />❣❣❣ Bán sỉ theo ri (theo dây chính là sl tối thiểu để dc giá buôn mã hàng đó) hàng có sz và tỉ lệ (hàng chuyền chuẩn, hàng nối chuyền và hàng xuất) thì khách lấy hàng theo sz và tỉ lệ có trc, thường 10-20c/1 ri là sl tối thiểu (Hàng này ko chọn sz, chọn màu). Sl lấy càng nhiều giá càng tốt, có giá đặc biệt cho khách lấy để sỉ lại lấy dc sll. Giá sỉ chiết khấu 25-35% trên giá lẻ tuỳ từng mẫu. Ko quy định lần đầu hay lần cuối Lần nào cũng phải lấy sl như lần nào nhé khách<br /><br />☀️☀️☀️Khách mún lấy dạng order nghĩa là lấy hàng theo y/c (nhặt mẫu và sl tuỳ ý ) tổng bill hàng theo giá lẻ trên 2tr chiết khấu 15%- trên 4tr chiết khấu 20%!<br /><br />Khách sỉ HN và các tỉnh lân cận có điều kiện có thể qua xem và mua hàng trực tiếp tại đ/c: Số 8 ngõ Phan Chu Trinh, Hoàn Kiếm, HN<br />☎️ 0948994000--- 0916374000 (số này chỉ nhận sms imess, zalo, viber) Khách sỉ có thể add Zalo 2 số này để theo dõi hàng mới mỗi ngày!<br /><br />Khách sỉ xa có thể inbox ảnh trên Page, Zalo, Viber để đc báo gía, sl tối thiểu từng mẫu cũng như các thông tin liên quan đến sản phẩm. Khách ok mua hàng thì ck cho shop theo:<br /><br /><span style=\"color: #ff0000;\"><strong>❤️ ❤️❤️Thông tin chuyển khoản❤️❤️❤️</strong></span><br /><span style=\"color: #ff0000;\"><strong>☀️ Vietcombank: 0021001470177 Vũ Thị Phương Thuỳ Vietcombank chi nhánh HN </strong></span><br /><span style=\"color: #ff0000;\"><strong>☀ Viettinbank: 101010007871578 Nguyễn Tiến Tuấn Bình NHTMCPCT Thanh Xuân</strong></span><br /><span style=\"color: #ff0000;\"><strong>☀️ BIDV: 21110000674651 Vũ Thị Phương Thuỳ BIDV Hà Nội</strong></span><br /><span style=\"color: #ff0000;\"><strong>☀️ Agribank: 1483205212029 Vũ Ngọc Anh Chi nhánh Thủ Đô</strong></span><br /><br />Nội dung ck ghi rõ tên FB, sđt để tránh nhầm lẫn và sót đơn, ck xong khách thông báo cho shop qua FB và nt đến sđt shop: 0948994000 hoặc 0916374000 (chỉ nhận sms) để shop xác nhận đơn hàng!<br /><br />✔️Khách sỉ HN có nhu cầu ship hàng cũng CK trc tiền hàng vì bên shop ko có ng ứng tiền hàng ship<br /><br />Ship hàng khách tỉnh xa theo Chuyển phát nhanh (cpn) hoặc chuyển ra xe (phí THUÊ SHIPPER 30k chuyển hàng ra gửi xe khách trả trc cùng tiền hàng, với đơn hàng trên 10tr sẽ freeship thuê SHIPPER). Tiền ship hàng qua cpn hay xe khách tự trả sau nhận hàng!<br /><br />HÀNG LỖI KHÁCH ĐC ĐỔI HÀNG TRONG VÒNG 3 NGÀY KỂ TỪ NGÀY NHẬN ĐC HÀNG (Nếu quá 3 ngày shop ko nhận đổi trả, hết hàng đổi shop sẽ hoàn lại tiền hoặc khách đổi sang hàng khác tuỳ ý), khách dán lỗi hàng kĩ trc khi trả để shop dễ check lỗi nhé! KO BAO ĐỔI TRẢ HÀNG NẾU SHOP KO BÁN DC TKS!<br /><br />HÀNG MỚI ĐC UPDATE HẰNG NGÀY TRÊN FANPAGE CỦA SHOP HOẶC TRÊN ZALO KHÁCH SỈ CHỦ ĐỘNG CẬP NHẬT MỖI NGÀY NHA!!! KHÁCH CHỌN CHẾ ĐỘ THEO DÕI \"XEM TRƯỚC\" (\"SEE FIRST\") ĐỂ BÀI POST LUÔN HIỆN ĐẦU BẢN TIN, KO BỎ SÓT MẪU HOT NHAAA</span></span></p>\r\n\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/_layout/info-page/info-page.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/_layout/info-page/info-page.component.ts ***!
+  \**********************************************************/
+/*! exports provided: InfoPageComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InfoPageComponent", function() { return InfoPageComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var InfoPageComponent = /** @class */ (function () {
+    function InfoPageComponent() {
+    }
+    InfoPageComponent.prototype.ngOnInit = function () {
+    };
+    InfoPageComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-info-page',
+            template: __webpack_require__(/*! ./info-page.component.html */ "./src/app/_layout/info-page/info-page.component.html"),
+            styles: []
+        }),
+        __metadata("design:paramtypes", [])
+    ], InfoPageComponent);
+    return InfoPageComponent;
 }());
 
 
@@ -1678,6 +1797,58 @@ var SalesComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/_layout/shipping/shipping.component.html":
+/*!**********************************************************!*\
+  !*** ./src/app/_layout/shipping/shipping.component.html ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\r\n    <div class=\"page-title\" id=\"ph-title\">\r\n        <h1>Giao h&#224;ng (Shipping)</h1>\r\n    </div>\r\n    <div class=\"page-body\">\r\n        <p><span style=\"font-size: 12pt; font-family: arial, helvetica, sans-serif; color: #000000;\">⚠️Lưu ý: Mua nhanh các nàng call hoặc sms cho hai số đt 0948994000 ( hoặc 0916374000 CHỈ NHẬN SMS)</span><br /><span style=\"font-size: 12pt; font-family: arial, helvetica, sans-serif; color: #000000;\">Thời gian trả lời inbox và nhận điện thoại, sms từ 9h -20h30 TẤT CẢ các ngày trong tuần.</span><br /><span style=\"font-size: 12pt; font-family: arial, helvetica, sans-serif; color: #000000;\">-------------------------------------</span><br /><span style=\"font-size: 12pt; font-family: arial, helvetica, sans-serif; color: #000000;\">✔️ Hàng mua tại shop vui lòng không đổi/trả, kính đề nghị quý khách kiểm tra kỹ trước khi mua.</span><br /><span style=\"font-size: 12pt; font-family: arial, helvetica, sans-serif; color: #000000;\">✔️Hàng ship ngoại thành: khách hàng nhận sản phẩm không đúng theo mẫu đặt, hàng lỗi do shop, khách hàng có thể đổi/trả trong vòng 48h. Trong trường hợp khách đặt size bị chật/rộng, shop sẽ đổi size, nếu mẫu hết size khách có thể đổi sang món khác bằng tiền hoặc cao hơn, shop ko nhận trả lại, phí ship đổi khách chịu.</span></p>\r\n    <p><span style=\"font-size: 12pt; font-family: arial, helvetica, sans-serif; color: #000000;\">✔️ Ship hàng khách tỉnh xa theo Chuyển phát nhanh (cpn) hoặc chuyển ra xe (phí THUÊ SHIPPER 30k chuyển hàng ra gửi xe khách trả trc cùng tiền hàng, với đơn hàng trên 10tr sẽ freeship thuê SHIPPER). Tiền ship hàng qua cpn hay xe khách tự trả sau nhận hàng!</span></p>\r\n    </div>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/_layout/shipping/shipping.component.ts":
+/*!********************************************************!*\
+  !*** ./src/app/_layout/shipping/shipping.component.ts ***!
+  \********************************************************/
+/*! exports provided: ShippingComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShippingComponent", function() { return ShippingComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ShippingComponent = /** @class */ (function () {
+    function ShippingComponent() {
+    }
+    ShippingComponent.prototype.ngOnInit = function () {
+    };
+    ShippingComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-shipping',
+            template: __webpack_require__(/*! ./shipping.component.html */ "./src/app/_layout/shipping/shipping.component.html"),
+            styles: []
+        }),
+        __metadata("design:paramtypes", [])
+    ], ShippingComponent);
+    return ShippingComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/_layout/view-cart-detail/view-cart-detail.component.html":
 /*!**************************************************************************!*\
   !*** ./src/app/_layout/view-cart-detail/view-cart-detail.component.html ***!
@@ -1949,12 +2120,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layout_sales_sales_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./_layout/sales/sales.component */ "./src/app/_layout/sales/sales.component.ts");
 /* harmony import */ var _layout_login_login_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./_layout/login/login.component */ "./src/app/_layout/login/login.component.ts");
 /* harmony import */ var _layout_register_register_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./_layout/register/register.component */ "./src/app/_layout/register/register.component.ts");
+/* harmony import */ var _layout_info_page_info_page_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./_layout/info-page/info-page.component */ "./src/app/_layout/info-page/info-page.component.ts");
+/* harmony import */ var _layout_shipping_shipping_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./_layout/shipping/shipping.component */ "./src/app/_layout/shipping/shipping.component.ts");
+/* harmony import */ var _layout_contact_contact_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./_layout/contact/contact.component */ "./src/app/_layout/contact/contact.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -1973,7 +2150,10 @@ var routes = [
             { path: 'chi-tiet-gio-hang', component: _layout_view_cart_detail_view_cart_detail_component__WEBPACK_IMPORTED_MODULE_4__["ViewCartDetailComponent"] },
             { path: 'chi-tiet-hang-hoa/:mavattu', component: _layout_detail_merchandise_detail_merchandise_component__WEBPACK_IMPORTED_MODULE_5__["DetailMerchandiseComponent"] },
             { path: 'loai-hang/:maloaivattu', component: _layout_home_home_component__WEBPACK_IMPORTED_MODULE_3__["HomeComponent"] },
-            { path: 'chuong-trinh-khuyen-mai', component: _layout_sales_sales_component__WEBPACK_IMPORTED_MODULE_6__["SalesComponent"] }
+            { path: 'chuong-trinh-khuyen-mai', component: _layout_sales_sales_component__WEBPACK_IMPORTED_MODULE_6__["SalesComponent"] },
+            { path: 'gioi-thieu', component: _layout_info_page_info_page_component__WEBPACK_IMPORTED_MODULE_9__["InfoPageComponent"] },
+            { path: 'giao-hang', component: _layout_shipping_shipping_component__WEBPACK_IMPORTED_MODULE_10__["ShippingComponent"] },
+            { path: 'lien-he', component: _layout_contact_contact_component__WEBPACK_IMPORTED_MODULE_11__["ContactComponent"] }
         ]
     },
     {
@@ -2088,12 +2268,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layout_login_login_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./_layout/login/login.component */ "./src/app/_layout/login/login.component.ts");
 /* harmony import */ var _layout_register_register_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./_layout/register/register.component */ "./src/app/_layout/register/register.component.ts");
 /* harmony import */ var _angular_material_stepper__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/material/stepper */ "./node_modules/@angular/material/esm5/stepper.es5.js");
+/* harmony import */ var _layout_info_page_info_page_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./_layout/info-page/info-page.component */ "./src/app/_layout/info-page/info-page.component.ts");
+/* harmony import */ var _layout_shipping_shipping_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./_layout/shipping/shipping.component */ "./src/app/_layout/shipping/shipping.component.ts");
+/* harmony import */ var _layout_contact_contact_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./_layout/contact/contact.component */ "./src/app/_layout/contact/contact.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -2143,6 +2329,9 @@ var AppModule = /** @class */ (function () {
                 _layout_sales_sales_component__WEBPACK_IMPORTED_MODULE_25__["SalesComponent"],
                 _layout_login_login_component__WEBPACK_IMPORTED_MODULE_26__["LoginComponent"],
                 _layout_register_register_component__WEBPACK_IMPORTED_MODULE_27__["RegisterComponent"],
+                _layout_info_page_info_page_component__WEBPACK_IMPORTED_MODULE_29__["InfoPageComponent"],
+                _layout_shipping_shipping_component__WEBPACK_IMPORTED_MODULE_30__["ShippingComponent"],
+                _layout_contact_contact_component__WEBPACK_IMPORTED_MODULE_31__["ContactComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -2310,7 +2499,7 @@ var CommonServiceService = /** @class */ (function () {
     function CommonServiceService(_http) {
         this._http = _http;
         this.madonvi = 'DV1-CH1';
-        this.host = 'http://localhost:50595/';
+        this.host = 'http://btsoftvn.com:50595/';
         this.makho = 'DV1-CH1-KBL';
     }
     CommonServiceService.prototype.getDataPaging = function (event) {

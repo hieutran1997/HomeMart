@@ -28,10 +28,10 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-          <ul class="navbar-nav mt-2 mt-lg-0">
+          <ul class="nav navbar-nav">
               <li *ngFor="let item of listMenu">
-                  <a class="nav-link" routerLink="/{{item.url}}"> <span id="menuBar">{{item.Title}}</span></a>
-                </li>
+                <a class="nav-link" routerLink="/{{item.url}}"> <span id="menuBar">{{item.Title}}</span></a>
+              </li>
           </ul>
         </div>
     </div>
