@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,MatCardModule ,MatPaginatorModule,MatSliderModule,MatPaginatorIntl,MatFormFieldModule ,MatInputModule ,MatDatepickerModule,MatNativeDateModule} from '@angular/material';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule  } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutComponent } from './_layout/layout/layout.component';
 import { HeaderComponent } from './_layout/header/header.component';
 import { FooterComponent } from './_layout/footer/footer.component';
