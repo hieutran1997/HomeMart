@@ -1,5 +1,5 @@
 #menuBar{
-    font-size: 17px;
+    font-size: 20px;
     color: #555;
 }
 
@@ -9,4 +9,7 @@
 
 #navbarTogglerDemo03{
     text-align:center;
+}
+#sign-out:hover{
+    cursor: pointer;
 }

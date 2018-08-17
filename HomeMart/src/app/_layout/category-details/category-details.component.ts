@@ -88,8 +88,8 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   })}
     
   display(item:string){
-    if(item.length >15){
-      return item.substring(0,15)+' ...';
+    if(item.length >12){
+      return item.substring(0,12)+' ...';
     }
     else{
       return item;

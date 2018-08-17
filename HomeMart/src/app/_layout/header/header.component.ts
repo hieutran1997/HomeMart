@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let arrTemp = new Array({ Title : 'Trang chủ' , url : '/'},{Title:'Khuyến mãi',url:'/chuong-trinh-khuyen-mai'});
+    let arrTemp = new Array({ Title : 'Hàng mới về' , url : '/'},{Title:'Khuyến mãi',url:'/chuong-trinh-khuyen-mai'});
     if(this.cookieService.check('taikhoanbanhang')){
       this.checkUser = true;
     }
@@ -41,5 +41,9 @@ export class HeaderComponent implements OnInit {
         }
       }
     );
+  }
+  signOut(){
+    this.cookieService.delete('taikhoanbanhang');
+    this.checkUser = false;
   }
 }

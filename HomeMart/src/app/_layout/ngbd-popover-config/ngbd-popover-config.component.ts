@@ -36,6 +36,9 @@ export class NgbdPopoverConfig{
       this.quantity = this.vattuSelected.tongSoLuong;
       this.titleCart = 'Có tất cả : '+ this.quantity +' mặt hàng';
       let content = '';
+      if(this.quantity === 0){
+        this.cookieService.delete('vattutronggiohang');
+      }
     });
   }
 

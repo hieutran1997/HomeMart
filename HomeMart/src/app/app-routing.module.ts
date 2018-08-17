@@ -23,17 +23,11 @@ const routes: Routes = [
         {path:'chuong-trinh-khuyen-mai',component:SalesComponent},
         {path:'gioi-thieu',component : InfoPageComponent},
         {path:'giao-hang',component:ShippingComponent},
-        {path:'lien-he',component: ContactComponent}
+        {path:'lien-he',component: ContactComponent},
+        { path:'dang-nhap',component : LoginComponent },
+        {path:'dang-ky', component:RegisterComponent}
       ]
     },
-    {
-      path:'dang-nhap',
-      component : LoginComponent
-    },
-    {
-      path:'dang-ky',
-      component:RegisterComponent
-    }
 ];
 
 @NgModule({
