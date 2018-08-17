@@ -91,7 +91,8 @@
         <mat-paginator  [length]="length"
                         [pageIndex]="pageIndex"
                         [pageSize]="pageSize"
-                        [pageSizeOptions]="[9,12,24]"
+                        [pageSizeOptions]="[9,12,18]"
+                        [showFirstLastButtons]="true"
                         (page)="pageEvent = getServerData($event)">
         </mat-paginator>
     </mat-card-footer>

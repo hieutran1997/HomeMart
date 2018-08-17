@@ -46,3 +46,12 @@
     padding-top: 30px;
     cursor: pointer;
 }
+
+li a:hover{
+    color: cornflowerblue !important;
+    text-decoration: underline;
+} 
+
+ul li ul {
+    display: none;
+} 

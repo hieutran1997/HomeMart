@@ -25,7 +25,7 @@ export class CommonServiceService {
       return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize='+event.pageSize+'&pagenumber='+pageIndex);
     }
     else{
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize=6&pagenumber=1');
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize=12&pagenumber=1');
     }
   }
   getListMerchanediseByCategory(event? :PageEvent,manhom?:string){
@@ -33,7 +33,7 @@ export class CommonServiceService {
       return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize='+event.pageSize+'&pagenumber='+event.pageIndex+'&merchanedisetype='+manhom);
     }
     else{
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize=6&pagenumber=1&merchanedisetype='+manhom);
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize=12&pagenumber=1&merchanedisetype='+manhom);
     }
   }
   getDataDetail<VatTuDetail>(mavattu :string){
@@ -53,7 +53,7 @@ export class CommonServiceService {
       return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseKhuyenMai?pagesize='+event.pageSize+'&pagenumber='+event.pageIndex+'&makho='+this.makho+'&madonvi='+this.madonvi);
     }
     else{
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseKhuyenMai?pagesize=6&pagenumber=1&makho='+this.makho+'&madonvi='+this.madonvi);
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseKhuyenMai?pagesize=12&pagenumber=1&makho='+this.makho+'&madonvi='+this.madonvi);
     }
   }
   register<objectResult>(obj?:khachHangModel){

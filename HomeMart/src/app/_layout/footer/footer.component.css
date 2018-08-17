@@ -1,7 +1,8 @@
 .footer-above{
-    background-color: white;
-    margin-bottom: 60px;
+    background-color: #eee;
 }
-.title-footer{
-    font-weight: bold;
+.footer{
+    background-color: #eee;
+    text-align: right;
+    font-size: 12px;
 }

@@ -1,9 +1,9 @@
-import { Component, OnInit,EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {VatTu,VatTuDTO} from './vattumodel';
 import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
 import {CartModel} from '../../model/cartModel';
-import {ViewCartService} from '../view-cart.service';
+import {Router,NavigationEnd} from '@angular/router';
 import {CommonServiceService} from '../../service/common-service.service';
 import { LoaiVatTu } from '../../model/LoaiVatTu';
 import { NhomVatTu } from '../../model/nhomVatTu';
@@ -30,6 +30,7 @@ export class HomeComponent  implements OnInit {
   pageSize:number;
   length:number;
   cookieValue = 'UNKNOWN';
+  navigationSubscription;
   vattuSelected : CartModel = null;
   sortOrders: string[] = ["Theo tên", "Theo giá bán", "Theo độ ưa thích"];
   scoreFavorites : number[] = [1,2,3,4,5];
@@ -41,7 +42,16 @@ export class HomeComponent  implements OnInit {
     private commonService :CommonServiceService,
     private route: ActivatedRoute,
     private location: Location,
-  ) { }
+    private router: Router,
+  ) { 
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd ) {
+        let url:string = e.urlAfterRedirects; 
+        let manhomhang = url.split('/');
+        this.maloaivattu = manhomhang[manhomhang.length-1];
+      }
+    });
+  }
   ngOnInit() {
     this.maloaivattu= this.route.snapshot.paramMap.get('maloaivattu');
     if(this.maloaivattu){

@@ -1,15 +1,17 @@
-<app-ngbd-carousel-config></app-ngbd-carousel-config>
-
+<div class="container">
+    <app-ngbd-carousel-config></app-ngbd-carousel-config>
+</div>
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col-lg-3">
             <mat-card>
                 <div *ngFor="let item of lstSideBar">
-                    <span style="font-size: 15px;font-weight: bold;">{{item.TenLoaiVatTu}}</span>
+                    <strong style="font-size: 20px;">{{item.TenLoaiVatTu}}</strong>
                     <hr/>
                     <ul>
-                        <li *ngFor="let subItem of item.ListNhomVatTu">
-                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}">{{subItem.TENNHOMVATTU}}</a>
+                        <li *ngFor="let subItem of item.ListNhomVatTu" class="list">
+                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" *ngIf="maloaivattu!==subItem.MANHOMVATTU" id="menuSidebar" style="color: dimgray !important;">{{subItem.TENNHOMVATTU}}</a>
+                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" *ngIf="maloaivattu===subItem.MANHOMVATTU" id="menuSidebar" style="color: dodgerblue !important;">{{subItem.TENNHOMVATTU}}</a>
                         </li>
                     </ul>
                 </div>
@@ -25,3 +27,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.list > li a').click(function() {
+        $(this).parent().find('ul').toggle();
+    });
+</script>

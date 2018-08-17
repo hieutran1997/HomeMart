@@ -1,10 +1,11 @@
 #menuBar{
-    font-size: 20px;
+    font-size: 17px;
     color: #555;
 }
 
 #menuBar:hover{
     color: brown;
+    text-decoration: underline
 }
 
 #navbarTogglerDemo03{
@@ -12,4 +13,10 @@
 }
 #sign-out:hover{
     cursor: pointer;
+}
+nav ul{
+    text-align:center;
+}
+nav li {
+display:inline-block; 
 }
