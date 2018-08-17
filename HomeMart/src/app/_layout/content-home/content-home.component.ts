@@ -6,7 +6,7 @@ import {CartModel,VatTuCart} from '../../model/cartModel';
 import {ViewCartService} from '../view-cart.service';
 import {CommonServiceService} from '../../service/common-service.service';
 import { NhomVatTu } from '../../model/nhomVatTu';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 
@@ -37,6 +37,7 @@ export class ContentHomeComponent implements OnInit {
     private viewCartService: ViewCartService,
     private commonService :CommonServiceService,
     private route: ActivatedRoute,
+    private router: Router,
     private location: Location,
     config: NgbRatingConfig
   ) { 
@@ -177,4 +178,8 @@ export class ContentHomeComponent implements OnInit {
     }
   }
   //đóng sắp xếp
+
+  redirectDetail(item){
+    this.router.navigateByUrl('/chi-tiet-hang-hoa/'+item.MaVatTu);
+  }
 }

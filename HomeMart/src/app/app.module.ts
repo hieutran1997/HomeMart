@@ -23,7 +23,7 @@ import {MatPaginatorIntlCro} from './MatPaginatorIntlCro';
 import { CommonServiceService } from './service/common-service.service';
 import { CategoryDetailsComponent } from './_layout/category-details/category-details.component';
 import { ContentHomeComponent } from './_layout/content-home/content-home.component';
-import {SelfBuildingSquareSpinnerModule} from 'angular-epic-spinners';
+import { LoopingRhumbusesSpinnerModule } from 'angular-epic-spinners';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { SalesComponent } from './_layout/sales/sales.component';
 import { LoginComponent } from './_layout/login/login.component';
@@ -71,7 +71,7 @@ import { ContactComponent } from './_layout/contact/contact.component';
     MatStepperModule,
     MatDatepickerModule,
     FormsModule,
-    SelfBuildingSquareSpinnerModule,
+    LoopingRhumbusesSpinnerModule,
     NgxGalleryModule,
     ReactiveFormsModule,
     MatFormFieldModule ,

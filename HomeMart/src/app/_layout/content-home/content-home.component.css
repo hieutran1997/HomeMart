@@ -45,8 +45,20 @@
 #pointer {
     padding-top: 30px;
     cursor: pointer;
+    
+}
+
+#pointer:hover{
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
 }
 
 ngb-rating{
     color: crimson;
+}
+
+#tenVatTu:hover{
+    cursor: pointer;
 }
