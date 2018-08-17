@@ -21,7 +21,8 @@ export class CommonServiceService {
 
   getDataPaging(event? :PageEvent){
     if(event){
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize='+event.pageSize+'&pagenumber='+event.pageIndex);
+      let pageIndex:number = event.pageIndex + 1;
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize='+event.pageSize+'&pagenumber='+pageIndex);
     }
     else{
       return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize=6&pagenumber=1');

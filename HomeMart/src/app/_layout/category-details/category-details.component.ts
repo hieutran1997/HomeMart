@@ -72,12 +72,12 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
       this.isLoading = false;
       this.result = arr;
       if(event){
-        event.pageIndex = this.result.PageNumber;
+        event.pageIndex = this.result.PageNumber-1;
         event.pageSize = this.result.PageSize;
         event.length = this.result.ItemTotal;
       }
       else{
-        this.pageIndex = this.result.PageNumber;
+        this.pageIndex = this.result.PageNumber-1;
         this.pageSize = this.result.PageSize;
         this.length = this.result.ItemTotal;
       }
