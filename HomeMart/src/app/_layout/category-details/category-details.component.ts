@@ -106,7 +106,6 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     this.pageEvent = event;
     this.filterData(event,this.maloaivattu,order,sortType);
   }
-
  
   addToCart(item){
     let lstVatTuCart :Array<VatTuCart> = [];

@@ -36,7 +36,8 @@ export class CommonServiceService {
   }
   getListMerchanediseByCategory(event? :PageEvent,manhom?:string,order?:string ,sorttype?:string){
     if(event){
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize='+event.pageSize+'&pagenumber='+event.pageIndex+'&merchanedisetype='+manhom+'&order='+order+'&sorttype='+sorttype);
+      let pageIndex:number = event.pageIndex + 1;
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize='+event.pageSize+'&pagenumber='+pageIndex+'&merchanedisetype='+manhom+'&order='+order+'&sorttype='+sorttype);
     }
     else{
       let defaultOrder = 'vt.TENVATTU';

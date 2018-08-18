@@ -52,8 +52,8 @@
                       </div>
                   </mat-card-content>
                   <mat-card-footer style="text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; ">
-                        <div class="row"> 
-                            <span style="font-size: 13px" (click)="redirectDetail(item)" id="tenVatTu">{{display(item.TenVatTu)}}</span>
+                        <div class="row" style="height: 40px;"> 
+                            <span style="font-size: 13px" (click)="redirectDetail(item)" id="tenVatTu">( {{item.MaVatTu}} ) - {{display(item.TenVatTu)}}</span>
                         </div>
                         <br/>
                         <div class="row">
@@ -63,7 +63,7 @@
                                 <span style="font-size: 13px">Tồn kho :&nbsp;<span class="badge badge-light">{{item.SoTon}}</span> </span>
                             </div>
                             <div class="col-md-3">
-                                    <img src="/assets/cart.png" (click)="addToCart(item)" id="pointer"  title="Thêm vào giỏ hàng"/>
+                                <img src="/assets/cartNew.png" (click)="addToCart(item)" id="pointer" width="32px" height="32px" title="Thêm vào giỏ hàng"/>
                                 <!-- <span (click)="addToCart(item)" id="pointer" title="Thêm vào giỏ hàng" class="fa fa-shopping-basket fa-2x"></span> -->
                             </div>
                         </div>
@@ -79,7 +79,7 @@
               <div class="row"  *ngFor="let item of lstVatTu">
                   <div class="col-md-3" style="text-align: center"><a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}"  title="{{item.TenVatTu}}"><img src="data:image/JPEG;base64,{{item.Avatar}}" class="img-thumbnail" id="zoomList" alt="{{item.TenVatTu}}"></a></div>
                   <div class="col" style="margin-top: 30px;">
-                      <span style="font-size: 1.3em;">{{item.TenVatTu}}</span>
+                      <span style="font-size: 1.3em;">({{item.MaVatTu}})-{{item.TenVatTu}}</span>
                       <br/>
                       <span id="monney" style="color: #F57223;">{{item.DonGia | number}} ₫</span>
                       <br/>
@@ -93,7 +93,7 @@
           </div>
   </mat-card-content>
   <mat-card-footer> 
-      <mat-paginator  [length]="length"
+      <mat-paginator  style="font-size: 16px"   [length]="length"
                       [pageIndex]="pageIndex"
                       [pageSize]="pageSize"
                       [pageSizeOptions]="[9,12,18]"
