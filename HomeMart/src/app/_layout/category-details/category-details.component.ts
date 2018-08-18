@@ -18,7 +18,7 @@ import {ViewCartService} from '../view-cart.service';
 })
 export class CategoryDetailsComponent implements OnInit,OnDestroy {
   maloaivattu: string='';
-  pageEvent: PageEvent;
+  pageEvent: PageEvent = new PageEvent();
   datasource: null;
   pageIndex:number;
   pageSize:number;
@@ -33,6 +33,8 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   vattuSelected : CartModel = null;
   cookieValue = 'UNKNOWN';
   categoryName = '';
+  orderBy : string = 'vt.TENVATTU';
+  sortType : string = 'ASC';
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -70,9 +72,9 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     }
   }
 
-  filterData(event?:PageEvent,manhom?:string){
+  filterData(event?:PageEvent,manhom?:string,order?:string,sortType?:string){
     this.isLoading = true;
-    this.commonService.getListMerchanediseByCategory(event,manhom).subscribe(arr=>{
+    this.commonService.getListMerchanediseByCategory(event,manhom,order,sortType).subscribe(arr=>{
       this.isLoading = false;
       this.result = arr;
       if(event){
@@ -100,8 +102,9 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     }
   }
 
-  public getServerData(event?:PageEvent){
-    this.filterData(event,this.maloaivattu);
+  public getServerData(event?:PageEvent,order?:string,sortType?:string){
+    this.pageEvent = event;
+    this.filterData(event,this.maloaivattu,order,sortType);
   }
 
  
@@ -169,20 +172,29 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     if(order ==="Theo tên"){
       if(this.sortAsc){
         this.sortAsc = false;
-        this.lstVatTu.sort(this.compareValues('TenVatTu','desc'));
+        // this.lstVatTu.sort(this.compareValues('TenVatTu','desc'));
+        this.orderBy = 'vt.TENVATTU';
+        this.sortType = 'DESC';
+        
       }
       else{
         this.sortAsc = true;
-        this.lstVatTu.sort(this.compareValues('TenVatTu','asc'));
+        // this.lstVatTu.sort(this.compareValues('TenVatTu','asc'));
+        this.orderBy = 'vt.TENVATTU';
+        this.sortType = 'ASC';
       }
     }if(order === "Theo giá bán"){
       if(this.sortAsc){
         this.sortAsc = false;
-        this.lstVatTu.sort(this.compareValues('DonGia','desc'));
+        // this.lstVatTu.sort(this.compareValues('DonGia','desc'));
+        this.orderBy = 'vt.GIABANLEVAT';
+        this.sortType = 'DESC';
       }
       else{
         this.sortAsc = true;
-        this.lstVatTu.sort(this.compareValues('DonGia','asc'));
+        // this.lstVatTu.sort(this.compareValues('DonGia','asc'));
+        this.orderBy = 'vt.GIABANLEVAT';
+        this.sortType = 'ASC';
       }
     }if(order ==="Theo độ ưa thích"){
       if(this.sortAsc){
@@ -193,6 +205,12 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
         this.sortAsc = true;
         this.lstVatTu.sort(this.compareValues('DonGia','asc'));
       }
+    }
+    if(this.pageEvent){
+      this.filterData(this.pageEvent,this.maloaivattu,this.orderBy,this.sortType);
+    }
+    else{
+      this.filterData(null,this.maloaivattu,this.orderBy,this.sortType);
     }
   }
   //đóng sắp xếp

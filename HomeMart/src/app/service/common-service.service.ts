@@ -19,21 +19,33 @@ export class CommonServiceService {
     private _http: HttpClient, 
   ) { }
 
-  getDataPaging(event? :PageEvent){
+  getDataPaging(event? :PageEvent,order?:string ,sorttype?:string){
     if(event){
       let pageIndex:number = event.pageIndex + 1;
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize='+event.pageSize+'&pagenumber='+pageIndex);
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize='+event.pageSize+'&pagenumber='+pageIndex+'&order='+order+'&sorttype='+sorttype);
     }
     else{
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize=12&pagenumber=1');
+      let defaultOrder = 'vt.TENVATTU';
+      let defaultSortType = 'ASC';
+      if(order&&sorttype){
+        defaultOrder = order;
+        defaultSortType = sorttype;
+      }
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize=12&pagenumber=1&order='+defaultOrder+'&sorttype='+defaultSortType);
     }
   }
-  getListMerchanediseByCategory(event? :PageEvent,manhom?:string){
+  getListMerchanediseByCategory(event? :PageEvent,manhom?:string,order?:string ,sorttype?:string){
     if(event){
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize='+event.pageSize+'&pagenumber='+event.pageIndex+'&merchanedisetype='+manhom);
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize='+event.pageSize+'&pagenumber='+event.pageIndex+'&merchanedisetype='+manhom+'&order='+order+'&sorttype='+sorttype);
     }
     else{
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize=12&pagenumber=1&merchanedisetype='+manhom);
+      let defaultOrder = 'vt.TENVATTU';
+      let defaultSortType = 'ASC';
+      if(order&&sorttype){
+        defaultOrder = order;
+        defaultSortType = sorttype;
+      }
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize=12&pagenumber=1&merchanedisetype='+manhom+'&order='+defaultOrder+'&sorttype='+defaultSortType);
     }
   }
   getDataDetail<VatTuDetail>(mavattu :string){

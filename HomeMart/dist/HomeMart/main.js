@@ -90,7 +90,7 @@ var MatPaginatorIntlCro = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#imageNew:hover{\r\n    color: red !important;\r\n}\r\n#cartParent{\r\n    margin-bottom: 50px;\r\n}\r\n.img-fluid {\r\n    -webkit-transform: scale(1.25);\r\n            transform: scale(1.25);max-height: 300px;min-height: 200px;\r\n}\r\n.fa-cart-plus:hover{\r\n    color:brown;\r\n}\r\n.img-thumbnail{\r\n    padding: 10px !important;\r\n    max-height: 200px;\r\n}\r\n#zoomList {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoomList:hover {\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#monney{\r\n    font-size: 1em;\r\n}\r\n#zoom {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoom:hover {\r\n    -webkit-transform: scale(1.75);\r\n            transform: scale(1.75); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#pointer {\r\n    padding-top: 30px;\r\n    cursor: pointer;\r\n}\r\nngb-rating{\r\n    color: crimson;\r\n}\r\n"
+module.exports = "#cartParent{\r\n    margin-bottom: 50px;\r\n}\r\n.img-fluid {\r\n    -webkit-transform: scale(1.25);\r\n            transform: scale(1.25);max-height: 300px;min-height: 200px;\r\n}\r\n.fa-cart-plus:hover{\r\n    color:brown;\r\n}\r\n.img-thumbnail{\r\n    padding: 10px !important;\r\n    max-height: 200px;\r\n}\r\n#zoomList {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoomList:hover {\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#monney{\r\n    font-size: 1em;\r\n}\r\n#zoom {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoom:hover {\r\n    -webkit-transform: scale(1.75);\r\n            transform: scale(1.75); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#pointer {\r\n    cursor: pointer;\r\n}\r\n#pointer:hover{\r\n    opacity: 0.4;\r\n    filter: alpha(opacity=40);\r\n    -webkit-transform: translate3d(0,0,0);\r\n    transform: translate3d(0,0,0);\r\n}\r\nngb-rating{\r\n    color: crimson;\r\n}\r\n"
 
 /***/ }),
 
@@ -101,7 +101,7 @@ module.exports = "#imageNew:hover{\r\n    color: red !important;\r\n}\r\n#cartPa
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card id=\"cartParent\">\r\n    <mat-card-title>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-6\">Danh sách mặt hàng theo loại : {{category}} </div>\r\n            <div class=\"col-md-2\"></div>\r\n            <div class=\"col-md-2\" style=\"text-align: right\">\r\n                <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                    <div ngbDropdown class=\"d-inline-block\">\r\n                        <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                            Sắp xếp</button>\r\n                        <!-- Missing tag added below -->\r\n                        <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                            <button class=\"dropdown-item\" \r\n                                    *ngFor=\"let sortOrder of sortOrders\" \r\n                                    (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                            </button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-2\">\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n            </div>\r\n        </div>\r\n    </mat-card-title>\r\n    <mat-card-content  *ngIf=\"isLoading\">\r\n        <br/>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-5\"></div>\r\n            <div class=\"col align-self-center\">\r\n                <app-self-building-square-spinner \r\n                [animationDuration]=\"3000\"\r\n                [size]=\"40\"\r\n                [color]=\"'#441d72'\"\r\n                ></app-self-building-square-spinner>\r\n            </div>\r\n            <div class=\"col-md-4\"></div>\r\n        </div>\r\n        <br/>\r\n    </mat-card-content>\r\n    <mat-card-content  class=\"container\" *ngIf=\"!isLoading\">\r\n        <!-- chọn show bảng -->\r\n        <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n            <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n                <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                    <mat-card-content>\r\n                        <div class=\"text-center\">\r\n                            <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" style=\"padding-top:20px;max-height: 90px!important \" width=\"150\" alt=\"{{item.TenVatTu}}\"></a>\r\n                        </div>\r\n                    </mat-card-content>\r\n                    <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; \">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-md-9\">\r\n                                <span>{{display(item.TenVatTu)}}</span>\r\n                                <br/>\r\n                                <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                                <br/>\r\n                                <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                            </div>\r\n                            <div class=\"col-md-3\">\r\n                                <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                            <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                    </mat-card-footer>\r\n                </mat-card>\r\n            </div>\r\n        </div>\r\n        <!-- chọn show danh sách -->\r\n        <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n                <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                    <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                    <div class=\"col\" style=\"margin-top: 30px;\">\r\n                        <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                        <br/>\r\n                        <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                        <br/>\r\n                        <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                            <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                        <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n    </mat-card-content>\r\n    <mat-card-footer> \r\n        <mat-paginator  [length]=\"length\"\r\n                        [pageIndex]=\"pageIndex\"\r\n                        [pageSize]=\"pageSize\"\r\n                        [pageSizeOptions]=\"[9,12,18]\"\r\n                        [showFirstLastButtons]=\"true\"\r\n                        (page)=\"pageEvent = getServerData($event)\">\r\n        </mat-paginator>\r\n    </mat-card-footer>\r\n  </mat-card>"
+module.exports = "<mat-card id=\"cartParent\">\r\n    <mat-card-title>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-6\">{{categoryName}} </div>\r\n            <div class=\"col-md-2\"></div>\r\n            <div class=\"col-md-2\" style=\"text-align: right\">\r\n                <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                    <div ngbDropdown class=\"d-inline-block\">\r\n                        <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                            Sắp xếp</button>\r\n                        <!-- Missing tag added below -->\r\n                        <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                            <button class=\"dropdown-item\" \r\n                                    *ngFor=\"let sortOrder of sortOrders\" \r\n                                    (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                            </button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-2\">\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n            </div>\r\n        </div>\r\n    </mat-card-title>\r\n    <mat-card-content  *ngIf=\"isLoading\">\r\n        <br/>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-5\"></div>\r\n            <div class=\"col align-self-center\">\r\n                <app-looping-rhombuses-spinner\r\n                [animationDuration]=\"2500\"\r\n                [rhombusSize]=\"15\"\r\n                [color]=\"'#4286f4'\"\r\n                ></app-looping-rhombuses-spinner>\r\n                  \r\n            </div>\r\n            <div class=\"col-md-4\"></div>\r\n        </div>\r\n        <br/>\r\n    </mat-card-content>\r\n    <mat-card-content  class=\"container\" *ngIf=\"!isLoading\">\r\n        <!-- chọn show bảng -->\r\n        <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n            <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n                <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                    <mat-card-content>\r\n                        <div class=\"text-center\">\r\n                            <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" style=\"padding-top:20px;max-height: 90px!important \" width=\"150\" alt=\"{{item.TenVatTu}}\"></a>\r\n                        </div>\r\n                    </mat-card-content>\r\n                    <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; \">\r\n                        <div class=\"row\"> \r\n                            <span style=\"font-size: 13px\" (click)=\"redirectDetail(item)\" id=\"tenVatTu\">{{display(item.TenVatTu)}}</span>\r\n                        </div>\r\n                        <br/>\r\n                        <div class=\"row\">\r\n                            <div class=\"col-md-9\">\r\n                                <span id=\"monney\" style=\"color: #F57223;\">{{item.DonGia | number}} ₫</span>\r\n                                <br/>\r\n                                <span style=\"font-size: 13px\">Tồn kho :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                            </div>\r\n                            <div class=\"col-md-3\">\r\n                                    <img src=\"/assets/cart.png\" (click)=\"addToCart(item)\" id=\"pointer\"  title=\"Thêm vào giỏ hàng\"/>\r\n                                <!-- <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span> -->\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                            <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                    </mat-card-footer>\r\n                </mat-card>\r\n            </div>\r\n        </div>\r\n        <!-- chọn show danh sách -->\r\n        <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n                <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                    <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                    <div class=\"col\" style=\"margin-top: 30px;\">\r\n                        <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                        <br/>\r\n                        <span id=\"monney\" style=\"color: #F57223;\">{{item.DonGia | number}} ₫</span>\r\n                        <br/>\r\n                        <span style=\"font-size: 13px\">Tồn kho :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                            <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                        <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n    </mat-card-content>\r\n    <mat-card-footer> \r\n        <mat-paginator  [length]=\"length\"\r\n                        [pageIndex]=\"pageIndex\"\r\n                        [pageSize]=\"pageSize\"\r\n                        [pageSizeOptions]=\"[9,12,18]\"\r\n                        [showFirstLastButtons]=\"true\"\r\n                        (page)=\"pageEvent = getServerData($event,orderBy,sortType)\">\r\n        </mat-paginator>\r\n    </mat-card-footer>\r\n  </mat-card>"
 
 /***/ }),
 
@@ -119,10 +119,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _service_common_service_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/common-service.service */ "./src/app/service/common-service.service.ts");
-/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var _model_cartModel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../model/cartModel */ "./src/app/model/cartModel.ts");
-/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
-/* harmony import */ var _view_cart_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../view-cart.service */ "./src/app/_layout/view-cart.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var _model_cartModel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/cartModel */ "./src/app/model/cartModel.ts");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
+/* harmony import */ var _view_cart_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../view-cart.service */ "./src/app/_layout/view-cart.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -132,6 +133,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -151,6 +153,7 @@ var CategoryDetailsComponent = /** @class */ (function () {
         this.cookieService = cookieService;
         this.viewCartService = viewCartService;
         this.maloaivattu = '';
+        this.pageEvent = new _angular_material__WEBPACK_IMPORTED_MODULE_4__["PageEvent"]();
         this.result = null;
         this.sortOrders = ["Theo tên", "Theo giá bán", "Theo độ ưa thích"];
         this.viewer = 'table';
@@ -158,6 +161,9 @@ var CategoryDetailsComponent = /** @class */ (function () {
         this.isLoading = false;
         this.vattuSelected = null;
         this.cookieValue = 'UNKNOWN';
+        this.categoryName = '';
+        this.orderBy = 'vt.TENVATTU';
+        this.sortType = 'ASC';
         config.max = 5;
         this.navigationSubscription = this.router.events.subscribe(function (e) {
             if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_1__["NavigationEnd"]) {
@@ -168,22 +174,26 @@ var CategoryDetailsComponent = /** @class */ (function () {
         });
     }
     CategoryDetailsComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.maloaivattu = this.route.snapshot.paramMap.get('maloaivattu');
         this.filterData(null, this.maloaivattu);
         if (this.cookieService.check('vattutronggiohang')) {
             this.cookieValue = this.cookieService.get('vattutronggiohang');
             this.vattuSelected = JSON.parse(this.cookieValue);
         }
+        this.viewCartService.category.subscribe(function (data) {
+            _this.categoryName = data;
+        });
     };
     CategoryDetailsComponent.prototype.ngOnDestroy = function () {
         if (this.navigationSubscription) {
             this.navigationSubscription.unsubscribe();
         }
     };
-    CategoryDetailsComponent.prototype.filterData = function (event, manhom) {
+    CategoryDetailsComponent.prototype.filterData = function (event, manhom, order, sortType) {
         var _this = this;
         this.isLoading = true;
-        this.commonService.getListMerchanediseByCategory(event, manhom).subscribe(function (arr) {
+        this.commonService.getListMerchanediseByCategory(event, manhom, order, sortType).subscribe(function (arr) {
             _this.isLoading = false;
             _this.result = arr;
             if (event) {
@@ -203,22 +213,23 @@ var CategoryDetailsComponent = /** @class */ (function () {
         });
     };
     CategoryDetailsComponent.prototype.display = function (item) {
-        if (item.length > 12) {
-            return item.substring(0, 12) + ' ...';
+        if (item.length > 50) {
+            return item.substring(0, 50) + ' ...';
         }
         else {
             return item;
         }
     };
-    CategoryDetailsComponent.prototype.getServerData = function (event) {
-        this.filterData(event, this.maloaivattu);
+    CategoryDetailsComponent.prototype.getServerData = function (event, order, sortType) {
+        this.pageEvent = event;
+        this.filterData(event, this.maloaivattu, order, sortType);
     };
     CategoryDetailsComponent.prototype.addToCart = function (item) {
         var lstVatTuCart = [];
         var vattu = null;
         vattu = item;
         vattu.SoLuong = 1;
-        var vattuCart = new _model_cartModel__WEBPACK_IMPORTED_MODULE_5__["VatTuCart"](vattu.MaVatTu, vattu.SoLuong);
+        var vattuCart = new _model_cartModel__WEBPACK_IMPORTED_MODULE_6__["VatTuCart"](vattu.MaVatTu, vattu.SoLuong);
         lstVatTuCart.push(vattuCart);
         if (this.vattuSelected) {
             var j = 0; //Kiểm tra trùng
@@ -242,7 +253,7 @@ var CategoryDetailsComponent = /** @class */ (function () {
             this.viewCartService.changedCartView(this.vattuSelected);
         }
         else {
-            this.vattuSelected = new _model_cartModel__WEBPACK_IMPORTED_MODULE_5__["CartModel"](lstVatTuCart, vattu.SoLuong, vattu.DonGia * vattu.SoLuong);
+            this.vattuSelected = new _model_cartModel__WEBPACK_IMPORTED_MODULE_6__["CartModel"](lstVatTuCart, vattu.SoLuong, vattu.DonGia * vattu.SoLuong);
             this.vattuSelected.tongSoLuong = vattu.SoLuong;
             this.cookieService.set('vattutronggiohang', JSON.stringify(this.vattuSelected), 10);
             this.viewCartService.changedCartView(this.vattuSelected);
@@ -274,21 +285,29 @@ var CategoryDetailsComponent = /** @class */ (function () {
         if (order === "Theo tên") {
             if (this.sortAsc) {
                 this.sortAsc = false;
-                this.lstVatTu.sort(this.compareValues('TenVatTu', 'desc'));
+                // this.lstVatTu.sort(this.compareValues('TenVatTu','desc'));
+                this.orderBy = 'vt.TENVATTU';
+                this.sortType = 'DESC';
             }
             else {
                 this.sortAsc = true;
-                this.lstVatTu.sort(this.compareValues('TenVatTu', 'asc'));
+                // this.lstVatTu.sort(this.compareValues('TenVatTu','asc'));
+                this.orderBy = 'vt.TENVATTU';
+                this.sortType = 'ASC';
             }
         }
         if (order === "Theo giá bán") {
             if (this.sortAsc) {
                 this.sortAsc = false;
-                this.lstVatTu.sort(this.compareValues('DonGia', 'desc'));
+                // this.lstVatTu.sort(this.compareValues('DonGia','desc'));
+                this.orderBy = 'vt.GIABANLEVAT';
+                this.sortType = 'DESC';
             }
             else {
                 this.sortAsc = true;
-                this.lstVatTu.sort(this.compareValues('DonGia', 'asc'));
+                // this.lstVatTu.sort(this.compareValues('DonGia','asc'));
+                this.orderBy = 'vt.GIABANLEVAT';
+                this.sortType = 'ASC';
             }
         }
         if (order === "Theo độ ưa thích") {
@@ -301,21 +320,31 @@ var CategoryDetailsComponent = /** @class */ (function () {
                 this.lstVatTu.sort(this.compareValues('DonGia', 'asc'));
             }
         }
+        if (this.pageEvent) {
+            this.filterData(this.pageEvent, this.maloaivattu, this.orderBy, this.sortType);
+        }
+        else {
+            this.filterData(null, this.maloaivattu, this.orderBy, this.sortType);
+        }
+    };
+    //đóng sắp xếp
+    CategoryDetailsComponent.prototype.redirectDetail = function (item) {
+        this.router.navigateByUrl('/chi-tiet-hang-hoa/' + item.MaVatTu);
     };
     CategoryDetailsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-category-details',
             template: __webpack_require__(/*! ./category-details.component.html */ "./src/app/_layout/category-details/category-details.component.html"),
             styles: [__webpack_require__(/*! ./category-details.component.css */ "./src/app/_layout/category-details/category-details.component.css")],
-            providers: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbRatingConfig"]]
+            providers: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__["NgbRatingConfig"]]
         }),
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
             _angular_common__WEBPACK_IMPORTED_MODULE_2__["Location"],
             _service_common_service_service__WEBPACK_IMPORTED_MODULE_3__["CommonServiceService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
-            _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbRatingConfig"],
-            ngx_cookie_service__WEBPACK_IMPORTED_MODULE_6__["CookieService"],
-            _view_cart_service__WEBPACK_IMPORTED_MODULE_7__["ViewCartService"]])
+            _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__["NgbRatingConfig"],
+            ngx_cookie_service__WEBPACK_IMPORTED_MODULE_7__["CookieService"],
+            _view_cart_service__WEBPACK_IMPORTED_MODULE_8__["ViewCartService"]])
     ], CategoryDetailsComponent);
     return CategoryDetailsComponent;
 }());
@@ -383,7 +412,7 @@ var ContactComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#imageNew:hover{\r\n    color: red !important;\r\n}\r\n#cartParent{\r\n    margin-bottom: 50px;\r\n}\r\n.img-fluid {\r\n    -webkit-transform: scale(1.25);\r\n            transform: scale(1.25);max-height: 300px;min-height: 200px;\r\n}\r\n.fa-cart-plus:hover{\r\n    color:brown;\r\n}\r\n.img-thumbnail{\r\n    padding: 10px !important;\r\n    max-height: 200px;\r\n}\r\n#zoomList {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoomList:hover {\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#monney{\r\n    font-size: 1em;\r\n}\r\n#zoom {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5);\r\n}\r\n#zoom:hover {\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#pointer {\r\n    padding-top: 30px;\r\n    cursor: pointer;\r\n}\r\nngb-rating{\r\n    color: crimson;\r\n}\r\n"
+module.exports = "#cartParent{\r\n    margin-bottom: 50px;\r\n}\r\n.img-fluid {\r\n    -webkit-transform: scale(1.25);\r\n            transform: scale(1.25);max-height: 300px;min-height: 200px;\r\n}\r\n.fa-cart-plus:hover{\r\n    color:brown;\r\n}\r\n.img-thumbnail{\r\n    padding: 10px !important;\r\n    max-height: 200px;\r\n}\r\n#zoomList {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n}\r\n#zoomList:hover {\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#monney{\r\n    font-size: 1em;\r\n}\r\n#zoom {\r\n    padding: 50px;\r\n    transition: -webkit-transform .2s;\r\n    transition: transform .2s;\r\n    transition: transform .2s, -webkit-transform .2s; /* Animation */\r\n    margin: 0 auto;\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5);\r\n}\r\n#zoom:hover {\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */\r\n}\r\n#pointer {\r\n    cursor: pointer;\r\n    \r\n}\r\n#pointer:hover{\r\n    opacity: 0.4;\r\n    filter: alpha(opacity=40);\r\n    -webkit-transform: translate3d(0,0,0);\r\n    transform: translate3d(0,0,0);\r\n}\r\nngb-rating{\r\n    color: crimson;\r\n}\r\n#tenVatTu:hover{\r\n    cursor: pointer;\r\n}"
 
 /***/ }),
 
@@ -394,7 +423,7 @@ module.exports = "#imageNew:hover{\r\n    color: red !important;\r\n}\r\n#cartPa
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card id=\"cartParent\">\r\n  <mat-card-title>\r\n      <div class=\"row\">\r\n          <div class=\"col-md-6\">Hàng mới về </div>\r\n          <div class=\"col-md-2\"></div>\r\n          <div class=\"col-md-2\" style=\"text-align: right\">\r\n              <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                  <div ngbDropdown class=\"d-inline-block\">\r\n                      <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                          Sắp xếp</button>\r\n                      <!-- Missing tag added below -->\r\n                      <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                          <button class=\"dropdown-item\" \r\n                                  *ngFor=\"let sortOrder of sortOrders\" \r\n                                  (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                          </button>\r\n                      </div>\r\n                  </div>\r\n              </div>\r\n          </div>\r\n          <div class=\"col-md-2\">\r\n              <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n              <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n          </div>\r\n      </div>\r\n  </mat-card-title>\r\n  <br/>\r\n  <mat-card-content  *ngIf=\"isLoading\">\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"col-md-5\"></div>\r\n        <div class=\"col align-self-center\">\r\n            <app-self-building-square-spinner \r\n            [animationDuration]=\"3000\"\r\n            [size]=\"40\"\r\n            [color]=\"'#441d72'\"\r\n            ></app-self-building-square-spinner>\r\n        </div>\r\n        <div class=\"col-md-4\"></div>\r\n    </div>\r\n    <br/>\r\n  </mat-card-content>\r\n  <mat-card-content class=\"container\" *ngIf=\"!isLoading\">\r\n    <!-- chọn show bảng -->\r\n      <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n          <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n              <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                  <mat-card-content>\r\n                      <div class=\"text-center\">\r\n                          <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" style=\"padding-top:20px;max-height: 90px!important \" width=\"150\" alt=\"{{item.TenVatTu}}\"></a>\r\n                      </div>\r\n                  </mat-card-content>\r\n                  <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; \">\r\n                      <div class=\"row\">\r\n                          <div class=\"col-md-9\">\r\n                              <span>{{display(item.TenVatTu)}}</span>\r\n                              <br/>\r\n                              <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                              <br/>\r\n                              <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                          </div>\r\n                          <div class=\"col-md-3\">\r\n                              <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span>\r\n                          </div>\r\n                      </div>\r\n                      <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                        <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                      </div>\r\n                  </mat-card-footer>\r\n              </mat-card>\r\n          </div>\r\n      </div>\r\n      <!-- chọn show danh sách -->\r\n      <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n              <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                  <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                  <div class=\"col\" style=\"margin-top: 30px;\">\r\n                      <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                      <br/>\r\n                      <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                      <br/>\r\n                      <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                      <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                        <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                      </div>\r\n                      <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                  </div>\r\n              </div>\r\n          </div>\r\n  </mat-card-content>\r\n  <mat-card-footer> \r\n      <mat-paginator  [length]=\"length\"\r\n                      [pageIndex]=\"pageIndex\"\r\n                      [pageSize]=\"pageSize\"\r\n                      [pageSizeOptions]=\"[9,12,18]\"\r\n                      [showFirstLastButtons]=\"true\"\r\n                      (page)=\"pageEvent = getServerData($event)\">\r\n      </mat-paginator>\r\n  </mat-card-footer>\r\n</mat-card>"
+module.exports = "<mat-card id=\"cartParent\">\r\n  <mat-card-title>\r\n      <div class=\"row\">\r\n          <div class=\"col-md-6\">Hàng mới về </div>\r\n          <div class=\"col-md-2\"></div>\r\n          <div class=\"col-md-2\" style=\"text-align: right\">\r\n              <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                  <div ngbDropdown class=\"d-inline-block\">\r\n                      <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                          Sắp xếp</button>\r\n                      <!-- Missing tag added below -->\r\n                      <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                          <button class=\"dropdown-item\" \r\n                                  *ngFor=\"let sortOrder of sortOrders\" \r\n                                  (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                          </button>\r\n                      </div>\r\n                  </div>\r\n              </div>\r\n          </div>\r\n          <div class=\"col-md-2\">\r\n              <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n              <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n          </div>\r\n      </div>\r\n  </mat-card-title>\r\n  <br/>\r\n  <mat-card-content  *ngIf=\"isLoading\">\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"col-md-5\"></div>\r\n        <div class=\"col align-self-center\">\r\n            <app-looping-rhombuses-spinner\r\n            [animationDuration]=\"2500\"\r\n            [rhombusSize]=\"15\"\r\n            [color]=\"'#4286f4'\"\r\n            ></app-looping-rhombuses-spinner>\r\n              \r\n        </div>\r\n        <div class=\"col-md-4\"></div>\r\n    </div>\r\n    <br/>\r\n  </mat-card-content>\r\n  <mat-card-content class=\"container\" *ngIf=\"!isLoading\">\r\n    <!-- chọn show bảng -->\r\n      <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n          <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n              <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                  <mat-card-content>\r\n                      <div class=\"text-center\">\r\n                          <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" style=\"padding-top:20px;max-height: 90px!important \" width=\"150\" alt=\"{{item.TenVatTu}}\"></a>\r\n                      </div>\r\n                  </mat-card-content>\r\n                  <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; \">\r\n                        <div class=\"row\"> \r\n                            <span style=\"font-size: 13px\" (click)=\"redirectDetail(item)\" id=\"tenVatTu\">{{display(item.TenVatTu)}}</span>\r\n                        </div>\r\n                        <br/>\r\n                        <div class=\"row\">\r\n                            <div class=\"col-md-9\">\r\n                                <span id=\"monney\" style=\"color: #F57223;\">{{item.DonGia | number}} ₫</span>\r\n                                <br/>\r\n                                <span style=\"font-size: 13px\">Tồn kho :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                            </div>\r\n                            <div class=\"col-md-3\">\r\n                                    <img src=\"/assets/cart.png\" (click)=\"addToCart(item)\" id=\"pointer\"  title=\"Thêm vào giỏ hàng\"/>\r\n                                <!-- <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span> -->\r\n                            </div>\r\n                        </div>\r\n                      <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                        <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                      </div>\r\n                  </mat-card-footer>\r\n              </mat-card>\r\n          </div>\r\n      </div>\r\n      <!-- chọn show danh sách -->\r\n      <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n              <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                  <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                  <div class=\"col\" style=\"margin-top: 30px;\">\r\n                      <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                      <br/>\r\n                      <span id=\"monney\" style=\"color: #F57223;\">{{item.DonGia | number}} ₫</span>\r\n                      <br/>\r\n                      <span style=\"font-size: 13px\">Tồn kho :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                      <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                        <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                      </div>\r\n                      <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                  </div>\r\n              </div>\r\n          </div>\r\n  </mat-card-content>\r\n  <mat-card-footer> \r\n      <mat-paginator  [length]=\"length\"\r\n                      [pageIndex]=\"pageIndex\"\r\n                      [pageSize]=\"pageSize\"\r\n                      [pageSizeOptions]=\"[9,12,18]\"\r\n                      [showFirstLastButtons]=\"true\"\r\n                      (page)=\"pageEvent = getServerData($event,orderBy,sortType)\">\r\n      </mat-paginator>\r\n  </mat-card-footer>\r\n</mat-card>"
 
 /***/ }),
 
@@ -434,11 +463,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var ContentHomeComponent = /** @class */ (function () {
-    function ContentHomeComponent(cookieService, viewCartService, commonService, route, location, config) {
+    function ContentHomeComponent(cookieService, viewCartService, commonService, route, router, location, config) {
         this.cookieService = cookieService;
         this.viewCartService = viewCartService;
         this.commonService = commonService;
         this.route = route;
+        this.router = router;
         this.location = location;
         this.maloaivattu = '';
         this.result = null;
@@ -448,27 +478,29 @@ var ContentHomeComponent = /** @class */ (function () {
         this.viewer = 'table';
         this.sortAsc = true;
         this.isLoading = false;
+        this.orderBy = 'vt.TENVATTU';
+        this.sortType = 'ASC';
         config.max = 5;
     }
     ContentHomeComponent.prototype.ngOnInit = function () {
-        this.filterData(null);
+        this.filterData(null, this.orderBy, this.sortType);
         if (this.cookieService.check('vattutronggiohang')) {
             this.cookieValue = this.cookieService.get('vattutronggiohang');
             this.vattuSelected = JSON.parse(this.cookieValue);
         }
     };
     ContentHomeComponent.prototype.display = function (item) {
-        if (item.length > 12) {
-            return item.substring(0, 12) + ' ...';
+        if (item.length > 50) {
+            return item.substring(0, 50) + ' ...';
         }
         else {
             return item;
         }
     };
-    ContentHomeComponent.prototype.filterData = function (event) {
+    ContentHomeComponent.prototype.filterData = function (event, order, sortType) {
         var _this = this;
         this.isLoading = true;
-        this.commonService.getDataPaging(event).subscribe(function (arr) {
+        this.commonService.getDataPaging(event, order, sortType).subscribe(function (arr) {
             _this.isLoading = false;
             _this.result = arr;
             if (event) {
@@ -487,8 +519,9 @@ var ContentHomeComponent = /** @class */ (function () {
             });
         });
     };
-    ContentHomeComponent.prototype.getServerData = function (event) {
-        this.filterData(event);
+    ContentHomeComponent.prototype.getServerData = function (event, order, sortType) {
+        this.pageEvent = event;
+        this.filterData(event, order, sortType);
     };
     ContentHomeComponent.prototype.addToCart = function (item) {
         var lstVatTuCart = [];
@@ -551,21 +584,29 @@ var ContentHomeComponent = /** @class */ (function () {
         if (order === "Theo tên") {
             if (this.sortAsc) {
                 this.sortAsc = false;
-                this.lstVatTu.sort(this.compareValues('TenVatTu', 'desc'));
+                // this.lstVatTu.sort(this.compareValues('TenVatTu','desc'));
+                this.orderBy = 'vt.TENVATTU';
+                this.sortType = 'DESC';
             }
             else {
                 this.sortAsc = true;
-                this.lstVatTu.sort(this.compareValues('TenVatTu', 'asc'));
+                // this.lstVatTu.sort(this.compareValues('TenVatTu','asc'));
+                this.orderBy = 'vt.TENVATTU';
+                this.sortType = 'ASC';
             }
         }
         if (order === "Theo giá bán") {
             if (this.sortAsc) {
                 this.sortAsc = false;
-                this.lstVatTu.sort(this.compareValues('DonGia', 'desc'));
+                // this.lstVatTu.sort(this.compareValues('DonGia','desc'));
+                this.orderBy = 'vt.GIABANLEVAT';
+                this.sortType = 'DESC';
             }
             else {
                 this.sortAsc = true;
-                this.lstVatTu.sort(this.compareValues('DonGia', 'asc'));
+                // this.lstVatTu.sort(this.compareValues('DonGia','asc'));
+                this.orderBy = 'vt.GIABANLEVAT';
+                this.sortType = 'ASC';
             }
         }
         if (order === "Theo độ ưa thích") {
@@ -578,6 +619,16 @@ var ContentHomeComponent = /** @class */ (function () {
                 this.lstVatTu.sort(this.compareValues('DonGia', 'asc'));
             }
         }
+        if (this.pageEvent) {
+            this.filterData(this.pageEvent, this.orderBy, this.sortType);
+        }
+        else {
+            this.filterData(null, this.orderBy, this.sortType);
+        }
+    };
+    //đóng sắp xếp
+    ContentHomeComponent.prototype.redirectDetail = function (item) {
+        this.router.navigateByUrl('/chi-tiet-hang-hoa/' + item.MaVatTu);
     };
     ContentHomeComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -590,6 +641,7 @@ var ContentHomeComponent = /** @class */ (function () {
             _view_cart_service__WEBPACK_IMPORTED_MODULE_3__["ViewCartService"],
             _service_common_service_service__WEBPACK_IMPORTED_MODULE_4__["CommonServiceService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"],
             _angular_common__WEBPACK_IMPORTED_MODULE_6__["Location"],
             _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_7__["NgbRatingConfig"]])
     ], ContentHomeComponent);
@@ -887,7 +939,7 @@ module.exports = "#menuBar{\r\n    font-size: 17px;\r\n    color: #555;\r\n}\r\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light fixed-top\" style=\"background-color: white;height: 50px;\">\r\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\">\r\n    <app-ngbd-popover-config></app-ngbd-popover-config>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\">I <i class=\"fa fa-heart\" style=\"color: brown;\"></i> Việt Nam</a>\r\n  <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n    <ul class=\"navbar-nav mr-auto mt-2 mt-lg-0\" style=\"width: 400px;\">\r\n    </ul>\r\n    <ul class=\"navbar-nav mt-2 mt-lg-0\" style=\"margin-right: 10px;padding-top: 15px;\">\r\n      <li class=\"nav-item\"  style=\"padding-right: 15px\">\r\n        <div class=\"input-group mb-3\">\r\n            <input type=\"text\" class=\"form-control\" placeholder=\"Tìm kiếm\" aria-label=\"Tìm kiếm\" aria-describedby=\"basic-addon2\">\r\n            <div class=\"input-group-append\">\r\n              <button class=\"input-group-text\" id=\"basic-addon2\"><span class=\"fa fa-search\"></span></button>\r\n            </div>\r\n          </div>\r\n      </li>\r\n      <li class=\"nav-item\" style=\"padding-right: 15px\">\r\n          <app-ngbd-popover-config></app-ngbd-popover-config>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-ky\">Đăng ký</a>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-nhap\">Đăng nhập</a>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"checkUser\">\r\n          <span id=\"sign-out\" (click)=\"signOut()\">Đăng xuất</span>\r\n        </li>\r\n    </ul>\r\n  </div>\r\n</nav>\r\n<nav style=\"margin-top: 50px;\">\r\n  <hr/>\r\n\t<ul>\r\n\t\t<li *ngFor=\"let item of listMenu;index as i\">\r\n      <a class=\"nav-link\" *ngIf=\"i<listMenu.length-1\" routerLink=\"/{{item.url}}\" style=\"border-right: solid 1px gray;\"><span id=\"menuBar\">{{item.Title}} </span></a>\r\n      <a class=\"nav-link\" *ngIf=\"i==listMenu.length-1\" routerLink=\"/{{item.url}}\" style=\"border-right: none;\"><span id=\"menuBar\">{{item.Title}} </span></a>\r\n    </li>\r\n  </ul>\r\n  <hr/>\r\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light fixed-top\" style=\"background-color: white;height: 50px;\">\r\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\">\r\n    <app-ngbd-popover-config></app-ngbd-popover-config>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\">I <i class=\"fa fa-heart\" style=\"color: brown;\"></i> Việt Nam</a>\r\n  <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo03\">\r\n    <ul class=\"navbar-nav mr-auto mt-2 mt-lg-0\" style=\"width: 400px;\">\r\n    </ul>\r\n    <ul class=\"navbar-nav mt-2 mt-lg-0\" style=\"margin-right: 10px;padding-top: 15px;\">\r\n      <li class=\"nav-item\"  style=\"padding-right: 15px\">\r\n        <div class=\"input-group mb-3\">\r\n            <input type=\"text\" class=\"form-control\" placeholder=\"Tìm kiếm\" aria-label=\"Tìm kiếm\" aria-describedby=\"basic-addon2\">\r\n            <div class=\"input-group-append\">\r\n              <button class=\"input-group-text\" id=\"basic-addon2\" style=\"background-color: #F57223\"><span class=\"fa fa-search\"></span></button>\r\n            </div>\r\n          </div>\r\n      </li>\r\n      <li class=\"nav-item\" style=\"padding-right: 15px\">\r\n          <app-ngbd-popover-config></app-ngbd-popover-config>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-ky\">Đăng ký</a>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"!checkUser\">\r\n        <a class=\"nav-link\" routerLink=\"/dang-nhap\">Đăng nhập</a>\r\n      </li>\r\n      <li class=\"nav-item\" *ngIf=\"checkUser\">\r\n          <span id=\"sign-out\" (click)=\"signOut()\">Đăng xuất</span>\r\n        </li>\r\n    </ul>\r\n  </div>\r\n</nav>\r\n<nav style=\"margin-top: 50px;\">\r\n  <hr/>\r\n\t<ul>\r\n\t\t<li *ngFor=\"let item of listMenu;index as i\">\r\n      <a class=\"nav-link\" *ngIf=\"i<listMenu.length-1\" routerLink=\"/{{item.url}}\" style=\"border-right: solid 1px gray;\"><span id=\"menuBar\">{{item.Title}} </span></a>\r\n      <a class=\"nav-link\" *ngIf=\"i==listMenu.length-1\" routerLink=\"/{{item.url}}\" style=\"border-right: none;\"><span id=\"menuBar\">{{item.Title}} </span></a>\r\n    </li>\r\n  </ul>\r\n  <hr/>\r\n</nav>"
 
 /***/ }),
 
@@ -972,7 +1024,7 @@ var HeaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n    <app-ngbd-carousel-config></app-ngbd-carousel-config>\r\n</div>\r\n<div class=\"container\" style=\"margin-top: 20px;\">\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-3\">\r\n            <mat-card>\r\n                <div *ngFor=\"let item of lstSideBar\">\r\n                    <strong style=\"font-size: 20px;\">{{item.TenLoaiVatTu}}</strong>\r\n                    <hr/>\r\n                    <ul>\r\n                        <li *ngFor=\"let subItem of item.ListNhomVatTu\" class=\"list\">\r\n                            <a routerLink=\"/loai-hang/{{subItem.MANHOMVATTU}}\" *ngIf=\"maloaivattu!==subItem.MANHOMVATTU\" id=\"menuSidebar\" style=\"color: dimgray !important;\">{{subItem.TENNHOMVATTU}}</a>\r\n                            <a routerLink=\"/loai-hang/{{subItem.MANHOMVATTU}}\" *ngIf=\"maloaivattu===subItem.MANHOMVATTU\" id=\"menuSidebar\" style=\"color: dodgerblue !important;\">{{subItem.TENNHOMVATTU}}</a>\r\n                        </li>\r\n                    </ul>\r\n                </div>\r\n                <div>\r\n                    <span style=\"font-size: 15px;font-weight: bold;\">Sản phẩm vừa xem</span>\r\n                    <hr/>\r\n                </div>\r\n            </mat-card>\r\n        </div>\r\n        <div class=\"col-lg-9\">\r\n            <app-content-home *ngIf=\"!isViewContent\"></app-content-home>\r\n            <app-category-details  *ngIf=\"isViewContent\"></app-category-details>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<script>\r\n    $('.list > li a').click(function() {\r\n        $(this).parent().find('ul').toggle();\r\n    });\r\n</script>"
+module.exports = "<div class=\"container\">\r\n    <app-ngbd-carousel-config></app-ngbd-carousel-config>\r\n</div>\r\n<div class=\"container\" style=\"margin-top: 20px;\">\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-3\">\r\n            <mat-card>\r\n                <div *ngFor=\"let item of lstSideBar\">\r\n                    <strong style=\"font-size: 20px;\">{{item.TenLoaiVatTu}}</strong>\r\n                    <hr/>\r\n                    <ul>\r\n                        <li *ngFor=\"let subItem of item.ListNhomVatTu\" class=\"list\">\r\n                            <a routerLink=\"/loai-hang/{{subItem.MANHOMVATTU}}\" (click)=\"changeCategory(subItem)\" *ngIf=\"maloaivattu!==subItem.MANHOMVATTU\" id=\"menuSidebar\" style=\"font-size: 16px;\">{{subItem.TENNHOMVATTU}}</a>\r\n                            <a routerLink=\"/loai-hang/{{subItem.MANHOMVATTU}}\" *ngIf=\"maloaivattu===subItem.MANHOMVATTU\" id=\"menuSidebar\" style=\"color: red !important;font-size: 16px;\">{{subItem.TENNHOMVATTU}}</a>\r\n                        </li>\r\n                    </ul>\r\n                </div>\r\n                <div>\r\n                    <span style=\"font-size: 15px;font-weight: bold;\">Sản phẩm vừa xem</span>\r\n                    <hr/>\r\n                </div>\r\n            </mat-card>\r\n        </div>\r\n        <div class=\"col-lg-9\">\r\n            <app-content-home *ngIf=\"!isViewContent\"></app-content-home>\r\n            <app-category-details  *ngIf=\"isViewContent\"></app-category-details>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<script>\r\n    $('.list > li a').click(function() {\r\n        $(this).parent().find('ul').toggle();\r\n    });\r\n</script>"
 
 /***/ }),
 
@@ -992,6 +1044,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_common_service_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/common-service.service */ "./src/app/service/common-service.service.ts");
 /* harmony import */ var _model_sideBarShowModel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../model/sideBarShowModel */ "./src/app/model/sideBarShowModel.ts");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _view_cart_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../view-cart.service */ "./src/app/_layout/view-cart.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1008,14 +1061,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var HomeComponent = /** @class */ (function () {
-    function HomeComponent(cookieService, commonService, route, location, router) {
+    function HomeComponent(cookieService, commonService, route, location, router, viewCartService) {
         var _this = this;
         this.cookieService = cookieService;
         this.commonService = commonService;
         this.route = route;
         this.location = location;
         this.router = router;
+        this.viewCartService = viewCartService;
         this.maloaivattu = '';
         this.result = null;
         this.lstSideBar = [];
@@ -1072,6 +1127,9 @@ var HomeComponent = /** @class */ (function () {
             }
         });
     };
+    HomeComponent.prototype.changeCategory = function (item) {
+        this.viewCartService.changeCategory(item.TENNHOMVATTU);
+    };
     HomeComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-home',
@@ -1082,7 +1140,8 @@ var HomeComponent = /** @class */ (function () {
             _service_common_service_service__WEBPACK_IMPORTED_MODULE_3__["CommonServiceService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
             _angular_common__WEBPACK_IMPORTED_MODULE_5__["Location"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
+            _view_cart_service__WEBPACK_IMPORTED_MODULE_6__["ViewCartService"]])
     ], HomeComponent);
     return HomeComponent;
 }());
@@ -1335,7 +1394,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ngb-carousel *ngIf=\"images\">\r\n    <ng-template ngbSlide>\r\n      <img [src]=\"images[0]\" alt=\"Random first slide\">\r\n      <div class=\"carousel-caption\">\r\n        <h3>10 seconds between slides...</h3>\r\n        <p>This carousel uses customized default values.</p>\r\n      </div>\r\n    </ng-template>\r\n    <ng-template ngbSlide>\r\n      <img [src]=\"images[1]\" alt=\"Random second slide\">\r\n      <div class=\"carousel-caption\">\r\n        <h3>No mouse events...</h3>\r\n        <p>This carousel doesn't pause or resume on mouse events</p>\r\n      </div>\r\n    </ng-template>\r\n    <ng-template ngbSlide>\r\n      <img [src]=\"images[2]\"  alt=\"Random third slide\">\r\n      <div class=\"carousel-caption\">\r\n        <h3>No keyboard...</h3>\r\n        <p>This carousel uses customized default values.</p>\r\n      </div>\r\n    </ng-template>\r\n    <ng-template ngbSlide>\r\n      <img [src]=\"images[3]\" alt=\"Random fourth slide\">\r\n      <div class=\"carousel-caption\">\r\n        <h3>And no wrap after last slide.</h3>\r\n        <p>This carousel uses customized default values.</p>\r\n      </div>\r\n    </ng-template>\r\n  </ngb-carousel>\r\n\r\n  <ngb-carousel *ngIf=\"isLoading\">\r\n      <br/>\r\n      <div class=\"row\">\r\n          <div class=\"col-md-5\"></div>\r\n          <div class=\"col align-self-center\">\r\n              <app-self-building-square-spinner \r\n              [animationDuration]=\"3000\"\r\n              [size]=\"40\"\r\n              [color]=\"'#441d72'\"\r\n              ></app-self-building-square-spinner>\r\n          </div>\r\n          <div class=\"col-md-4\"></div>\r\n      </div>\r\n      <br/>\r\n  </ngb-carousel>"
+module.exports = "<ngb-carousel *ngIf=\"images\">\r\n    <ng-template ngbSlide>\r\n      <img [src]=\"images[0]\" alt=\"Random first slide\">\r\n      <div class=\"carousel-caption\">\r\n        <h3>10 seconds between slides...</h3>\r\n        <p>This carousel uses customized default values.</p>\r\n      </div>\r\n    </ng-template>\r\n    <ng-template ngbSlide>\r\n      <img [src]=\"images[1]\" alt=\"Random second slide\">\r\n      <div class=\"carousel-caption\">\r\n        <h3>No mouse events...</h3>\r\n        <p>This carousel doesn't pause or resume on mouse events</p>\r\n      </div>\r\n    </ng-template>\r\n    <ng-template ngbSlide>\r\n      <img [src]=\"images[2]\"  alt=\"Random third slide\">\r\n      <div class=\"carousel-caption\">\r\n        <h3>No keyboard...</h3>\r\n        <p>This carousel uses customized default values.</p>\r\n      </div>\r\n    </ng-template>\r\n    <ng-template ngbSlide>\r\n      <img [src]=\"images[3]\" alt=\"Random fourth slide\">\r\n      <div class=\"carousel-caption\">\r\n        <h3>And no wrap after last slide.</h3>\r\n        <p>This carousel uses customized default values.</p>\r\n      </div>\r\n    </ng-template>\r\n  </ngb-carousel>\r\n\r\n  <ngb-carousel *ngIf=\"isLoading\">\r\n      <br/>\r\n      <div class=\"row\">\r\n          <div class=\"col-md-5\"></div>\r\n          <div class=\"col align-self-center\">\r\n              <app-looping-rhombuses-spinner\r\n                [animationDuration]=\"2500\"\r\n                [rhombusSize]=\"15\"\r\n                [color]=\"'#4286f4'\"\r\n              ></app-looping-rhombuses-spinner>\r\n\r\n          </div>\r\n          <div class=\"col-md-4\"></div>\r\n      </div>\r\n      <br/>\r\n  </ngb-carousel>"
 
 /***/ }),
 
@@ -1618,7 +1677,7 @@ var RegisterComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card id=\"cartParent\">\r\n    <mat-card-title>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-6\">Chương trình khuyến mãi </div>\r\n            <div class=\"col-md-2\"></div>\r\n            <div class=\"col-md-2\" style=\"text-align: right\">\r\n                <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                    <div ngbDropdown class=\"d-inline-block\">\r\n                        <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                            Sắp xếp</button>\r\n                        <!-- Missing tag added below -->\r\n                        <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                            <button class=\"dropdown-item\" \r\n                                    *ngFor=\"let sortOrder of sortOrders\" \r\n                                    (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                            </button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-2\">\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n            </div>\r\n        </div>\r\n    </mat-card-title>\r\n    <br/>\r\n    <mat-card-content  *ngIf=\"isLoading\">\r\n      <br/>\r\n      <div class=\"row\">\r\n          <div class=\"col-md-5\"></div>\r\n          <div class=\"col align-self-center\">\r\n              <app-self-building-square-spinner \r\n              [animationDuration]=\"3000\"\r\n              [size]=\"40\"\r\n              [color]=\"'#441d72'\"\r\n              ></app-self-building-square-spinner>\r\n          </div>\r\n          <div class=\"col-md-4\"></div>\r\n      </div>\r\n      <br/>\r\n    </mat-card-content>\r\n    <mat-card-content class=\"container\" *ngIf=\"!isLoading\">\r\n      <!-- chọn show bảng -->\r\n        <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n            <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n                <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                    <mat-card-content>\r\n                        <div class=\"text-center\">\r\n                            <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" id=\"zoom\" alt=\"{{item.TenVatTu}}\"></a>\r\n                        </div>\r\n                    </mat-card-content>\r\n                    <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-md-9\">\r\n                                <span>{{display(item.TenVatTu)}}</span>\r\n                                <br/>\r\n                                <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                                <br/>\r\n                                <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                            </div>\r\n                            <div class=\"col-md-3\">\r\n                                <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                          <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                    </mat-card-footer>\r\n                </mat-card>\r\n            </div>\r\n        </div>\r\n        <!-- chọn show danh sách -->\r\n        <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n                <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                    <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                    <div class=\"col\" style=\"margin-top: 30px;\">\r\n                        <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                        <br/>\r\n                        <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                        <br/>\r\n                        <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                          <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                        <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n    </mat-card-content>\r\n    <mat-card-footer> \r\n        <mat-paginator  [length]=\"length\"\r\n                        [pageIndex]=\"pageIndex\"\r\n                        [pageSize]=\"pageSize\"\r\n                        [pageSizeOptions]=\"[3,6,9,12]\"\r\n                        (page)=\"pageEvent = getServerData($event)\">\r\n        </mat-paginator>\r\n    </mat-card-footer>\r\n  </mat-card>"
+module.exports = "<mat-card id=\"cartParent\">\r\n    <mat-card-title>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-6\">Chương trình khuyến mãi </div>\r\n            <div class=\"col-md-2\"></div>\r\n            <div class=\"col-md-2\" style=\"text-align: right\">\r\n                <div class=\"btn-group\" ngbDropdown role=\"group\" aria-label=\"Button group with nested dropdown\">\r\n                    <div ngbDropdown class=\"d-inline-block\">\r\n                        <button class=\"btn btn-outline-primary\" id=\"sortMenu\" ngbDropdownToggle>\r\n                            Sắp xếp</button>\r\n                        <!-- Missing tag added below -->\r\n                        <div class=\"dropdown-menu\" aria-labelledby=\"sortMenu\" ngbDropdownMenu>\r\n                            <button class=\"dropdown-item\" \r\n                                    *ngFor=\"let sortOrder of sortOrders\" \r\n                                    (click)=\"ChangeSortOrder(sortOrder)\">{{sortOrder}}\r\n                            </button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-2\">\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='list'\"><span class=\"fa fa-list-ul\"></span></button>\r\n                <button class=\"btn btn-outline-primary\" (click)=\"viewer='table'\"><span class=\"fa fa-table\"></span></button>\r\n            </div>\r\n        </div>\r\n    </mat-card-title>\r\n    <br/>\r\n    <mat-card-content  *ngIf=\"isLoading\">\r\n      <br/>\r\n      <div class=\"row\">\r\n          <div class=\"col-md-5\"></div>\r\n          <div class=\"col align-self-center\">\r\n            <app-looping-rhombuses-spinner\r\n            [animationDuration]=\"2500\"\r\n            [rhombusSize]=\"15\"\r\n            [color]=\"'#4286f4'\"\r\n            ></app-looping-rhombuses-spinner>\r\n              \r\n          </div>\r\n          <div class=\"col-md-4\"></div>\r\n      </div>\r\n      <br/>\r\n    </mat-card-content>\r\n    <mat-card-content class=\"container\" *ngIf=\"!isLoading\">\r\n      <!-- chọn show bảng -->\r\n        <div class=\"row\" *ngIf=\"viewer=='table'\">\r\n            <div class=\"col-md-4\" *ngFor=\"let item of lstVatTu\">\r\n                <mat-card id=\"imageNew\" style=\"margin-top: 15px;\">\r\n                    <mat-card-content>\r\n                        <div class=\"text-center\">\r\n                            <a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\" title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-fluid\" id=\"zoom\" alt=\"{{item.TenVatTu}}\"></a>\r\n                        </div>\r\n                    </mat-card-content>\r\n                    <mat-card-footer style=\"text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em\">\r\n                        <div class=\"row\">\r\n                            <div class=\"col-md-9\">\r\n                                <span>{{display(item.TenVatTu)}}</span>\r\n                                <br/>\r\n                                <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                                <br/>\r\n                                <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                            </div>\r\n                            <div class=\"col-md-3\">\r\n                                <span (click)=\"addToCart(item)\" id=\"pointer\" title=\"Thêm vào giỏ hàng\" class=\"fa fa-shopping-basket fa-2x\"></span>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 30%;\">\r\n                          <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                    </mat-card-footer>\r\n                </mat-card>\r\n            </div>\r\n        </div>\r\n        <!-- chọn show danh sách -->\r\n        <div class=\"container\" *ngIf=\"viewer=='list'\">\r\n                <div class=\"row\"  *ngFor=\"let item of lstVatTu\">\r\n                    <div class=\"col-md-3\" style=\"text-align: center\"><a routerLink=\"/chi-tiet-hang-hoa/{{item.MaVatTu}}\"  title=\"{{item.TenVatTu}}\"><img src=\"data:image/JPEG;base64,{{item.Avatar}}\" class=\"img-thumbnail\" id=\"zoomList\" alt=\"{{item.TenVatTu}}\"></a></div>\r\n                    <div class=\"col\" style=\"margin-top: 30px;\">\r\n                        <span style=\"font-size: 1.3em;\">{{item.TenVatTu}}</span>\r\n                        <br/>\r\n                        <span id=\"monney\" style=\"color: forestgreen;\">{{item.DonGia | number}} ₫</span>\r\n                        <br/>\r\n                        <span style=\"font-size: 13px\">Còn lại :&nbsp;<span class=\"badge badge-light\">{{item.SoTon}}</span> </span>\r\n                        <div class=\"row\" style=\"font-size: 15px;margin-left: 1%;\">\r\n                          <ngb-rating [rate]=\"item.selectFavorite\"></ngb-rating>\r\n                        </div>\r\n                        <button (click)=\"addToCart(item)\" class=\"btn btn-primary\">Thêm vào giỏ hàng</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n    </mat-card-content>\r\n    <mat-card-footer> \r\n        <mat-paginator  [length]=\"length\"\r\n                        [pageIndex]=\"pageIndex\"\r\n                        [pageSize]=\"pageSize\"\r\n                        [pageSizeOptions]=\"[3,6,9,12]\"\r\n                        (page)=\"pageEvent = getServerData($event)\">\r\n        </mat-paginator>\r\n    </mat-card-footer>\r\n  </mat-card>"
 
 /***/ }),
 
@@ -2108,14 +2167,22 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var ViewCartService = /** @class */ (function () {
     function ViewCartService() {
         this.changeCart = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.category = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
     }
     ViewCartService.prototype.changedCartView = function (data) {
         this.changeCart.emit(data);
+    };
+    ViewCartService.prototype.changeCategory = function (data) {
+        this.category.emit(data);
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
         __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"])
     ], ViewCartService.prototype, "changeCart", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"])
+    ], ViewCartService.prototype, "category", void 0);
     ViewCartService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
@@ -2372,7 +2439,7 @@ var AppModule = /** @class */ (function () {
                 _angular_material_stepper__WEBPACK_IMPORTED_MODULE_28__["MatStepperModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatDatepickerModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
-                angular_epic_spinners__WEBPACK_IMPORTED_MODULE_23__["SelfBuildingSquareSpinnerModule"],
+                angular_epic_spinners__WEBPACK_IMPORTED_MODULE_23__["LoopingRhumbusesSpinnerModule"],
                 ngx_gallery__WEBPACK_IMPORTED_MODULE_24__["NgxGalleryModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatFormFieldModule"],
@@ -2524,21 +2591,33 @@ var CommonServiceService = /** @class */ (function () {
         this.host = 'http://btsoftvn.com:50595/';
         this.makho = 'DV1-CH1-KBL';
     }
-    CommonServiceService.prototype.getDataPaging = function (event) {
+    CommonServiceService.prototype.getDataPaging = function (event, order, sorttype) {
         if (event) {
             var pageIndex = event.pageIndex + 1;
-            return this._http.get(this.host + 'api/home/GetListMerchanedise?pagesize=' + event.pageSize + '&pagenumber=' + pageIndex);
+            return this._http.get(this.host + 'api/home/GetListMerchanedise?pagesize=' + event.pageSize + '&pagenumber=' + pageIndex + '&order=' + order + '&sorttype=' + sorttype);
         }
         else {
-            return this._http.get(this.host + 'api/home/GetListMerchanedise?pagesize=12&pagenumber=1');
+            var defaultOrder = 'vt.TENVATTU';
+            var defaultSortType = 'ASC';
+            if (order && sorttype) {
+                defaultOrder = order;
+                defaultSortType = sorttype;
+            }
+            return this._http.get(this.host + 'api/home/GetListMerchanedise?pagesize=12&pagenumber=1&order=' + defaultOrder + '&sorttype=' + defaultSortType);
         }
     };
-    CommonServiceService.prototype.getListMerchanediseByCategory = function (event, manhom) {
+    CommonServiceService.prototype.getListMerchanediseByCategory = function (event, manhom, order, sorttype) {
         if (event) {
-            return this._http.get(this.host + 'api/home/GetListMerchanediseByCategory?pagesize=' + event.pageSize + '&pagenumber=' + event.pageIndex + '&merchanedisetype=' + manhom);
+            return this._http.get(this.host + 'api/home/GetListMerchanediseByCategory?pagesize=' + event.pageSize + '&pagenumber=' + event.pageIndex + '&merchanedisetype=' + manhom + '&order=' + order + '&sorttype=' + sorttype);
         }
         else {
-            return this._http.get(this.host + 'api/home/GetListMerchanediseByCategory?pagesize=12&pagenumber=1&merchanedisetype=' + manhom);
+            var defaultOrder = 'vt.TENVATTU';
+            var defaultSortType = 'ASC';
+            if (order && sorttype) {
+                defaultOrder = order;
+                defaultSortType = sorttype;
+            }
+            return this._http.get(this.host + 'api/home/GetListMerchanediseByCategory?pagesize=12&pagenumber=1&merchanedisetype=' + manhom + '&order=' + defaultOrder + '&sorttype=' + defaultSortType);
         }
     };
     CommonServiceService.prototype.getDataDetail = function (mavattu) {

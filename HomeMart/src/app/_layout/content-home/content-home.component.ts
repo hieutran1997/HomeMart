@@ -32,6 +32,8 @@ export class ContentHomeComponent implements OnInit {
   viewer : string = 'table';
   sortAsc: Boolean = true;
   isLoading : Boolean = false;
+  orderBy : string = 'vt.TENVATTU';
+  sortType : string = 'ASC';
   constructor(
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
@@ -45,7 +47,7 @@ export class ContentHomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filterData(null);
+    this.filterData(null,this.orderBy,this.sortType);
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);   
@@ -61,9 +63,9 @@ export class ContentHomeComponent implements OnInit {
     }
   }
 
-  filterData(event?:PageEvent){
+  filterData(event?:PageEvent,order?:string,sortType?:string){
     this.isLoading = true;
-    this.commonService.getDataPaging(event).subscribe(arr=>{
+    this.commonService.getDataPaging(event,order,sortType).subscribe(arr=>{
         this.isLoading = false;
         this.result = arr;
         if(event){
@@ -83,8 +85,9 @@ export class ContentHomeComponent implements OnInit {
     })
   }
 
-  public getServerData(event?:PageEvent){
-    this.filterData(event);
+  public getServerData(event?:PageEvent,order?:string,sortType?:string){
+    this.pageEvent = event;
+    this.filterData(event,order,sortType);
   }
 
   addToCart(item){
@@ -151,20 +154,29 @@ export class ContentHomeComponent implements OnInit {
     if(order ==="Theo tên"){
       if(this.sortAsc){
         this.sortAsc = false;
-        this.lstVatTu.sort(this.compareValues('TenVatTu','desc'));
+        // this.lstVatTu.sort(this.compareValues('TenVatTu','desc'));
+        this.orderBy = 'vt.TENVATTU';
+        this.sortType = 'DESC';
+        
       }
       else{
         this.sortAsc = true;
-        this.lstVatTu.sort(this.compareValues('TenVatTu','asc'));
+        // this.lstVatTu.sort(this.compareValues('TenVatTu','asc'));
+        this.orderBy = 'vt.TENVATTU';
+        this.sortType = 'ASC';
       }
     }if(order === "Theo giá bán"){
       if(this.sortAsc){
         this.sortAsc = false;
-        this.lstVatTu.sort(this.compareValues('DonGia','desc'));
+        // this.lstVatTu.sort(this.compareValues('DonGia','desc'));
+        this.orderBy = 'vt.GIABANLEVAT';
+        this.sortType = 'DESC';
       }
       else{
         this.sortAsc = true;
-        this.lstVatTu.sort(this.compareValues('DonGia','asc'));
+        // this.lstVatTu.sort(this.compareValues('DonGia','asc'));
+        this.orderBy = 'vt.GIABANLEVAT';
+        this.sortType = 'ASC';
       }
     }if(order ==="Theo độ ưa thích"){
       if(this.sortAsc){
@@ -175,6 +187,12 @@ export class ContentHomeComponent implements OnInit {
         this.sortAsc = true;
         this.lstVatTu.sort(this.compareValues('DonGia','asc'));
       }
+    }
+    if(this.pageEvent){
+      this.filterData(this.pageEvent,this.orderBy,this.sortType);
+    }
+    else{
+      this.filterData(null,this.orderBy,this.sortType);
     }
   }
   //đóng sắp xếp
