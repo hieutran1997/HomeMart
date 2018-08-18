@@ -19,6 +19,7 @@ import {ViewCartService} from '../view-cart.service';
 export class CategoryDetailsComponent implements OnInit,OnDestroy {
   maloaivattu: string='';
   pageEvent: PageEvent = new PageEvent();
+  page : any;
   datasource: null;
   pageIndex:number;
   pageSize:number;
@@ -102,9 +103,9 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     }
   }
 
-  public getServerData(event?:PageEvent,order?:string,sortType?:string){
+  public getServerData(event?:PageEvent){
     this.pageEvent = event;
-    this.filterData(event,this.maloaivattu,order,sortType);
+    this.filterData(event,this.maloaivattu,this.orderBy,this.sortType);
   }
  
   addToCart(item){

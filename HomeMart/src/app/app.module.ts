@@ -33,7 +33,6 @@ import { InfoPageComponent } from './_layout/info-page/info-page.component';
 import { ShippingComponent } from './_layout/shipping/shipping.component';
 import { ContactComponent } from './_layout/contact/contact.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +51,7 @@ import { ContactComponent } from './_layout/contact/contact.component';
     RegisterComponent,
     InfoPageComponent,
     ShippingComponent,
-    ContactComponent
+    ContactComponent,
   ],
   imports: [
     BrowserModule,

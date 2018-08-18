@@ -9,6 +9,7 @@ import { NhomVatTu } from '../../model/nhomVatTu';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-content-home',
@@ -41,7 +42,8 @@ export class ContentHomeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    config: NgbRatingConfig
+    config: NgbRatingConfig,
+    private modalService: NgbModal
   ) { 
     config.max = 5;
   }
@@ -85,11 +87,10 @@ export class ContentHomeComponent implements OnInit {
     })
   }
 
-  public getServerData(event?:PageEvent,order?:string,sortType?:string){
+  public getServerData(event?:PageEvent){
     this.pageEvent = event;
-    this.filterData(event,order,sortType);
+    this.filterData(event,this.orderBy,this.sortType);
   }
-
   addToCart(item){
     let lstVatTuCart :Array<VatTuCart> = [];
     let vattu : VatTu = null;

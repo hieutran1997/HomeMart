@@ -94,7 +94,7 @@
                         [pageIndex]="pageIndex"
                         [pageSize]="pageSize"
                         [pageSizeOptions]="[3,6,9,12]"
-                        (page)="pageEvent = getServerData($event)">
+                        (page)="getServerData($event)">
         </mat-paginator>
     </mat-card-footer>
   </mat-card>

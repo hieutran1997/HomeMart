@@ -16,7 +16,6 @@ import { Location } from '@angular/common';
   providers: [NgbRatingConfig] 
 })
 export class SalesComponent implements OnInit {
-
   maloaivattu : string = '';
   result : VatTuDTO = null;
   lstVatTu : Array<VatTu>;
