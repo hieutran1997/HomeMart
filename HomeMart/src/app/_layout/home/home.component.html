@@ -10,7 +10,7 @@
                     <hr/>
                     <ul>
                         <li *ngFor="let subItem of item.ListNhomVatTu" class="list">
-                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" *ngIf="maloaivattu!==subItem.MANHOMVATTU" id="menuSidebar" style="font-size: 16px;">{{subItem.TENNHOMVATTU}}</a>
+                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" (click)="changeCategory(subItem)" *ngIf="maloaivattu!==subItem.MANHOMVATTU" id="menuSidebar" style="font-size: 16px;">{{subItem.TENNHOMVATTU}}</a>
                             <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" *ngIf="maloaivattu===subItem.MANHOMVATTU" id="menuSidebar" style="color: red !important;font-size: 16px;">{{subItem.TENNHOMVATTU}}</a>
                         </li>
                     </ul>

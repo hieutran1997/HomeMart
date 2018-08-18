@@ -1,6 +1,3 @@
-#imageNew:hover{
-    color: red !important;
-}
 #cartParent{
     margin-bottom: 50px;
 }
@@ -42,7 +39,6 @@
 }
 
 #pointer {
-    padding-top: 30px;
     cursor: pointer;
 }
 

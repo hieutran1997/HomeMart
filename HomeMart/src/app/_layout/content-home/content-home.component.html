@@ -52,19 +52,21 @@
                       </div>
                   </mat-card-content>
                   <mat-card-footer style="text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; ">
-                      <div class="row">
-                          <div class="col-md-9">
-                              <span style="font-size: 13px" (click)="redirectDetail(item)" id="tenVatTu">{{item.TenVatTu}}</span>
-                              <br/>
-                              <span id="monney" style="color: forestgreen;">{{item.DonGia | number}} ₫</span>
-                              <br/>
-                              <span style="font-size: 13px">Còn lại :&nbsp;<span class="badge badge-light">{{item.SoTon}}</span> </span>
-                          </div>
-                          <div class="col-md-3">
-                              <img src="/assets/cart.png" (click)="addToCart(item)" id="pointer"  title="Thêm vào giỏ hàng"/>
-                              <!-- <span (click)="addToCart(item)" id="pointer" title="Thêm vào giỏ hàng" ></span> -->
-                          </div>
-                      </div>
+                        <div class="row"> 
+                            <span style="font-size: 13px" (click)="redirectDetail(item)" id="tenVatTu">{{display(item.TenVatTu)}}</span>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <span id="monney" style="color: #F57223;">{{item.DonGia | number}} ₫</span>
+                                <br/>
+                                <span style="font-size: 13px">Tồn kho :&nbsp;<span class="badge badge-light">{{item.SoTon}}</span> </span>
+                            </div>
+                            <div class="col-md-3">
+                                    <img src="/assets/cart.png" (click)="addToCart(item)" id="pointer"  title="Thêm vào giỏ hàng"/>
+                                <!-- <span (click)="addToCart(item)" id="pointer" title="Thêm vào giỏ hàng" class="fa fa-shopping-basket fa-2x"></span> -->
+                            </div>
+                        </div>
                       <div class="row" style="font-size: 15px;margin-left: 30%;">
                         <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
                       </div>
@@ -79,9 +81,9 @@
                   <div class="col" style="margin-top: 30px;">
                       <span style="font-size: 1.3em;">{{item.TenVatTu}}</span>
                       <br/>
-                      <span id="monney" style="color: forestgreen;">{{item.DonGia | number}} ₫</span>
+                      <span id="monney" style="color: #F57223;">{{item.DonGia | number}} ₫</span>
                       <br/>
-                      <span style="font-size: 13px">Còn lại :&nbsp;<span class="badge badge-light">{{item.SoTon}}</span> </span>
+                      <span style="font-size: 13px">Tồn kho :&nbsp;<span class="badge badge-light">{{item.SoTon}}</span> </span>
                       <div class="row" style="font-size: 15px;margin-left: 1%;">
                         <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
                       </div>

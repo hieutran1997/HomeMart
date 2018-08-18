@@ -6,9 +6,14 @@ import{CartModel} from '../model/cartModel';
 })
 export class ViewCartService {
   @Output() changeCart: EventEmitter<CartModel> = new EventEmitter();
+  @Output() category :EventEmitter<String> = new EventEmitter();
   constructor() { }
 
   changedCartView(data :CartModel){
     this.changeCart.emit(data);
+  }
+
+  changeCategory(data:String){
+    this.category.emit(data);
   }
 }

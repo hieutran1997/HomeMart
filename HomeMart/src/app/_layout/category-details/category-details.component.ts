@@ -32,6 +32,7 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   isLoading : Boolean = false;
   vattuSelected : CartModel = null;
   cookieValue = 'UNKNOWN';
+  categoryName = '';
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -58,6 +59,9 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);   
     }
+    this.viewCartService.category.subscribe(data=>{
+      this.categoryName = data;
+    });
   }
 
   ngOnDestroy() {
@@ -88,8 +92,8 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   })}
     
   display(item:string){
-    if(item.length >12){
-      return item.substring(0,12)+' ...';
+    if(item.length >50){
+      return item.substring(0,50)+' ...';
     }
     else{
       return item;
@@ -192,4 +196,7 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     }
   }
   //đóng sắp xếp
+  redirectDetail(item){
+    this.router.navigateByUrl('/chi-tiet-hang-hoa/'+item.MaVatTu);
+  }
 }

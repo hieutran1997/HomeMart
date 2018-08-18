@@ -10,7 +10,7 @@ import { NhomVatTu } from '../../model/nhomVatTu';
 import {sideBarShow} from '../../model/sideBarShowModel';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
+import { ViewCartService } from '../view-cart.service';
 
 @Component({
   selector: 'app-home',
@@ -43,6 +43,7 @@ export class HomeComponent  implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private router: Router,
+    private viewCartService: ViewCartService,
   ) { 
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd ) {
@@ -91,5 +92,9 @@ export class HomeComponent  implements OnInit {
         }
       }
     );
+  }
+
+  changeCategory(item){
+    this.viewCartService.changeCategory(item.TENNHOMVATTU);
   }
 }

@@ -53,8 +53,8 @@ export class ContentHomeComponent implements OnInit {
   }
   
   display(item:string){
-    if(item.length >12){
-      return item.substring(0,12)+' ...';
+    if(item.length >50){
+      return item.substring(0,50)+' ...';
     }
     else{
       return item;
