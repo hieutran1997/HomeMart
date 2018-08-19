@@ -170,6 +170,7 @@ export class ViewCartDetailComponent implements OnInit {
                 alert("Đặt hàng thành công ! Vui lòng chờ liên hệ từ chúng tôi ");
                 this.cookieService.delete('vattutronggiohang');//refresh cart
                 this.vattuSelected = new CartModel([],0,0);
+                this.lstViewVatTu=[];
                 this.viewCartService.changedCartView(this.vattuSelected);
               }
           });

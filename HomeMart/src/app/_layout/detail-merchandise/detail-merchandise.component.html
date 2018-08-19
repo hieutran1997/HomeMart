@@ -29,7 +29,7 @@
                             <span  style="padding-top: 10px;font-size: 20px;">Giá bán : </span>
                         </div>
                         <div class="col-md-5">
-                            <span id="monney" style="color: red;font-size: 25px">{{vattu.DonGia | number}} ₫</span>
+                            <span id="monney" style="color: #F57223;font-size: 25px">{{vattu.DonGia | number}} ₫</span>
                         </div>
                     </div>
                     <br/>
@@ -43,16 +43,15 @@
                             </div>
                         </div>
                         <div class="col-md-1"></div>
-                        <button (click)="addToCart(vattu)" title="Thêm vào giỏ hàng" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                        <button (click)="addToCart(vattu)" style="background-color: #F57223;border: none" title="Thêm vào giỏ hàng" class="btn btn-primary">Thêm vào giỏ hàng</button>
                     </div>
                     <br/>
                     <div class="row">
-                        <div class="col-md-2" style="font-size: 20px;">Còn : </div>
-                        <div class="col-md-2"> 
-                            <span id="monney" style="color: red;font-size: 25px">{{vattu.SoTon | number}}</span>
+                        <div class="col-md-4">
+                            <span style="font-size: 20px">Tồn kho :&nbsp;<span class="badge badge-light" style="color: #F57223 !important">{{vattu.SoTon}}</span> </span>
                         </div>
                     </div>
-                    <div class="row" style="font-size: 20px;margin-left: 30%;color: crimson;">
+                    <div class="row" style="font-size: 20px;margin-left: 30%;color: #F57223;">
                         <ngb-rating [rate]="vattu.selectFavorite"></ngb-rating>
                     </div>
                     <br/>

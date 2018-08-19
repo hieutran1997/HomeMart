@@ -59,7 +59,7 @@
                             <div class="col-md-9">
                                 <span id="monney" style="color: #F57223;">{{item.DonGia | number}} ₫</span>
                                 <br/>
-                                <span style="font-size: 13px">Tồn kho :&nbsp;<span class="badge badge-warning" style="background-color: #F57223 !important">{{item.SoTon}}</span> </span>
+                                <span style="font-size: 13px">Tồn kho :&nbsp;<span class="badge badge-light" style="color: #F57223 !important">{{item.SoTon}}</span> </span>
                             </div>
                             <div class="col-md-3">
                                 <img src="/assets/cartNew.png" (click)="addToCart(item);open(modalCart,item)" id="pointer" width="32px" height="32px" title="Thêm vào giỏ hàng"/>
@@ -82,7 +82,7 @@
                       <br/>
                       <span id="monney" style="color: #F57223;">{{item.DonGia | number}} ₫</span>
                       <br/>
-                      <span style="font-size: 13px">Tồn kho :&nbsp;<span class="badge badge-warning"  style="background-color: #F57223 !important">{{item.SoTon}}</span> </span>
+                      <span style="font-size: 13px">Tồn kho :&nbsp;<span class="badge badge-light"  style="color: #F57223 !important">{{item.SoTon}}</span> </span>
                       <div class="row" style="font-size: 15px;margin-left: 1%;">
                         <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
                       </div>
