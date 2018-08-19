@@ -9,6 +9,7 @@ import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 import {CartModel,VatTuCart} from '../../model/cartModel';
 import { CookieService } from 'ngx-cookie-service';
 import {ViewCartService} from '../view-cart.service';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-category-details',
@@ -36,6 +37,7 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   categoryName = '';
   orderBy : string = 'vt.TENVATTU';
   sortType : string = 'ASC';
+  itemSelect : VatTu;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -44,6 +46,7 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     config: NgbRatingConfig,
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
+    private modalService : NgbModal
   ) {
     config.max = 5;
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -61,6 +64,9 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);   
+    }
+    else{
+      this.vattuSelected = new CartModel([],0,0);
     }
     this.viewCartService.category.subscribe(data=>{
       this.categoryName = data;
@@ -121,7 +127,7 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
         for(var i = 0 ; i < this.vattuSelected.arrVatTuSelected.length ; i++){
           if(this.vattuSelected.arrVatTuSelected[i].MaVatTu === vattu.MaVatTu){
             this.vattuSelected.arrVatTuSelected[i].SoLuong = this.vattuSelected.arrVatTuSelected[i].SoLuong + vattu.SoLuong;
-            this.vattuSelected.tongSoLuong += vattu.SoLuong;
+            this.vattuSelected.tongSoLuong += 1;
             this.vattuSelected.tongTien += vattu.DonGia*vattu.SoLuong;
             j++;
           }
@@ -216,5 +222,14 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   //đóng sắp xếp
   redirectDetail(item){
     this.router.navigateByUrl('/chi-tiet-hang-hoa/'+item.MaVatTu);
+  }
+
+    
+  open(modal,item){
+    this.itemSelect = item;
+    this.modalService.open(modal,{ centered: true,size: 'lg'});
+  }
+  goToCart(){
+    this.router.navigateByUrl('/chi-tiet-gio-hang');
   }
 }

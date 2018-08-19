@@ -1,4 +1,4 @@
-import { Component, OnInit,EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit,EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
 import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
@@ -9,11 +9,13 @@ import { NhomVatTu } from '../../model/nhomVatTu';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-content-home',
   templateUrl: './content-home.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./content-home.component.css'],
   providers: [NgbRatingConfig] 
 })
@@ -35,6 +37,7 @@ export class ContentHomeComponent implements OnInit {
   isLoading : Boolean = false;
   orderBy : string = 'vt.TENVATTU';
   sortType : string = 'ASC';
+  itemSelect : VatTu;
   constructor(
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
@@ -43,10 +46,11 @@ export class ContentHomeComponent implements OnInit {
     private router: Router,
     private location: Location,
     config: NgbRatingConfig,
-    private modalService: NgbModal
+    private modalService : NgbModal
   ) { 
     config.max = 5;
   }
+
 
   ngOnInit() {
     this.filterData(null,this.orderBy,this.sortType);
@@ -54,8 +58,11 @@ export class ContentHomeComponent implements OnInit {
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);   
     }
+    else{
+      this.vattuSelected = new CartModel([],0,0);
+    }
   }
-  
+
   display(item:string){
     if(item.length >50){
       return item.substring(0,50)+' ...';
@@ -200,5 +207,15 @@ export class ContentHomeComponent implements OnInit {
 
   redirectDetail(item){
     this.router.navigateByUrl('/chi-tiet-hang-hoa/'+item.MaVatTu);
+  }
+
+    
+  open(modal,item){
+    this.itemSelect = item;
+    this.modalService.open(modal,{ centered: true,size: 'lg'});
+  }
+
+  goToCart(){
+    this.router.navigateByUrl('/chi-tiet-gio-hang');
   }
 }

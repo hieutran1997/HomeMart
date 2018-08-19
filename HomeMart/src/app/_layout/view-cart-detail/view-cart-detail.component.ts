@@ -9,6 +9,8 @@ import { khachHangModel } from '../../model/khachHangModel';
 import { loginModel } from '../../model/loginModel';
 import { ObjectCartModel ,DetailsCart } from '../../model/ObjectCartDTO';
 import { objectResult } from '../../model/objectResult';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-view-cart-detail',
@@ -25,11 +27,14 @@ export class ViewCartDetailComponent implements OnInit {
   loginModel : loginModel =null;
   TenKH:string = '';
   DataDTO: ObjectCartModel;
+  itemSelect = new viewDetailCart();
 
   constructor(
     private cookieService : CookieService,
     private commonService :CommonServiceService,
     private viewCartService: ViewCartService,
+    private modalService : NgbModal,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -64,7 +69,13 @@ export class ViewCartDetailComponent implements OnInit {
     })
   }
 
-  DeleteItem(item){
+  open(modal,item){
+    this.itemSelect = item;
+    this.modalService.open(modal,{ centered: true , backdrop : 'static'});
+  }
+
+  DeleteItem(){
+    let item = this.itemSelect;
     let index = this.lstViewVatTu.indexOf(item);
     this.lstViewVatTu.splice(index,1);
     this.vattuSelected.arrVatTuSelected.splice(index,1);
@@ -122,46 +133,55 @@ export class ViewCartDetailComponent implements OnInit {
     this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
     this.viewCartService.changedCartView(this.vattuSelected);
   }
-  CheckOut(){
-    let Detail = [];
-    if(this.vattuSelected.arrVatTuSelected.length === 0){
-      alert("Quý khách vui lòng chọn hàng thanh toán !");
-      return;
-    }
-    else{
-      let tongtien = 0;
-      let tongsoluong = 0 ;
-      this.lstViewVatTu.forEach(function(obj){
-        let objectDetail = new DetailsCart();
-        objectDetail.DONGIA = obj.GiaBanLeVat;
-        objectDetail.DONGIADEXUAT = obj.GiaBanLeVat;
-        objectDetail.MAHANG = obj.MaVatTu;
-        objectDetail.SOLUONG = obj.SoLuong;
-        objectDetail.SOLUONGLE =  obj.SoLuong;
-        objectDetail.TENHANG = obj.TenVatTu;
-        tongtien +=  obj.SoLuong*obj.GiaBanLeVat;
-        tongsoluong +=obj.SoLuong;
-        Detail.push(objectDetail);
-      });
-      this.DataDTO = new ObjectCartModel(Detail);
-      this.DataDTO.DIACHINN = this.khachHang.DiaChi;
-      this.DataDTO.TENNN = this.khachHang.TenKH;
-      this.DataDTO.UNITCODE = this.khachHang.MaDonVi;
-      this.DataDTO.SDTNN = this.khachHang.DienThoai;
-      this.DataDTO.MAKHACHHANG = this.khachHang.DienThoai;
-      this.DataDTO.SOPHIEUCON = this.vattuSelected.arrVatTuSelected.length;
-      this.DataDTO.SOLUONG = tongsoluong;
-      this.DataDTO.THANHTIENSAUVAT = tongtien;
-      if(this.DataDTO){
-        this.commonService.checkOut<objectResult>(this.DataDTO).subscribe(result=>{
-            if(result.Result){
-              alert("Đặt hàng thành công ! Vui lòng chờ liên hệ từ chúng tôi ");
-              this.cookieService.delete('vattutronggiohang');//refresh cart
-              this.vattuSelected = new CartModel([],0,0);
-              this.viewCartService.changedCartView(this.vattuSelected);
-            }
+  CheckOut(modalCheckLogin){
+    if(this.cookieService.check('taikhoanbanhang')){
+      let Detail = [];
+      if(this.vattuSelected.arrVatTuSelected.length === 0){
+        alert("Quý khách vui lòng chọn hàng thanh toán !");
+        return;
+      }
+      else{
+        let tongtien = 0;
+        let tongsoluong = 0 ;
+        this.lstViewVatTu.forEach(function(obj){
+          let objectDetail = new DetailsCart();
+          objectDetail.DONGIA = obj.GiaBanLeVat;
+          objectDetail.DONGIADEXUAT = obj.GiaBanLeVat;
+          objectDetail.MAHANG = obj.MaVatTu;
+          objectDetail.SOLUONG = obj.SoLuong;
+          objectDetail.SOLUONGLE =  obj.SoLuong;
+          objectDetail.TENHANG = obj.TenVatTu;
+          tongtien +=  obj.SoLuong*obj.GiaBanLeVat;
+          tongsoluong +=obj.SoLuong;
+          Detail.push(objectDetail);
         });
+        this.DataDTO = new ObjectCartModel(Detail);
+        this.DataDTO.DIACHINN = this.khachHang.DiaChi;
+        this.DataDTO.TENNN = this.khachHang.TenKH;
+        this.DataDTO.UNITCODE = this.khachHang.MaDonVi;
+        this.DataDTO.SDTNN = this.khachHang.DienThoai;
+        this.DataDTO.MAKHACHHANG = this.khachHang.DienThoai;
+        this.DataDTO.SOPHIEUCON = this.vattuSelected.arrVatTuSelected.length;
+        this.DataDTO.SOLUONG = tongsoluong;
+        this.DataDTO.THANHTIENSAUVAT = tongtien;
+        if(this.DataDTO){
+          this.commonService.checkOut<objectResult>(this.DataDTO).subscribe(result=>{
+              if(result.Result){
+                alert("Đặt hàng thành công ! Vui lòng chờ liên hệ từ chúng tôi ");
+                this.cookieService.delete('vattutronggiohang');//refresh cart
+                this.vattuSelected = new CartModel([],0,0);
+                this.viewCartService.changedCartView(this.vattuSelected);
+              }
+          });
+        }
       }
     }
+    else{
+      this.modalService.open(modalCheckLogin,{ centered: true , backdrop : 'static'});
+    }
+  }
+
+  RedirectToLogin(){
+    this.router.navigateByUrl('/dang-nhap');
   }
 }
