@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let arrTemp = new Array({ Title : 'Hàng mới về' , url : '/'},{Title:'Khuyến mãi',url:'/chuong-trinh-khuyen-mai'});
+    let arrTemp = new Array({ Title : 'Hàng mới' , url : '/'});
     if(this.cookieService.check('taikhoanbanhang')){
       this.checkUser = true;
     }
