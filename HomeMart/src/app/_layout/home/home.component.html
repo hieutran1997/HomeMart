@@ -6,17 +6,18 @@
         <div class="col-lg-3">
             <mat-card>
                 <div *ngFor="let item of lstSideBar">
-                    <strong style="font-size: 20px;">{{item.TenLoaiVatTu}}</strong>
+                    <span style="font-size: 20px;">{{item.TenLoaiVatTu}}</span>
                     <hr/>
-                    <ul id="sideBar" style="list-style-image: url('../../../assets/iconLi_1_10x10.png')">
+                    <ul id="sideBar"  style="list-style-image: url('../../../assets/iconLi_1_10x10.png')">
                         <li *ngFor="let subItem of item.ListNhomVatTu" class="list">
                             <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" (click)="changeCategory(subItem)" *ngIf="maloaivattu!==subItem.MANHOMVATTU" id="menuSidebar" style="font-size: 16px;">{{subItem.TENNHOMVATTU}}</a>
                             <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" *ngIf="maloaivattu===subItem.MANHOMVATTU" id="menuSidebar" style="color: #F57223 !important;font-size: 16px;">{{subItem.TENNHOMVATTU}}</a>
                         </li>
                     </ul>
+                    <hr/>
                 </div>
                 <div>
-                    <span style="font-size: 15px;font-weight: bold;">Sản phẩm vừa xem</span>
+                    <span>Sản phẩm vừa xem</span>
                     <hr/>
                 </div>
             </mat-card>

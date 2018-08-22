@@ -28,13 +28,13 @@ export class NgbdPopoverConfig{
       this.vattuSelected =JSON.parse(this.cookieValue);
       //this.cookieService.delete('vattutronggiohang');
       this.quantity = this.vattuSelected.tongSoLuong;
-      this.titleCart = 'Có tất cả : '+ this.quantity +' mặt hàng';
+      this.titleCart = 'Có tất cả: '+ this.quantity +' mặt hàng';
       let content = '';
     }
     this.viewCartService.changeCart.subscribe(data => {
       this.vattuSelected = data;
       this.quantity = this.vattuSelected.tongSoLuong;
-      this.titleCart = 'Có tất cả : '+ this.quantity +' mặt hàng';
+      this.titleCart = 'Có tất cả: '+ this.quantity +' mặt hàng';
       let content = '';
       if(this.quantity === 0){
         this.cookieService.delete('vattutronggiohang');
