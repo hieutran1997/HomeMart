@@ -1,17 +1,17 @@
 <div class="container">
     <app-ngbd-carousel-config></app-ngbd-carousel-config>
 </div>
-<div class="container" style="margin-top: 10px;">
+<div class="container">
     <div class="row">
         <div class="col-lg-3">
             <mat-card>
                 <div *ngFor="let item of lstSideBar">
                     <span style="font-size: 20px;">{{item.TenLoaiVatTu}}</span>
                     <hr/>
-                    <ul id="sideBar"  style="list-style-image: url('../../../assets/iconLi_1_10x10.png')">
+                    <ul id="sideBar"  style="list-style-image: url('../../../assets/iconLi.gif');">
                         <li *ngFor="let subItem of item.ListNhomVatTu" class="list">
-                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" (click)="changeCategory(subItem)" *ngIf="maloaivattu!==subItem.MANHOMVATTU" id="menuSidebar" style="font-size: 16px;">{{subItem.TENNHOMVATTU}}</a>
-                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" *ngIf="maloaivattu===subItem.MANHOMVATTU" id="menuSidebar" style="color: #F57223 !important;font-size: 16px;">{{subItem.TENNHOMVATTU}}</a>
+                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" (click)="changeCategory(subItem)" *ngIf="maloaivattu!==subItem.MANHOMVATTU" id="menuSidebar" style="font-size: 15px; padding: 5px;">{{subItem.TENNHOMVATTU}}</a>
+                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" *ngIf="maloaivattu===subItem.MANHOMVATTU" id="menuSidebar" style="color: #F57223 !important;font-size: 15px;padding: 5px;">{{subItem.TENNHOMVATTU}}</a>
                         </li>
                     </ul>
                     <hr/>
