@@ -7,13 +7,14 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using BT.API.HOME.Models;
 using OracleInternal.Secure.Network;
+using System.Threading.Tasks;
 
 namespace BT.API.HOME.Controllers
 {
     [RoutePrefix("api/home")]
     public class HomeController : ApiController
     {
-        public IHttpActionResult GetListMerchanedise(decimal pagenumber , decimal pagesize,string order , string sorttype)
+        public async Task<IHttpActionResult> GetListMerchanedise(decimal pagenumber, decimal pagesize, string order, string sorttype)
         {
             List<VatTuModel> lstVatTu = new List<VatTuModel>();
             VatTuDTO vattu = new VatTuDTO(lstVatTu);
@@ -21,21 +22,21 @@ namespace BT.API.HOME.Controllers
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
             {
                 connection.Open();
-                if(connection.State == ConnectionState.Open)
+                if (connection.State == ConnectionState.Open)
                 {
                     decimal P_PAGENUMBER = pagenumber;
                     decimal P_PAGESIZE = pagesize;
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.InitialLONGFetchSize = 1000;
-                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' ORDER BY "+order+" "+sorttype+" ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' ORDER BY " + order + " " + sorttype + " ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
                     command.CommandType = CommandType.Text;
                     try
                     {
                         OracleDataReader reader = command.ExecuteReader();
                         if (reader.HasRows)
                         {
-                            decimal dongia ,soluong = 0;
+                            decimal dongia, soluong = 0;
                             while (reader.Read())
                             {
                                 VatTuModel temp = new VatTuModel();
@@ -79,7 +80,7 @@ namespace BT.API.HOME.Controllers
                     OracleDataReader dataReader = cmd.ExecuteReader();
                     if (dataReader.HasRows)
                     {
-                        decimal  totalitem = 0;
+                        decimal totalitem = 0;
                         while (dataReader.Read())
                         {
                             decimal.TryParse(dataReader["TOTALITEM"].ToString(), out totalitem);
@@ -93,7 +94,7 @@ namespace BT.API.HOME.Controllers
             return Ok(vattu);
         }
 
-        public IHttpActionResult GetListMerchanediseByCategory(decimal pagenumber, decimal pagesize,string merchanedisetype, string order, string sorttype)
+        public async Task<IHttpActionResult> GetListMerchanediseByCategory(decimal pagenumber, decimal pagesize, string merchanedisetype, string order, string sorttype)
         {
             List<VatTuModel> lstVatTu = new List<VatTuModel>();
             VatTuDTO vattu = new VatTuDTO(lstVatTu);
@@ -108,7 +109,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.InitialLONGFetchSize = 1000;
-                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MANHOMVATTU='" + merchanedisetype + "' OR vt.MALOAIVATTU = '"+ merchanedisetype + "' ORDER BY " + order + " " + sorttype + " ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MANHOMVATTU='" + merchanedisetype + "' OR vt.MALOAIVATTU = '" + merchanedisetype + "' ORDER BY " + order + " " + sorttype + " ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
                     command.CommandType = CommandType.Text;
                     try
                     {
@@ -135,7 +136,7 @@ namespace BT.API.HOME.Controllers
                                 string HinhAnh = reader["IMAGE"].ToString();
                                 string[] lstAnh = HinhAnh.Split(',');
                                 temp.HinhAnh = new List<string>();
-                                
+
                                 string Path = reader["PATH_IMAGE"].ToString();
                                 for (int i = 0; i < lstAnh.Length; i++)
                                 {
@@ -173,7 +174,7 @@ namespace BT.API.HOME.Controllers
             return Ok(vattu);
         }
 
-        public IHttpActionResult GetDetailMerchanedise(string mavattu , string madonvi)
+        public async Task<IHttpActionResult> GetDetailMerchanedise(string mavattu, string madonvi)
         {
             VatTuDetail result = new VatTuDetail();
             string table_XNT = CommonService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
@@ -185,7 +186,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT+" xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='"+ madonvi + "' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
+                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='" + madonvi + "' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
                     cmd.Parameters.Add("mavattu", OracleDbType.NVarchar2, 50).Value = mavattu;
                     try
                     {
@@ -220,13 +221,14 @@ namespace BT.API.HOME.Controllers
                                 result.Size = sizes;
                             }
                         }
-                    }catch(Exception ex) { }
+                    }
+                    catch (Exception ex) { }
                 }
             }
             return Ok(result);
         }
 
-        public IHttpActionResult GetListMerchanediseType(string madonvi)
+        public async Task<IHttpActionResult> GetListMerchanediseType(string madonvi)
         {
             List<MerchanediseType> lstMerchanediseType = new List<MerchanediseType>();
             using (
@@ -240,7 +242,7 @@ namespace BT.API.HOME.Controllers
                     command.Connection = connection;
                     command.CommandType = CommandType.Text;
                     command.CommandText = @"SELECT * FROM DM_LOAIVATTU WHERE UNITCODE = :madonvi";
-                    command.Parameters.Add("madonvi", OracleDbType.NVarchar2,10).Value = madonvi;
+                    command.Parameters.Add("madonvi", OracleDbType.NVarchar2, 10).Value = madonvi;
                     OracleDataReader reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {
@@ -258,7 +260,7 @@ namespace BT.API.HOME.Controllers
             return Ok(lstMerchanediseType);
         }
 
-        public IHttpActionResult GetAllGroupMerchanedise(string unitcode)
+        public async Task<IHttpActionResult> GetAllGroupMerchanedise(string unitcode)
         {
             List<NhomVatTuModel> lstNhomVatTu = new List<NhomVatTuModel>();
             using (
@@ -292,7 +294,7 @@ namespace BT.API.HOME.Controllers
             return Ok(lstNhomVatTu);
         }
 
-        public IHttpActionResult GetMerchanediseByCode(string mavattuselect,string madonvi)
+        public async Task<IHttpActionResult> GetMerchanediseByCode(string mavattuselect, string madonvi)
         {
             VatTuViewCart result = new VatTuViewCart();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
@@ -313,7 +315,7 @@ namespace BT.API.HOME.Controllers
                         {
                             while (reader.Read())
                             {
-                                decimal dongia= 0;
+                                decimal dongia = 0;
                                 result.TenVatTu = reader["TENHANG"].ToString();
                                 decimal.TryParse(reader["GIABANLEVAT"].ToString(), out dongia);
                                 result.GiaBanLeVat = dongia;
@@ -328,7 +330,7 @@ namespace BT.API.HOME.Controllers
             return Ok(result);
         }
 
-        public IHttpActionResult GetListMerchanediseKhuyenMai(decimal pagenumber, decimal pagesize,string makho,string madonvi)
+        public async Task<IHttpActionResult> GetListMerchanediseKhuyenMai(decimal pagenumber, decimal pagesize, string makho, string madonvi)
         {
             List<VatTuModel> lstVatTu = new List<VatTuModel>();
             VatTuDTO vattu = new VatTuDTO(lstVatTu);
@@ -343,14 +345,14 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.InitialLONGFetchSize = 1000;
-                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT km.MACHUONGTRINH,km.TUNGAY,DENNGAY,km.TUGIO,km.DENGIO,km.MAVATTU,km.SOLUONG,km.TYLEKHUYENMAICHILDREN AS TYLE,km.GIATRIKHUYENMAICHILDREN AS GIATRI,vt.GIABANLEVAT,vt.AVATAR,vt.TENHANG,xnt.TONCUOIKYSL SOTON FROM V_VATTU_GIABAN vt RIGHT JOIN V_CHUONGTRINH_KHUYENMAI km ON vt.MAVATTU = km.MAVATTU LEFT JOIN "+ table_XNT + " xnt ON xnt.MAVATTU= km.MAVATTU WHERE km.UNITCODE = '"+ madonvi + "' AND km.TRANGTHAI = 10 AND vt.UNITCODE ='"+ madonvi + "' AND xnt.MAKHO ='"+makho+"' AND km.TUNGAY >=TO_DATE(SYSDATE,'DD/MM/YY') AND km.DENNGAY <= TO_DATE(SYSDATE,'DD/MM/YY') ORDER BY vt.I_CREATE_DATE DESC ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT km.MACHUONGTRINH,km.TUNGAY,DENNGAY,km.TUGIO,km.DENGIO,km.MAVATTU,km.SOLUONG,km.TYLEKHUYENMAICHILDREN AS TYLE,km.GIATRIKHUYENMAICHILDREN AS GIATRI,vt.GIABANLEVAT,vt.AVATAR,vt.TENHANG,xnt.TONCUOIKYSL SOTON FROM V_VATTU_GIABAN vt RIGHT JOIN V_CHUONGTRINH_KHUYENMAI km ON vt.MAVATTU = km.MAVATTU LEFT JOIN " + table_XNT + " xnt ON xnt.MAVATTU= km.MAVATTU WHERE km.UNITCODE = '" + madonvi + "' AND km.TRANGTHAI = 10 AND vt.UNITCODE ='" + madonvi + "' AND xnt.MAKHO ='" + makho + "' AND km.TUNGAY >=TO_DATE(SYSDATE,'DD/MM/YY') AND km.DENNGAY <= TO_DATE(SYSDATE,'DD/MM/YY') ORDER BY vt.I_CREATE_DATE DESC ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
                     command.CommandType = CommandType.Text;
                     try
                     {
                         OracleDataReader reader = command.ExecuteReader();
                         if (reader.HasRows)
                         {
-                            decimal dongia, soluong ,khuyenmai,tyle= 0;
+                            decimal dongia, soluong, khuyenmai, tyle = 0;
                             while (reader.Read())
                             {
                                 VatTuModel temp = new VatTuModel();
@@ -387,7 +389,7 @@ namespace BT.API.HOME.Controllers
 
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
-                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_CHUONGTRINH_KHUYENMAI vt WHERE vt.UNITCODE ='" + madonvi+ "' AND vt.TUNGAY >=TO_DATE(SYSDATE,'DD/MM/YY') AND vt.DENNGAY <= TO_DATE(SYSDATE,'DD/MM/YY') ";
+                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_CHUONGTRINH_KHUYENMAI vt WHERE vt.UNITCODE ='" + madonvi + "' AND vt.TUNGAY >=TO_DATE(SYSDATE,'DD/MM/YY') AND vt.DENNGAY <= TO_DATE(SYSDATE,'DD/MM/YY') ";
                     cmd.CommandType = CommandType.Text;
                     OracleDataReader dataReader = cmd.ExecuteReader();
                     if (dataReader.HasRows)
@@ -408,12 +410,12 @@ namespace BT.API.HOME.Controllers
 
         [HttpPost]
         [Route("RegisKhachHang")]
-        public IHttpActionResult RegisKhachHang(KhachHangModel obj)
+        public async Task<IHttpActionResult> RegisKhachHang(KhachHangModel obj)
         {
             string newID = CommonService.GET_NEW_ID("KH");
             ObjectResult dataResult = new ObjectResult();
             string data = "";
-            using (OracleConnection connection =new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
             {
                 connection.Open();
                 if (connection.State == ConnectionState.Open)
@@ -430,7 +432,7 @@ namespace BT.API.HOME.Controllers
                     command.Parameters.Add("DIACHI", OracleDbType.NVarchar2, 500).Value = obj.DiaChi;
                     //command.Parameters.Add("TINH", OracleDbType.NVarchar2, 50).Value = obj.TinhTP;
                     command.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
-                    command.Parameters.Add("DIENTHOAI", OracleDbType.NVarchar2,50).Value = obj.DienThoai;
+                    command.Parameters.Add("DIENTHOAI", OracleDbType.NVarchar2, 50).Value = obj.DienThoai;
                     command.Parameters.Add("EMAIL", OracleDbType.NVarchar2, 100).Value = obj.Email;
                     command.Parameters.Add("NGAYSINH", OracleDbType.Date).Value = obj.NgaySinh;
                     command.Parameters.Add("CREATEDATE", OracleDbType.Date).Value = DateTime.Now;
@@ -446,9 +448,9 @@ namespace BT.API.HOME.Controllers
                             cmd.CommandText =
                                 @"INSERT INTO AU_NGUOIDUNG (ID , USERNAME, PASSWORD ,MANHANVIEN,SODIENTHOAI,TRANGTHAI,I_CREATE_DATE,UNITCODE)
                                    VALUES (:ID , :USERNAME , :PASSWORD , :MANHANVIEN , :SODIENTHOAI , :TRANGTHAI , :CREATEDATE ,:UNITCODE)";
-                            cmd.Parameters.Add("ID",OracleDbType.NVarchar2,50).Value = Guid.NewGuid();
+                            cmd.Parameters.Add("ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid();
                             cmd.Parameters.Add("USERNAME", OracleDbType.NVarchar2, 50).Value = obj.DienThoai;
-                            cmd.Parameters.Add("PASSWORD", OracleDbType.NVarchar2, 100).Value =CommonService.MD5Hash(obj.MatKhau);
+                            cmd.Parameters.Add("PASSWORD", OracleDbType.NVarchar2, 100).Value = CommonService.MD5Hash(obj.MatKhau);
                             cmd.Parameters.Add("MANHANVIEN", OracleDbType.NVarchar2, 50).Value = "KH";
                             cmd.Parameters.Add("SODIENTHOAI", OracleDbType.NVarchar2, 50).Value = obj.DienThoai;
                             cmd.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
@@ -482,7 +484,7 @@ namespace BT.API.HOME.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Login(string username,string pass, string donvi)
+        public async Task<IHttpActionResult> Login(string username, string pass, string donvi)
         {
             ObjectResult dataResult = new ObjectResult();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
@@ -494,7 +496,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.CommandType = CommandType.Text;
-                    command.CommandText = @"SELECT * FROM AU_NGUOIDUNG WHERE USERNAME = '"+ username + "' AND PASSWORD='"+ password + "' AND UNITCODE ='"+ donvi + "'";
+                    command.CommandText = @"SELECT * FROM AU_NGUOIDUNG WHERE USERNAME = '" + username + "' AND PASSWORD='" + password + "' AND UNITCODE ='" + donvi + "'";
                     try
                     {
                         OracleDataReader reader = command.ExecuteReader();
@@ -518,7 +520,7 @@ namespace BT.API.HOME.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetUserByPhone(string sodienthoai,string unitcode2)
+        public async Task<IHttpActionResult> GetUserByPhone(string sodienthoai, string unitcode2)
         {
             KhachHangModel dataResult = new KhachHangModel();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
@@ -548,7 +550,7 @@ namespace BT.API.HOME.Controllers
                     }
                     catch (Exception ex)
                     {
-                        
+
                     }
                 }
             }
@@ -557,7 +559,7 @@ namespace BT.API.HOME.Controllers
 
         [HttpPost]
         [Route("CheckOut")]
-        public IHttpActionResult CheckOut(ObjectCartModel data)
+        public async Task<IHttpActionResult> CheckOut(ObjectCartModel data)
         {
             ObjectResult dataResult = new ObjectResult();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
@@ -576,12 +578,12 @@ namespace BT.API.HOME.Controllers
                                             VALUES (:ID,:SOPHIEU,:MAHD,:SOPHIEUPK,:LOAI,:NGAY,:MAKHACHHANG,:THANHTIENSAUVAT,:TRANGTHAI,:TENNN,:SDTNN,:DIACHINN,:TRANGTHAITT,:ISBANBUON,:I_CREATE_DATE,:UNITCODE,:SOPHIEUCON)";
                     command.Parameters.Add("ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid();
                     command.Parameters.Add("SOPHIEU", OracleDbType.NVarchar2, 50).Value = soPhieu;
-                    command.Parameters.Add("MAHD",OracleDbType.NVarchar2,50).Value = soPhieu;
+                    command.Parameters.Add("MAHD", OracleDbType.NVarchar2, 50).Value = soPhieu;
                     command.Parameters.Add("SOPHIEUPK", OracleDbType.NVarchar2, 50).Value = soPhieuPK;
                     command.Parameters.Add("LOAI", OracleDbType.Decimal).Value = 10;
                     command.Parameters.Add("NGAY", OracleDbType.Date).Value = time;
                     command.Parameters.Add("MAKHACHHANG", OracleDbType.NVarchar2, 50).Value = data.SDTNN;
-                    command.Parameters.Add("THANHTIENSAUVAT", OracleDbType.NVarchar2, 50).Value =data.THANHTIENSAUVAT;
+                    command.Parameters.Add("THANHTIENSAUVAT", OracleDbType.NVarchar2, 50).Value = data.THANHTIENSAUVAT;
                     command.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
                     command.Parameters.Add("TENNN", OracleDbType.NVarchar2, 50).Value = data.TENNN;
                     command.Parameters.Add("SDTNN", OracleDbType.NVarchar2, 50).Value = data.SDTNN;
@@ -594,9 +596,9 @@ namespace BT.API.HOME.Controllers
                     try
                     {
                         int result = command.ExecuteNonQuery();
-                        if(result > 0)
+                        if (result > 0)
                         {
-                            int itemp =0, itemp2= 0;
+                            int itemp = 0, itemp2 = 0;
                             data.Details.ForEach(x =>
                             {
                                 OracleCommand cmd = new OracleCommand();
@@ -612,15 +614,15 @@ namespace BT.API.HOME.Controllers
                                 cmd.Parameters.Add("MAHANG", OracleDbType.NVarchar2, 50).Value = x.MAHANG;
                                 cmd.Parameters.Add("TENHANG", OracleDbType.NVarchar2, 50).Value = x.TENHANG;
                                 cmd.Parameters.Add("SOLUONG", OracleDbType.Decimal).Value = x.SOLUONG;
-                                cmd.Parameters.Add("DONGIA", OracleDbType.Decimal).Value = x.DONGIA ;
-                                cmd.Parameters.Add("THANHTIEN", OracleDbType.Decimal).Value = x.DONGIA *x.SOLUONG;
+                                cmd.Parameters.Add("DONGIA", OracleDbType.Decimal).Value = x.DONGIA;
+                                cmd.Parameters.Add("THANHTIEN", OracleDbType.Decimal).Value = x.DONGIA * x.SOLUONG;
                                 int resultDetail = cmd.ExecuteNonQuery();
-                                if(resultDetail > 0)
+                                if (resultDetail > 0)
                                 {
                                     itemp++;
                                 }
                             });
-                            if(itemp == itemp2)
+                            if (itemp == itemp2)
                             {
                                 dataResult.Message = "Thanh toán thành công !";
                                 dataResult.Result = true;
@@ -634,7 +636,7 @@ namespace BT.API.HOME.Controllers
                             }
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         dataResult.Message = "Thanh toán thất bại vui lòng kiểm tra lại !";
                         dataResult.Result = false;
@@ -643,6 +645,46 @@ namespace BT.API.HOME.Controllers
                 }
             }
             return Ok(dataResult);
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> SearchByCode(string codeMerchansedise, string unicodeSearch)
+        {
+            List<ObjectSearchDT> result = new List<ObjectSearchDT>();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = @"SEARCH_MERCHANDISE";
+                    command.Parameters.Add("P_MADONVI", OracleDbType.NVarchar2, 50).Value = unicodeSearch;
+                    command.Parameters.Add("STR_KEY", OracleDbType.NVarchar2, 500).Value = codeMerchansedise;
+                    command.Parameters.Add("RETURN_DATA", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    try
+                    {
+                        OracleDataReader dataReader = null;
+                        dataReader = command.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            ObjectSearchDT dataTemp = new ObjectSearchDT();
+                            while (dataReader.Read())
+                            {
+                                dataTemp.MaVatTu = dataReader["MAVATTU"].ToString();
+                                dataTemp.TenVatTu = dataReader["TENVATTU"].ToString();
+                                result.Add(dataTemp);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
+            return Ok(result);
         }
 
         public HttpResponseMessage Put()

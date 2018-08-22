@@ -5,6 +5,7 @@ import {PageEvent} from '@angular/material';
 import { khachHangModel } from '../model/khachHangModel';
 import { loginModel } from '../model/loginModel';
 import { ObjectCartModel } from '../model/ObjectCartDTO';
+import { ObjectSearchDTO } from '../model/objectSearchDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { ObjectCartModel } from '../model/ObjectCartDTO';
 export class CommonServiceService {
 
   madonvi:string = 'DV1-CH1';
-  host:string = 'http://btsoftvn.com:50595/';
+  host:string = 'http://localhost:50595/';
   makho :string= 'DV1-CH1-KBL';
 
   constructor(
@@ -82,5 +83,8 @@ export class CommonServiceService {
   }
   checkOut<objectResult>(data?:ObjectCartModel){
     return this._http.post<objectResult>(this.host+'api/home/CheckOut',data);
+  }
+  searchByCode<ObjectSearchDTO>(code? :string){
+    return this._http.get<ObjectSearchDTO>(this.host+'api/home/SearchByCode?codeMerchansedise='+code+'&unicodeSearch='+this.madonvi);
   }
 }
