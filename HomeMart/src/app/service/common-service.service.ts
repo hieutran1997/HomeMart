@@ -10,8 +10,8 @@ import { ObjectSearchDTO } from '../model/objectSearchDTO';
 @Injectable({
   providedIn: 'root'
 })
-export class CommonServiceService {
 
+export class CommonServiceService {
   madonvi:string = 'DV1-CH1';
   host:string = 'http://localhost:50595/';
   makho :string= 'DV1-CH1-KBL';
