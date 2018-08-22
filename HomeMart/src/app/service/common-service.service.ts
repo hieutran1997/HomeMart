@@ -9,8 +9,8 @@ import { ObjectCartModel } from '../model/ObjectCartDTO';
 @Injectable({
   providedIn: 'root'
 })
-export class CommonServiceService {
 
+export class CommonServiceService {
   madonvi:string = 'DV1-CH1';
   host:string = 'http://btsoftvn.com:50595/';
   makho :string= 'DV1-CH1-KBL';
