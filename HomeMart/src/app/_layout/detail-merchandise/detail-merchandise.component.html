@@ -8,11 +8,11 @@
                   <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
                 </div>
                 <div class="col-md-6">
-                    <p style="text-align: right;font-weight: bold;font-size: 16px;">{{vattu.TenVatTu}}</p>
+                    <p style="text-align: left;font-weight: bold;font-size: 16px;">{{vattu.MaVatTu}} - {{vattu.TenVatTu}}</p>
                     <hr/>
                     <div class="row">
                         <div class="col-md-3">
-                            <span  style="padding-top: 10px;font-size: 20px;">Giá bán : </span>
+                            <span  style="padding-top: 10px;font-size: 20px;">Giá lẻ: </span>
                         </div>
                         <div class="col-md-5">
                             <span id="monney" style="color: #F57223;font-size: 25px">{{vattu.DonGia | number}} ₫</span>
@@ -20,7 +20,7 @@
                     </div>
                     <br/>
                     <div class="row">
-                        <div class="col-md-3" style="padding-top: 10px;font-size: 20px;">Số lượng : </div>
+                        <div class="col-md-3" style="padding-top: 10px;font-size: 20px;">Số lượng: </div>
                         <div class="col-xs-4" style="padding-top: 15px">
                             <div class="input-group">
                                 <button (click)="changeSoLuong('giam')"><span class="fa fa-minus"></span></button>
@@ -51,7 +51,7 @@
         </mat-card-footer>
     </mat-card>
     <mat-card>
-        <mat-card-title>Mặt hàng liên quan
+        <mat-card-title>Sản phẩm liên quan
         </mat-card-title>
         <mat-card-content  *ngIf="isLoading">
                 <br/>
