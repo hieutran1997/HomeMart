@@ -4,15 +4,11 @@ import {CommonServiceService} from '../../service/common-service.service';
 import { CookieService } from 'ngx-cookie-service';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import { ObjectSearchDTO } from '../../model/objectSearchDTO';
+import { SearchService } from  '../../service/search.service';
+import {Router} from '@angular/router';
 
-const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
-  'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
-  'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
-  'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
-  'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-  'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico', 'Rhode Island',
-  'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Islands', 'Virginia',
-  'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+const states = [];
 
 @Component({
   selector: 'app-header',
@@ -20,13 +16,16 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
+  lstSearch : Array<ObjectSearchDTO>;
+  lstMerchansediseOld : Array<string>;
   lstLoaiVatTu : Array<LoaiVatTu>;
   checkUser : boolean = false;
   listMenu = new Array();
   constructor(
     private commonService : CommonServiceService,
     private cookieService:CookieService,
+    private searchService : SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -36,6 +35,12 @@ export class HeaderComponent implements OnInit {
     }
     else{
       this.checkUser = false;
+    }
+    if(this.cookieService.check('lstMerchansediseOld')){
+      this.lstMerchansediseOld = this.cookieService.get('lstMerchansediseOld').split(',');
+      this.lstMerchansediseOld.forEach(function(obj){
+        states.push(obj);
+      });
     }
     this.commonService.getAllMerchanediseType<Array<LoaiVatTu>>().subscribe(
       data=>{
@@ -62,19 +67,14 @@ export class HeaderComponent implements OnInit {
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => {
-        if(term.length < 2 ){
-          [];
-        }
-        else{
-          this.commonService.searchByCode(term).subscribe(result=>{
-            console.log(result);
-          });
-          states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
-        }
-      })
+      map(term => term.length < 1 ? []
+        : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     );
-  SearchData(data){
-    
+  searchData(data){
+    this.router.navigateByUrl('/tim-kiem/'+data);
+    // this.commonService.searchByCode<Array<ObjectSearchDTO>>(data).subscribe(result=>{
+    //   this.lstSearch = result;
+    //   this.searchService.searchByCode(this.lstSearch);
+    // });
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { VatTuDTO} from '../_layout/home/vattumodel';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient,HttpParams } from '@angular/common/http';
 import {PageEvent} from '@angular/material';
 import { khachHangModel } from '../model/khachHangModel';
 import { loginModel } from '../model/loginModel';
@@ -84,7 +84,36 @@ export class CommonServiceService {
   checkOut<objectResult>(data?:ObjectCartModel){
     return this._http.post<objectResult>(this.host+'api/home/CheckOut',data);
   }
-  searchByCode<ObjectSearchDTO>(code? :string){
-    return this._http.get<ObjectSearchDTO>(this.host+'api/home/SearchByCode?codeMerchansedise='+code+'&unicodeSearch='+this.madonvi);
+  searchByCode(event? :PageEvent,code? :string){
+
+    if(!event){
+      let data ={
+        pagenumber :1,
+        pagesize : 12,
+        keysearch: code,
+        order: 'vt.TENVATTU',
+        sorttype:'ASC',
+      }
+      return this._http.post<VatTuDTO>(this.host+'api/home/SearchByCode',data);
+    }
+    else{
+      let data ={
+        pagenumber : event.pageIndex +1,
+        pagesize : event.pageSize,
+        keysearch: code,
+        order: 'vt.TENVATTU',
+        sorttype:'ASC',
+      }
+      return this._http.post<VatTuDTO>(this.host+'api/home/SearchByCode',data);
+    }
+  }
+
+  getMerchanediseRel(maloaivattu : string){
+    let obj = {
+      MaLoaiVatTu : maloaivattu,
+      TenLoaiVatTu: '',
+      UnitCode : this.madonvi
+    }
+    return this._http.post<any>(this.host+'api/home/GetMerchanediseRel',obj);
   }
 }
