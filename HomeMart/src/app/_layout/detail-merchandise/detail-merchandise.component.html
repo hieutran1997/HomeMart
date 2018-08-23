@@ -5,28 +5,14 @@
         <mat-card-content  class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <!-- <div class="row  justify-content-around">
-                        <div class="col-5">
-                            <img *ngIf="vattu.Avatar" src="data:image/JPEG;base64,{{vattu.Avatar}}" class="img-fluid" alt="{{vattu.TenVatTu}}">
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="container" *ngIf="vattu.HinhAnhs">
-                        <div class="row justify-content-start">
-                            <div class="col-3" *ngFor="let image of vattu.HinhAnhs">
-                                <img src="http://btsoftvn.com:8080/{{image}}"  class="img-thumbnail" style="max-height: 100px;" alt="{{vattu.TenVatTu}}">
-                            </div>
-                        </div>
-                        
-                    </div>             -->
-                    <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+                  <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
                 </div>
                 <div class="col-md-6">
-                    <p style="text-align: right;font-weight: bold;font-size: 16px;">{{vattu.TenVatTu}}</p>
+                    <p style="text-align: left;font-weight: bold;font-size: 16px;">{{vattu.MaVatTu}} - {{vattu.TenVatTu}}</p>
                     <hr/>
                     <div class="row">
                         <div class="col-md-3">
-                            <span  style="padding-top: 10px;font-size: 20px;">Giá bán : </span>
+                            <span  style="padding-top: 10px;font-size: 20px;">Giá lẻ: </span>
                         </div>
                         <div class="col-md-5">
                             <span id="monney" style="color: #F57223;font-size: 25px">{{vattu.DonGia | number}} ₫</span>
@@ -34,7 +20,7 @@
                     </div>
                     <br/>
                     <div class="row">
-                        <div class="col-md-3" style="padding-top: 10px;font-size: 20px;">Số lượng : </div>
+                        <div class="col-md-3" style="padding-top: 10px;font-size: 20px;">Số lượng: </div>
                         <div class="col-xs-4" style="padding-top: 15px">
                             <div class="input-group">
                                 <button (click)="changeSoLuong('giam')"><span class="fa fa-minus"></span></button>
@@ -48,14 +34,14 @@
                     <br/>
                     <div class="row">
                         <div class="col-md-4">
-                            <span style="font-size: 20px">Tồn kho :&nbsp;<span class="badge badge-light" style="color: #F57223 !important">{{vattu.SoTon}}</span> </span>
+                            <span style="font-size: 20px">Tồn:&nbsp;<span class="badge badge-light" style="color: #F57223 !important">{{vattu.SoTon}}</span> </span>
                         </div>
                     </div>
                     <div class="row" style="font-size: 20px;margin-left: 30%;color: #F57223;">
                         <ngb-rating [rate]="vattu.selectFavorite"></ngb-rating>
                     </div>
                     <br/>
-                    <u style="font-size: 20px;">Chi tiết sản phẩm : </u>
+                    <u style="font-size: 20px;">Giới thiệu sản phẩm:</u>
                     <br/>
                     <span [innerHTML]="vattu.MoTa"></span>
                 </div>
@@ -65,7 +51,7 @@
         </mat-card-footer>
     </mat-card>
     <mat-card>
-        <mat-card-title>Mặt hàng liên quan
+        <mat-card-title>Sản phẩm liên quan
         </mat-card-title>
         <mat-card-content  *ngIf="isLoading">
                 <br/>

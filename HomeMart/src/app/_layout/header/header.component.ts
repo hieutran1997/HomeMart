@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let arrTemp = new Array({ Title : 'Hàng mới' , url : '/'});
+    let arrTemp = new Array();
     if(this.cookieService.check('taikhoanbanhang')){
       this.checkUser = true;
     }
@@ -52,10 +52,19 @@ export class HeaderComponent implements OnInit {
               url: '/loai-hang/'+obj.MaLoaiVatTu
             });
           });
+
+          arrTemp.push({
+            Title : 'Giới thiệu',
+            url: '/gioi-thieu'
+          });
           this.listMenu = arrTemp;
         }
       }
     );
+  }
+  redirectFB(){
+    let url="https://www.facebook.com/vnxkbanbuonbanle123/";
+    window.open(url, '_blank');
   }
   signOut(){
     this.cookieService.delete('taikhoanbanhang');
