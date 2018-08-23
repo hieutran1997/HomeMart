@@ -13,7 +13,7 @@ import { ObjectSearchDTO } from '../model/objectSearchDTO';
 
 export class CommonServiceService {
   madonvi:string = 'DV1-CH1';
-  host:string = 'http://localhost:50595/';
+  host:string = 'http://btsoftvn.com:50595/';
   makho :string= 'DV1-CH1-KBL';
 
   constructor(

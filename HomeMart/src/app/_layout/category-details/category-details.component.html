@@ -55,19 +55,18 @@
                         </div>
                     </mat-card-content>
                     <mat-card-footer style="text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; ">
-                        <div class="row" style="height: 40px;"> 
-                            <span style="font-size: 13px" (click)="redirectDetail(item)" id="tenVatTu"> {{item.MaVatTu}}  - {{display(item.TenVatTu)}}</span>
+                        <div class="row"> 
+                            <span style="color:  rgb(66, 132, 255) !important;font-size: 14px;text-align: left !important; padding-left: 20px; padding-top: 10px;padding-right: 15px" (click)="redirectDetail(item)" id="tenVatTu">{{item.MaVatTu}} - {{display(item.TenVatTu)}}</span>
                         </div>
                         <div class="row">
                             <div class="col-md-9">
-                                <span id="monney" style="color: #F57223;">{{item.DonGia | number}} ₫</span>
+                                <span id="monney" style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;color: #F57223; font-weight: bold">{{item.DonGia | number}} ₫</span>
                                 <br/>
-                                <span style="font-size: 13px">Tồn kho :&nbsp;<span class="badge badge-light" style="color: #F57223 !important">{{item.SoTon}}</span> </span>
+                                <span style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;font-size: 14px">Tồn:&nbsp;<span class="badge badge-light" style="color: #F57223 !important ;font-size: 14px">{{item.SoTon}}</span> </span>
                             </div>
-                            <div class="col-md-3">
-                                    <img src="/assets/cartNew.png" (click)="addToCart(item);open(modalCart,item)" id="pointer" width="32px" height="32px" title="Thêm vào giỏ hàng"/>
-                                <!-- <span (click)="addToCart(item)" id="pointer" title="Thêm vào giỏ hàng" class="fa fa-shopping-basket fa-2x"></span> -->
-                            </div>
+                            <div class="col-md-3" >
+                                <span style="padding-top:50px;padding-right:50px;"><img  src="/assets/cartNew.png" (click)="addToCart(item);open(modalCart,item)" id="pointer" title="Thêm vào giỏ hàng"/></span> 
+                             </div>
                         </div>
                         <div class="row" style="font-size: 15px;margin-left: 30%;">
                             <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
