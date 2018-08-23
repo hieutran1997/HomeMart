@@ -1,4 +1,4 @@
 export class ObjectSearchDTO{
-    public maVatTu:string;
-    public tenVatTu:string;
+    public MaVatTu:string;
+    public TenVatTu:string;
 }

@@ -8,6 +8,7 @@ import { ViewCartService } from '../view-cart.service';
 import { CommonServiceService } from '../../service/common-service.service';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
+import {Router,NavigationEnd} from '@angular/router';
 
 enableProdMode();
 
@@ -18,74 +19,130 @@ enableProdMode();
   providers: [NgbRatingConfig] 
 })
 export class DetailMerchandiseComponent implements OnInit {
+  lstMerchansediseOld : Array<string>;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   mavattu: string='';
+  navigationSubscription;
   vattu : VatTuDetail = new VatTuDetail();
   scoreFavorites : number[] = [1,2,3,4,5];
   soLuong:number=1;
   cookieValue = 'UNKNOWN';
   vattuSelected : CartModel = null;
-
+  vattuRel = [];
+  isLoading = false;
   constructor( 
     private route: ActivatedRoute,
     private location: Location,
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
     private commonService :CommonServiceService,
+    private router: Router,
     config: NgbRatingConfig
   ) {
     config.max = 5;
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd ) {
+        let url:string = e.urlAfterRedirects; 
+        let mavt = url.split('/');
+        console.log(mavt[mavt.length-1]);
+        this.filterData(mavt[mavt.length-1]);
+      }
+    });
   }
 
   ngOnInit() {
     this.mavattu= this.route.snapshot.paramMap.get('mavattu');
     this.filterData(this.mavattu);
-    console.log(this.cookieService.getAll());
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
       //this.cookieService.delete('vattutronggiohang');
     }
 
-     this.galleryOptions = [
-        {
-            width: '500px',
-            height: '400px',
-            thumbnailsColumns: 4,
-            imageAnimation: NgxGalleryAnimation.Slide
-        },
-        // max-width 800
-        {
-            breakpoint: 800,
-            width: '100%',
-            height: '600px',
-            imagePercent: 80,
-            thumbnailsPercent: 20,
-            thumbnailsMargin: 20,
-            thumbnailMargin: 20
-        },
-        // max-width 400
-        {
-            breakpoint: 400,
-            preview: false
-        }
+    this.galleryOptions = [
+      // {
+      //     width: '500px',
+      //     height: '400px',
+      //     thumbnailsColumns: 4,
+      //     imageAnimation: NgxGalleryAnimation.Slide
+      // },
+      // // max-width 800
+      // {
+      //     breakpoint: 800,
+      //     width: '100%',
+      //     height: '600px',
+      //     imagePercent: 80,
+      //     thumbnailsPercent: 20,
+      //     thumbnailsMargin: 20,
+      //     thumbnailMargin: 20
+      // },
+      // // max-width 400
+      // {
+      //     breakpoint: 400,
+      //     preview: false
+      // },
+      { "previewZoom": true, "previewRotate": true },
+      { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
+      { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 }
     ];
 
     this.galleryImages = [
     ];
   }
   filterData(mavattu){
+    this.isLoading = true;
    this.commonService.getDataDetail<VatTuDetail>(mavattu).subscribe(
       data =>{
+        this.lstMerchansediseOld = [];
         if(data){
           this.vattu = data;
           this.vattu.selectFavorite = 0;
+          this.commonService.getMerchanediseRel(this.vattu.MaNhomVatTu).subscribe(x=>{
+            this.vattuRel = x;
+            this.isLoading = false;
+          });
+          if(this.cookieService.check('lstMerchansediseOld')){
+            this.lstMerchansediseOld = this.cookieService.get('lstMerchansediseOld').split(',');
+            //this.cookieService.delete('lstMerchansediseOld');
+          }
+          if(this.lstMerchansediseOld.length>10){ //chỉ lưu 10 phần tử cũ
+            let checkExist = this.checkExist(this.vattu.TenVatTu,this.lstMerchansediseOld);
+            if(!checkExist){
+              this.lstMerchansediseOld.splice(0,1);
+              this.lstMerchansediseOld.push(this.vattu.TenVatTu);
+              let temp = "";
+              for(let i = 0 ;i < this.lstMerchansediseOld.length-1 ; i++){
+                if(i ===0){
+                  temp = this.lstMerchansediseOld[i];
+                }
+                else{
+                  temp+=","+this.lstMerchansediseOld[i];
+                }
+              }
+              this.cookieService.delete('lstMerchansediseOld');
+              this.cookieService.set('lstMerchansediseOld',temp,10);
+            }
+          }
+          else{
+            let checkExist = this.checkExist(this.vattu.TenVatTu,this.lstMerchansediseOld);
+            if(!checkExist){
+              let temp = this.cookieService.get('lstMerchansediseOld');
+              if(temp===""){
+                temp = this.vattu.TenVatTu;
+              }else{
+                temp +=","+this.vattu.TenVatTu;
+              }
+              this.cookieService.delete('lstMerchansediseOld');
+              this.cookieService.set('lstMerchansediseOld',temp,10);
+            }
+          }
           // this.galleryImages.push({
           //   small: this.vattu.Avartar,
           //   medium: this.vattu.Avartar,
           //   big: this.vattu.Avartar
           // });
+          this.galleryImages= [];
           for(let i = 0 ; i < this.vattu.HinhAnhs.length ; i++){
             this.galleryImages.push({
               small: 'http://btsoftvn.com:8080'+this.vattu.HinhAnhs[i],
@@ -96,6 +153,14 @@ export class DetailMerchandiseComponent implements OnInit {
         }
       }
     )
+  }
+
+  checkExist(tenvattu:string , lstData:Array<string>):boolean{
+    let index =lstData.indexOf(tenvattu);
+    if(index >= 0)
+      return true;
+    else
+      return false;
   }
 
   addToCart(item){
@@ -145,5 +210,22 @@ export class DetailMerchandiseComponent implements OnInit {
     else{
       this.soLuong++;
     }
+  }
+  slideConfig = {"slidesToShow": 4, "slidesToScroll": 4};
+
+  slickInit(e) {
+    console.log('slick initialized');
+  }
+  
+  breakpoint(e) {
+    console.log('breakpoint');
+  }
+  
+  afterChange(e) {
+    console.log('afterChange');
+  }
+  
+  beforeChange(e) {
+    console.log('beforeChange');
   }
 }

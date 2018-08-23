@@ -11,7 +11,6 @@ import { Location } from '@angular/common';
 import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-
 @Component({
   selector: 'app-content-home',
   templateUrl: './content-home.component.html',
@@ -20,6 +19,7 @@ import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
   providers: [NgbRatingConfig] 
 })
 export class ContentHomeComponent implements OnInit {
+  lstMerchansediseOld : Array<string>;
   maloaivattu : string = '';
   result : VatTuDTO = null;
   lstVatTu : Array<VatTu>;

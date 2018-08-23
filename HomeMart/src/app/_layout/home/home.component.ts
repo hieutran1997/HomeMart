@@ -11,6 +11,8 @@ import {sideBarShow} from '../../model/sideBarShowModel';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ViewCartService } from '../view-cart.service';
+import { SearchService } from '../../service/search.service';
+import { ObjectSearchDTO } from '../../model/objectSearchDTO';
 
 @Component({
   selector: 'app-home',
@@ -44,6 +46,7 @@ export class HomeComponent  implements OnInit {
     private location: Location,
     private router: Router,
     private viewCartService: ViewCartService,
+    private searchService : SearchService,
   ) { 
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd ) {

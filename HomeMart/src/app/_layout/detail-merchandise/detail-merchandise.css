@@ -2,3 +2,15 @@
     max-height: 400px;
     float:right;
 }
+
+#slickAvatar{
+    height: 200px;
+}
+
+#avatarDetail{
+    height: 200px !important;
+}
+.slide{
+    height: 300px !important;
+    max-width: 200px !important;
+}

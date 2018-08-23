@@ -32,6 +32,7 @@ export class VatTuDetail{
     public  NhaCungCap:string;
     public Size : Array<string>;
     public  MaDonVi:string;
+    public MaNhomVatTu : string;
     constructor(){
         this.TenVatTu = "";
         this.MaVatTu = "";

@@ -31,6 +31,8 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { InfoPageComponent } from './_layout/info-page/info-page.component';
 import { ShippingComponent } from './_layout/shipping/shipping.component';
 import { ContactComponent } from './_layout/contact/contact.component';
+import { SearchDetailComponent } from './_layout/search-detail/search-detail.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { ContactComponent } from './_layout/contact/contact.component';
     RegisterComponent,
     InfoPageComponent,
     ShippingComponent,
-    ContactComponent
+    ContactComponent,
+    SearchDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +78,7 @@ import { ContactComponent } from './_layout/contact/contact.component';
     MatFormFieldModule ,
     MatInputModule ,
     MatNativeDateModule,
+    SlickCarouselModule,
     NgbModule.forRoot(),
   ],
   providers: [CookieService,{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro},CommonServiceService],
