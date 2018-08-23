@@ -14,4 +14,12 @@ namespace BT.API.HOME.Models
         public string MADONVI { get; set; }
 
     }
+    public class VatTuCungNhom
+    {
+        public string MaVatTu { get; set; }
+        public string TenVatTu { get; set; }
+        public decimal DonGia { get; set; }
+        public byte[] Avatar { get; set; }
+        public string MaLoaiVatTu { get; set; }
+    }
 }

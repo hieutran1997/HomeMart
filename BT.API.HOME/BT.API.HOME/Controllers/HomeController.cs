@@ -29,7 +29,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.InitialLONGFetchSize = 1000;
-                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' ORDER BY " + order + " " + sorttype + " ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1'  AND xnt.TONCUOIKYSL > 0 AND xnt.MAKHO ='DV1-CH1-KBL' ORDER BY " + order + " " + sorttype + " ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
                     command.CommandType = CommandType.Text;
                     try
                     {
@@ -75,7 +75,7 @@ namespace BT.API.HOME.Controllers
 
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
-                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_VATTU_GIABAN vt WHERE vt.MADONVI ='DV1-CH1'";
+                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='DV1-CH1' AND xnt.TONCUOIKYSL > 0";
                     cmd.CommandType = CommandType.Text;
                     OracleDataReader dataReader = cmd.ExecuteReader();
                     if (dataReader.HasRows)
@@ -109,7 +109,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.InitialLONGFetchSize = 1000;
-                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MANHOMVATTU='" + merchanedisetype + "' OR vt.MALOAIVATTU = '" + merchanedisetype + "' ORDER BY " + order + " " + sorttype + " ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1'  AND xnt.TONCUOIKYSL > 0 AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MANHOMVATTU='" + merchanedisetype + "' OR vt.MALOAIVATTU = '" + merchanedisetype + "' ORDER BY " + order + " " + sorttype + " ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
                     command.CommandType = CommandType.Text;
                     try
                     {
@@ -155,7 +155,7 @@ namespace BT.API.HOME.Controllers
                     }
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
-                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_VATTU_GIABAN vt WHERE vt.MADONVI ='DV1-CH1' AND vt.MANHOMVATTU='" + merchanedisetype + "' OR vt.MALOAIVATTU = '" + merchanedisetype + "'";
+                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='DV1-CH1' AND xnt.TONCUOIKYSL > 0  AND vt.MANHOMVATTU='" + merchanedisetype + "' OR vt.MALOAIVATTU = '" + merchanedisetype + "'";
                     cmd.CommandType = CommandType.Text;
                     OracleDataReader dataReader = cmd.ExecuteReader();
                     if (dataReader.HasRows)
@@ -186,7 +186,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='" + madonvi + "' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
+                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar , vt.MANHOMVATTU, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='" + madonvi + "' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
                     cmd.Parameters.Add("mavattu", OracleDbType.NVarchar2, 50).Value = mavattu;
                     try
                     {
@@ -208,6 +208,7 @@ namespace BT.API.HOME.Controllers
                                 result.Avatar = (byte[])reader["Avatar"];
                                 string Path = reader["PATH_IMAGE"].ToString();
                                 result.MaDonVi = reader["MADONVI"].ToString();
+                                result.MaNhomVatTu = reader["MANHOMVATTU"].ToString();
                                 for (int i = 0; i < lstAnh.Length; i++)
                                 {
                                     if (!string.IsNullOrEmpty(lstAnh[i]))
@@ -647,41 +648,123 @@ namespace BT.API.HOME.Controllers
             return Ok(dataResult);
         }
 
-        [HttpGet]
-        public async Task<IHttpActionResult> SearchByCode(string codeMerchansedise, string unicodeSearch)
+        [HttpPost]
+        [Route("SearchByCode")]
+        public async Task<IHttpActionResult> SearchByCode(RequestObjectSearch data)
         {
-            List<ObjectSearchDT> result = new List<ObjectSearchDT>();
+            List<VatTuModel> lstVatTu = new List<VatTuModel>();
+            VatTuDTO vattu = new VatTuDTO(lstVatTu);
+            string table_XNT = CommonService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
             {
                 connection.Open();
                 if (connection.State == ConnectionState.Open)
                 {
+                    decimal P_PAGENUMBER = data.pagenumber;
+                    decimal P_PAGESIZE = data.pagesize;
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = @"SEARCH_MERCHANDISE";
-                    command.Parameters.Add("P_MADONVI", OracleDbType.NVarchar2, 50).Value = unicodeSearch;
-                    command.Parameters.Add("STR_KEY", OracleDbType.NVarchar2, 500).Value = codeMerchansedise;
-                    command.Parameters.Add("RETURN_DATA", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    command.InitialLONGFetchSize = 1000;
+                    command.CommandText = string.Format(@"SELECT * FROM ( SELECT a.*, rownum r__ FROM ( SELECT vt.MAVATTU , vt.TENVATTU , vt.GIABANLEVAT ,vt.Avatar, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU  WHERE vt.MADONVI ='DV1-CH1' AND xnt.MAKHO ='DV1-CH1-KBL'  AND xnt.TONCUOIKYSL > 0 AND vt.TENVATTU  LIKE '%" + data.keysearch + "%' OR vt.MAVATTU LIKE '%" + data.keysearch + "%' ORDER BY " + data.order + " " + data.sorttype + " ) a WHERE rownum < ((" + P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " + P_PAGESIZE + ") + 1)");
+                    command.CommandType = CommandType.Text;
                     try
                     {
-                        OracleDataReader dataReader = null;
-                        dataReader = command.ExecuteReader();
-                        if (dataReader.HasRows)
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
                         {
-                            ObjectSearchDT dataTemp = new ObjectSearchDT();
-                            while (dataReader.Read())
+                            decimal dongia, soluong = 0;
+                            while (reader.Read())
                             {
-                                dataTemp.MaVatTu = dataReader["MAVATTU"].ToString();
-                                dataTemp.TenVatTu = dataReader["TENVATTU"].ToString();
-                                result.Add(dataTemp);
+                                VatTuModel temp = new VatTuModel();
+                                temp.MaVatTu = reader["MAVATTU"].ToString();
+                                temp.TenVatTu = reader["TENVATTU"].ToString();
+                                decimal.TryParse(reader["GIABANLEVAT"].ToString(), out dongia);
+                                temp.DonGia = dongia;
+                                decimal.TryParse(reader["TONCUOIKYSL"].ToString(), out soluong);
+                                temp.SoTon = soluong;
+                                try
+                                {
+                                    temp.Avatar = (byte[])reader["Avatar"];
+                                }
+                                catch (Exception)
+                                {
+                                }
+                                string HinhAnh = reader["IMAGE"].ToString();
+                                string[] lstAnh = HinhAnh.Split(',');
+                                temp.HinhAnh = new List<string>();
+
+                                string Path = reader["PATH_IMAGE"].ToString();
+                                for (int i = 0; i < lstAnh.Length; i++)
+                                {
+                                    if (!string.IsNullOrEmpty(lstAnh[i]))
+                                    {
+                                        temp.HinhAnh.Add(Path + lstAnh[i]);
+                                    }
+                                }
+                                lstVatTu.Add(temp);
                             }
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
 
                     }
+                    OracleCommand cmd = new OracleCommand();
+                    cmd.Connection = connection;
+                    cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM V_VATTU_GIABAN vt WHERE vt.MADONVI ='DV1-CH1' AND  vt.TENVATTU  LIKE '%" + data.keysearch + "%' OR vt.MAVATTU LIKE '%" + data.keysearch + "%'";
+                    cmd.CommandType = CommandType.Text;
+                    OracleDataReader dataReader = cmd.ExecuteReader();
+                    if (dataReader.HasRows)
+                    {
+                        decimal totalitem = 0;
+                        while (dataReader.Read())
+                        {
+                            decimal.TryParse(dataReader["TOTALITEM"].ToString(), out totalitem);
+                            vattu.ItemTotal = totalitem;
+                            vattu.PageSize = data.pagesize;
+                            vattu.PageNumber = data.pagenumber;
+                        }
+                    }
+                }
+            }
+            return Ok(vattu);
+        }
+
+        [HttpPost]
+        [Route("GetMerchanediseRel")]
+        public async Task<IHttpActionResult> GetMerchanediseRel(MerchanediseType request)
+        {
+            List<VatTuCungNhom> result = new List<VatTuCungNhom>();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if(connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT vt.TENVATTU,vt.MAVATTU , vt.AVATAR ,vt.GIABANLEVAT,vt.MANHOMVATTU FROM V_VATTU_GIABAN vt WHERE vt.MANHOMVATTU =:maloai AND vt.UNITCODE=:madonvi AND ROWNUM <= 10";
+                    command.Parameters.Add("maloai", OracleDbType.NVarchar2, 50).Value = request.MaLoaiVatTu;
+                    command.Parameters.Add("madonvi", OracleDbType.NVarchar2, 50).Value = request.UnitCode;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            decimal dg = 0;
+                            while (reader.Read())
+                            {
+                                VatTuCungNhom data = new VatTuCungNhom();
+                                data.Avatar = (byte[])reader["Avatar"];
+                                data.TenVatTu = reader["TENVATTU"].ToString();
+                                data.MaVatTu = reader["MAVATTU"].ToString();
+                                data.MaLoaiVatTu = reader["MANHOMVATTU"].ToString();
+                                decimal.TryParse(reader["GIABANLEVAT"].ToString(), out dg);
+                                data.DonGia = dg;
+                                result.Add(data);
+                            }
+                        }
+                    }catch(Exception ex) { }
                 }
             }
             return Ok(result);

@@ -34,6 +34,7 @@ namespace BT.API.HOME.Models
         public string MaVatTu { get; set; }
         public string TenVatTu { get; set; }
         public string MoTa { get; set; }
+        public string MaNhomVatTu { get; set; }
         public decimal DonGia { get; set; }
         public decimal SoTon { get; set; }
         public string NhaCungCap { get; set; }
