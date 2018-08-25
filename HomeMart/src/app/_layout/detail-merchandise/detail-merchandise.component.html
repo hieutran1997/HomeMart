@@ -51,48 +51,18 @@
         </mat-card-footer>
     </mat-card>
     <mat-card>
-        <mat-card-title>Sản phẩm liên quan
-        </mat-card-title>
-        <mat-card-content  *ngIf="isLoading">
-                <br/>
-                <div class="row">
-                    <div class="col-md-5"></div>
-                    <div class="col align-self-center">
-                        <app-looping-rhombuses-spinner
-                        [animationDuration]="2500"
-                        [rhombusSize]="15"
-                        [color]="'#4286f4'"
-                        ></app-looping-rhombuses-spinner>
-                          
+        <mat-card-title>Sản phẩm liên quan</mat-card-title>
+        <mat-card-content>
+           <div class="row" style="text-align: center">
+                <div style="display: block" class="col-md-3" *ngFor="let item of vattuRel">
+                    <div class="text-center">
+                        <a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}" title="{{item.TenVatTu}}"><img src="data:image/JPEG;base64,{{item.Avatar}}" style="padding-top:20px;max-height: 200px!important" alt="{{item.TenVatTu}}"></a>
                     </div>
-                    <div class="col-md-4"></div>
+                    <div class="row">
+                        <span style="padding: 5px 30px 5px 30px">{{item.TenVatTu}}</span>
+                    </div>
                 </div>
-                <br/>
-            </mat-card-content>
-        <mat-card-content *ngIf="!isLoading"  class="container">
-             <!-- You can now use your library component in app.component.html -->
-            <ngx-slick-carousel class="carousel"
-                    #slickModal="slick-carousel" 
-                    [config]="slideConfig" 
-                    (init)="slickInit($event)"
-                    (breakpoint)="breakpoint($event)"
-                    (afterChange)="afterChange($event)"
-                    (beforeChange)="beforeChange($event)">
-                <div ngxSlickItem *ngFor="let vattu of vattuRel" class="slide" id="slickAvatar">
-                    <a routerLink="/chi-tiet-hang-hoa/{{vattu.MaVatTu}}">
-                        <div class="container">
-                            <div class="row">
-                                <img src="data:image/JPEG;base64,{{vattu.Avatar}}" id="avatarDetail" class="img-fluid" alt="{{vattu.TenVatTu}}">
-                            </div>
-                            <div class="row">
-                                <div style="height: 40px; text-align: center;padding: 0px 5px 0px 5px">{{vattu.TenVatTu}}</div>
-                            </div>  
-                            <br/>
-                            <span style="color: #F57223;">{{vattu.DonGia|number}}</span>
-                        </div>
-                    </a>
-                </div>
-            </ngx-slick-carousel>
+           </div>
         </mat-card-content>
     </mat-card>
 </div>

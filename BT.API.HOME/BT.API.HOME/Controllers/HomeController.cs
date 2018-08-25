@@ -64,6 +64,8 @@ namespace BT.API.HOME.Controllers
                                         temp.HinhAnh.Add(Path + lstAnh[i]);
                                     }
                                 }
+                                temp.DonGiaKhuyenMai = 0;
+                                //temp.DonGiaKhuyenMai = CommonService.GET_CTKM(connection, temp.MaVatTu, "DV1-CH1");
                                 lstVatTu.Add(temp);
                             }
                         }

@@ -45,6 +45,10 @@ export class HeaderComponent implements OnInit {
     this.commonService.getAllMerchanediseType<Array<LoaiVatTu>>().subscribe(
       data=>{
         this.lstLoaiVatTu = data;
+        arrTemp.push({
+          Title : 'Trang chủ',
+          url: '/'
+        });
         if(this.lstLoaiVatTu){
           this.lstLoaiVatTu.forEach(function(obj){
             arrTemp.push({

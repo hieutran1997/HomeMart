@@ -123,5 +123,73 @@ namespace BT.API.HOME
             }
             return hash.ToString();
         }
+
+        public static decimal GET_CTKM(OracleConnection connection, string MaVatTu, string MaDonVi)
+        {
+            OracleCommand subcmd = new OracleCommand();
+            subcmd.Connection = connection;
+            subcmd.CommandType = CommandType.StoredProcedure;
+            subcmd.CommandText = @"KHUYEN_MAI_MAT_HANG";
+            subcmd.Parameters.Add("P_MAHANG", OracleDbType.NVarchar2, 50).Value = MaVatTu;
+            subcmd.Parameters.Add("P_MADONVI", OracleDbType.NVarchar2, 50).Value = MaDonVi;
+            subcmd.Parameters.Add("CUR", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            OracleDataReader read = subcmd.ExecuteReader();
+            if (read.HasRows)
+            {
+                decimal gtkm = 0;
+                string tugio, dengio;
+                while (read.Read())
+                {
+                    decimal.TryParse(read["GIATRIKHUYENMAI"].ToString(), out gtkm);
+                    tugio = read["TUGIO"].ToString();
+                    dengio = read["DENGIO"].ToString();
+                    if (CompareTime(tugio, dengio))
+                    {
+                        return gtkm;
+                    }
+                }
+            }
+            return 0;
+        }
+        public static bool CompareTime(string timestart, string timeend)
+        {
+            DateTime now = DateTime.Now;
+            string[] arrTimeStart = timestart.Split(':');
+            string[] arrTimeEnd = timeend.Split(':');
+            decimal gioBD = decimal.Parse(arrTimeStart[0]);
+            decimal gioKT = decimal.Parse(arrTimeEnd[0]);
+            decimal phutBD = decimal.Parse(arrTimeStart[1]);
+            decimal phutKT = decimal.Parse(arrTimeEnd[1]);
+            if (gioBD <= now.Hour && gioKT >= now.Hour)
+            {
+                if (gioBD == now.Hour)
+                {
+                    if (phutBD <= now.Minute)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (gioKT == now.Hour)
+                {
+                    if (phutKT >= now.Minute)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

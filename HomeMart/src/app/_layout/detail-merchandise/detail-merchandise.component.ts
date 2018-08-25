@@ -45,7 +45,6 @@ export class DetailMerchandiseComponent implements OnInit {
       if (e instanceof NavigationEnd ) {
         let url:string = e.urlAfterRedirects; 
         let mavt = url.split('/');
-        console.log(mavt[mavt.length-1]);
         this.filterData(mavt[mavt.length-1]);
       }
     });
@@ -89,6 +88,14 @@ export class DetailMerchandiseComponent implements OnInit {
 
     this.galleryImages = [
     ];
+  }
+  display(item:string){
+    if(item.length >50){
+      return item.substring(0,50)+' ...';
+    }
+    else{
+      return item;
+    }
   }
   filterData(mavattu){
     this.isLoading = true;
@@ -210,22 +217,5 @@ export class DetailMerchandiseComponent implements OnInit {
     else{
       this.soLuong++;
     }
-  }
-  slideConfig = {"slidesToShow": 4, "slidesToScroll": 4};
-
-  slickInit(e) {
-    console.log('slick initialized');
-  }
-  
-  breakpoint(e) {
-    console.log('breakpoint');
-  }
-  
-  afterChange(e) {
-    console.log('afterChange');
-  }
-  
-  beforeChange(e) {
-    console.log('beforeChange');
   }
 }
