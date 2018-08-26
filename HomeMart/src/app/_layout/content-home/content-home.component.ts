@@ -1,4 +1,4 @@
-import { Component, OnInit,EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit,EventEmitter, Input, Output, ViewEncapsulation,Injectable  } from '@angular/core';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
 import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { ServiceChatService } from '../../service/service-chat.service';
 
 @Component({
   selector: 'app-content-home',
@@ -46,7 +47,8 @@ export class ContentHomeComponent implements OnInit {
     private router: Router,
     private location: Location,
     config: NgbRatingConfig,
-    private modalService : NgbModal
+    private modalService : NgbModal,
+    private chat:ServiceChatService
   ) { 
     config.max = 5;
   }
@@ -61,8 +63,13 @@ export class ContentHomeComponent implements OnInit {
     else{
       this.vattuSelected = new CartModel([],0,0);
     }
+    this.chat.messages.subscribe(res=>{
+      console.log(res);
+    })
   }
-
+  sendMessage() {
+    this.chat.sendMsg("Test Message");
+  }
   display(item:string){
     if(item.length >50){
       return item.substring(0,50)+' ...';

@@ -18,7 +18,7 @@ import { NgbdCarouselConfig } from './_layout/ngbd-carousel-config/ngbd-carousel
 import { CookieService } from 'ngx-cookie-service';
 import { ViewCartDetailComponent } from './_layout/view-cart-detail/view-cart-detail.component';
 import { DetailMerchandiseComponent } from './_layout/detail-merchandise/detail-merchandise.component';
-import {MatPaginatorIntlCro} from './MatPaginatorIntlCro';
+import { MatPaginatorIntlCro } from './MatPaginatorIntlCro';
 import { CommonServiceService } from './service/common-service.service';
 import { CategoryDetailsComponent } from './_layout/category-details/category-details.component';
 import { ContentHomeComponent } from './_layout/content-home/content-home.component';
