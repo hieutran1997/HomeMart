@@ -3,6 +3,7 @@ import { CommonServiceService } from '../../service/common-service.service';
 import { loginModel } from '../../model/loginModel';
 import { objectResult } from '../../model/objectResult';
 import { Router } from '@angular/router';
+import { LoginsuccesService} from '../../service/loginsucces.service';
 import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
     private commonService :CommonServiceService,
     private router:Router,
     private cookieService :CookieService,
+    private loginSuccessService : LoginsuccesService,
   ) { }
 
   ngOnInit() {
@@ -37,6 +39,7 @@ export class LoginComponent implements OnInit {
         if(data.Result){
           this.cookieService.set('taikhoanbanhang', JSON.stringify(obj),10);
           this.router.navigateByUrl('/');
+          this.loginSuccessService.loginSuccesed();
         }
       });
     }

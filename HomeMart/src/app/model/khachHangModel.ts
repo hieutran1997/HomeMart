@@ -8,4 +8,5 @@ export class khachHangModel{
     public  TinhTP :string;
     public  MatKhau:string;
     public  MaDonVi : string;
+    public  MaKH :string;
 }

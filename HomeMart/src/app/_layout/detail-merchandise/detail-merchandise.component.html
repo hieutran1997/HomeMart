@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         <div class="col-md-1"></div>
-                        <button (click)="addToCart(vattu)" style="background-color: #F57223;border: none" title="Thêm vào giỏ hàng" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                        <button (click)="addToCart(vattu);open(modalCart,vattu)" style="background-color: #F57223;border: none" title="Thêm vào giỏ hàng" class="btn btn-primary">Thêm vào giỏ hàng</button>
                     </div>
                     <br/>
                     <div class="row">
@@ -66,3 +66,54 @@
         </mat-card-content>
     </mat-card>
 </div>
+
+<ng-template #modalCart let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6" style="border-right: solid 1px dimgray">
+                <span style="color: darkgreen;font-weight: bold">Đã thêm {{itemSelect.SoLuong}} hàng vào giỏ hàng</span>
+                <br/><br/>
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="data:image/JPEG;base64,{{itemSelect.Avatar}}" height="100px;" width="130px" alt="{{itemSelect.TenVatTu}}">
+                    </div>
+                    <div class="col-md-8">
+                        <span style="font-size: 13px" (click)="redirectDetail(itemSelect)"> {{itemSelect.MaVatTu}}  - {{display(itemSelect.TenVatTu)}}</span>
+                        <br/>
+                        <span id="monney" style="color: #F57223;">{{itemSelect.DonGia | number}} ₫</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <span><strong>Giỏ hàng của tôi</strong> ( {{vattuSelected.tongSoLuong}} sản phẩm)</span>
+                <br/>
+                <div class="row">
+                   <div class="col align-self-start"> 
+                       <span>Tạm tính</span>
+                    </div>
+                   <div class="col align-self-end">
+                        {{vattuSelected.tongTien | number}} ₫
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col align-self-start"> 
+                        <strong>Tổng cộng</strong>
+                        </div>
+                    <div class="col align-self-end">
+                        <strong>{{vattuSelected.tongTien | number}} ₫</strong>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col align-self-center">
+                        <button (click)="goToCart();d('Cross click')" style="background-color: #F57223" class="btn">Đi đến giỏ hàng</button>
+                    </div>
+                    <div class="col align-self-center">
+                        <button (click)="d('Cross click')" style="background-color: #F57223" class="btn">Tiếp tục mua hàng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -6,6 +6,7 @@ import { khachHangModel } from '../model/khachHangModel';
 import { loginModel } from '../model/loginModel';
 import { ObjectCartModel } from '../model/ObjectCartDTO';
 import { ObjectSearchDTO } from '../model/objectSearchDTO';
+import { donHangModel } from '../model/donHangModel';
 
 @Injectable({
   providedIn: 'root'
@@ -115,5 +116,13 @@ export class CommonServiceService {
       UnitCode : this.madonvi
     }
     return this._http.post<any>(this.host+'api/home/GetMerchanediseRel',obj);
+  }
+
+  getAllOrder<donHangModel>(maKhachHang : string){
+    return this._http.get<donHangModel>(this.host+'api/home/GetAllBill?maKhachHang='+maKhachHang);
+  }
+
+  deleteOrder(maDonHang:string){
+    return this._http.get(this.host+'api/home/DeleteOrder?madonhang='+maDonHang);
   }
 }

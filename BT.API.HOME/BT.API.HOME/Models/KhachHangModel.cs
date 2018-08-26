@@ -16,5 +16,6 @@ namespace BT.API.HOME.Models
         public string TinhTP { get; set; }
         public string MatKhau { get; set; }
         public string MaDonVi { get; set; }
+        public string MaKH { get; set; }
     }
 }

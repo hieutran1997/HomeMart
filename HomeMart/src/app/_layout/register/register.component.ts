@@ -53,7 +53,8 @@ export class RegisterComponent implements OnInit {
           DiaChi : this.secondFormGroup.value.DiaChi,
           TinhTP : this.secondFormGroup.value.TinhTP,
           MatKhau : this.lastFormGroup.value.MatKhau,
-          MaDonVi : ''
+          MaDonVi : '',
+          MaKH : ''
         }
         this.commonService.register<objectResult>(obj).subscribe(data=>{
           if(data.Result){

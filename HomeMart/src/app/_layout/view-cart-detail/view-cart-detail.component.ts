@@ -11,6 +11,7 @@ import { ObjectCartModel ,DetailsCart } from '../../model/ObjectCartDTO';
 import { objectResult } from '../../model/objectResult';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
+import { donHangModel } from '../../model/donHangModel';
 
 @Component({
   selector: 'app-view-cart-detail',
@@ -28,6 +29,10 @@ export class ViewCartDetailComponent implements OnInit {
   TenKH:string = '';
   DataDTO: ObjectCartModel;
   itemSelect = new viewDetailCart();
+  lstOrder:Array<donHangModel>;
+  maKH:string;
+  orderSelected : donHangModel;
+  isLoaddingOrder = false;
 
   constructor(
     private cookieService : CookieService,
@@ -44,6 +49,12 @@ export class ViewCartDetailComponent implements OnInit {
       this.commonService.getUserByPhone<khachHangModel>(this.loginModel.username).subscribe(data=>{
         this.khachHang= data;
         this.TenKH = this.khachHang.TenKH;
+        this.maKH = data.MaKH;
+        this.isLoaddingOrder= true;
+        this.commonService.getAllOrder<Array<donHangModel>>(this.maKH).subscribe(res=>{
+          this.isLoaddingOrder= false;
+          this.lstOrder = res;
+        });
       })
     }
     if(this.cookieService.check('vattutronggiohang')){
@@ -73,6 +84,8 @@ export class ViewCartDetailComponent implements OnInit {
     this.itemSelect = item;
     this.modalService.open(modal,{ centered: true , backdrop : 'static'});
   }
+
+ 
 
   DeleteItem(){
     let item = this.itemSelect;
@@ -167,7 +180,13 @@ export class ViewCartDetailComponent implements OnInit {
         if(this.DataDTO){
           this.commonService.checkOut<objectResult>(this.DataDTO).subscribe(result=>{
               if(result.Result){
+                this.isLoaddingOrder = true;
                 alert("Đặt hàng thành công ! Vui lòng chờ liên hệ từ chúng tôi ");
+                this.commonService.getAllOrder<Array<donHangModel>>(this.maKH).subscribe(res=>{
+                  this.isLoaddingOrder = false;
+                  this.lstOrder = res;
+                  
+                });
                 this.cookieService.delete('vattutronggiohang');//refresh cart
                 this.vattuSelected = new CartModel([],0,0);
                 this.lstViewVatTu=[];
@@ -185,4 +204,5 @@ export class ViewCartDetailComponent implements OnInit {
   RedirectToLogin(){
     this.router.navigateByUrl('/dang-nhap');
   }
+
 }

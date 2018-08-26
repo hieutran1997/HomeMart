@@ -33,6 +33,7 @@ import { ShippingComponent } from './_layout/shipping/shipping.component';
 import { ContactComponent } from './_layout/contact/contact.component';
 import { SearchDetailComponent } from './_layout/search-detail/search-detail.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { InfoCustomComponent } from './_layout/info-custom/info-custom.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     InfoPageComponent,
     ShippingComponent,
     ContactComponent,
-    SearchDetailComponent
+    SearchDetailComponent,
+    InfoCustomComponent
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,7 @@ import { CommonServiceService } from '../../service/common-service.service';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
 import {Router,NavigationEnd} from '@angular/router';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 enableProdMode();
 
@@ -31,6 +32,7 @@ export class DetailMerchandiseComponent implements OnInit {
   vattuSelected : CartModel = null;
   vattuRel = [];
   isLoading = false;
+  itemSelect : VatTu;
   constructor( 
     private route: ActivatedRoute,
     private location: Location,
@@ -38,7 +40,8 @@ export class DetailMerchandiseComponent implements OnInit {
     private viewCartService: ViewCartService,
     private commonService :CommonServiceService,
     private router: Router,
-    config: NgbRatingConfig
+    config: NgbRatingConfig,
+    private modalService : NgbModal
   ) {
     config.max = 5;
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -217,5 +220,13 @@ export class DetailMerchandiseComponent implements OnInit {
     else{
       this.soLuong++;
     }
+  }
+  open(modal,item){
+    this.itemSelect = item;
+    this.modalService.open(modal,{ centered: true,size: 'lg'});
+  }
+
+  goToCart(){
+    this.router.navigateByUrl('/chi-tiet-gio-hang');
   }
 }

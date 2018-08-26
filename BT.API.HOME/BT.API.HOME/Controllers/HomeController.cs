@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using BT.API.HOME.Models;
 using OracleInternal.Secure.Network;
 using System.Threading.Tasks;
@@ -14,6 +15,14 @@ namespace BT.API.HOME.Controllers
     [RoutePrefix("api/home")]
     public class HomeController : ApiController
     {
+        /// <summary>
+        /// Lấy danh sách các mặt hàng trang home
+        /// </summary>
+        /// <param name="pagenumber"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="order"></param>
+        /// <param name="sorttype"></param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> GetListMerchanedise(decimal pagenumber, decimal pagesize, string order, string sorttype)
         {
             List<VatTuModel> lstVatTu = new List<VatTuModel>();
@@ -96,6 +105,16 @@ namespace BT.API.HOME.Controllers
             return Ok(vattu);
         }
 
+
+        /// <summary>
+        /// Lấy dánh sách các mặt hàng dựa theo loại 
+        /// </summary>
+        /// <param name="pagenumber"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="merchanedisetype"></param>
+        /// <param name="order"></param>
+        /// <param name="sorttype"></param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> GetListMerchanediseByCategory(decimal pagenumber, decimal pagesize, string merchanedisetype, string order, string sorttype)
         {
             List<VatTuModel> lstVatTu = new List<VatTuModel>();
@@ -176,6 +195,12 @@ namespace BT.API.HOME.Controllers
             return Ok(vattu);
         }
 
+        /// <summary>
+        /// Lấy thông tin chi tiết mặt hàng theo mã hàng
+        /// </summary>
+        /// <param name="mavattu"></param>
+        /// <param name="madonvi"></param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> GetDetailMerchanedise(string mavattu, string madonvi)
         {
             VatTuDetail result = new VatTuDetail();
@@ -231,6 +256,11 @@ namespace BT.API.HOME.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Lấy danh sách các loại hàng hóa
+        /// </summary>
+        /// <param name="madonvi"></param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> GetListMerchanediseType(string madonvi)
         {
             List<MerchanediseType> lstMerchanediseType = new List<MerchanediseType>();
@@ -263,6 +293,11 @@ namespace BT.API.HOME.Controllers
             return Ok(lstMerchanediseType);
         }
 
+        /// <summary>
+        /// Lấy danh sách các nhóm hàng hóa
+        /// </summary>
+        /// <param name="unitcode"></param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> GetAllGroupMerchanedise(string unitcode)
         {
             List<NhomVatTuModel> lstNhomVatTu = new List<NhomVatTuModel>();
@@ -297,6 +332,12 @@ namespace BT.API.HOME.Controllers
             return Ok(lstNhomVatTu);
         }
 
+        /// <summary>
+        /// Lấy mặt hàng theo mã hàng
+        /// </summary>
+        /// <param name="mavattuselect"></param>
+        /// <param name="madonvi"></param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> GetMerchanediseByCode(string mavattuselect, string madonvi)
         {
             VatTuViewCart result = new VatTuViewCart();
@@ -333,6 +374,14 @@ namespace BT.API.HOME.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Khuyến mãi
+        /// </summary>
+        /// <param name="pagenumber"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="makho"></param>
+        /// <param name="madonvi"></param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> GetListMerchanediseKhuyenMai(decimal pagenumber, decimal pagesize, string makho, string madonvi)
         {
             List<VatTuModel> lstVatTu = new List<VatTuModel>();
@@ -411,6 +460,11 @@ namespace BT.API.HOME.Controllers
             return Ok(vattu);
         }
 
+        /// <summary>
+        /// Đăng ký khách hàng
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("RegisKhachHang")]
         public async Task<IHttpActionResult> RegisKhachHang(KhachHangModel obj)
@@ -429,7 +483,7 @@ namespace BT.API.HOME.Controllers
                     command.CommandText = @"INSERT INTO DM_KHACHHANG (ID,MAKH,TENKH,TENKHAC,DIACHI,TRANGTHAI,DIENTHOAI,EMAIL,NGAYSINH,I_CREATE_DATE,UNITCODE)
                                             VALUES (:ID,:MAKH,:TENKH,:TENKHAC,:DIACHI,:TRANGTHAI,:DIENTHOAI,:EMAIL,:NGAYSINH,:CREATEDATE,:UNITCODE)";
                     command.Parameters.Add("ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid();
-                    command.Parameters.Add("MAKH", OracleDbType.NVarchar2, 50).Value = "KH";
+                    command.Parameters.Add("MAKH", OracleDbType.NVarchar2, 50).Value = "KH_" + obj.DienThoai;
                     command.Parameters.Add("TENKH", OracleDbType.NVarchar2, 500).Value = obj.TenKH;
                     command.Parameters.Add("TENKHAC", OracleDbType.NVarchar2, 500).Value = obj.TenKhac;
                     command.Parameters.Add("DIACHI", OracleDbType.NVarchar2, 500).Value = obj.DiaChi;
@@ -454,7 +508,7 @@ namespace BT.API.HOME.Controllers
                             cmd.Parameters.Add("ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid();
                             cmd.Parameters.Add("USERNAME", OracleDbType.NVarchar2, 50).Value = obj.DienThoai;
                             cmd.Parameters.Add("PASSWORD", OracleDbType.NVarchar2, 100).Value = CommonService.MD5Hash(obj.MatKhau);
-                            cmd.Parameters.Add("MANHANVIEN", OracleDbType.NVarchar2, 50).Value = "KH";
+                            cmd.Parameters.Add("MANHANVIEN", OracleDbType.NVarchar2, 50).Value = "KH_" + obj.DienThoai;
                             cmd.Parameters.Add("SODIENTHOAI", OracleDbType.NVarchar2, 50).Value = obj.DienThoai;
                             cmd.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
                             cmd.Parameters.Add("CREATEDATE", OracleDbType.Date).Value = DateTime.Now;
@@ -486,6 +540,13 @@ namespace BT.API.HOME.Controllers
             return Ok(dataResult);
         }
 
+        /// <summary>
+        /// Đăng nhập
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="pass"></param>
+        /// <param name="donvi"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IHttpActionResult> Login(string username, string pass, string donvi)
         {
@@ -522,6 +583,12 @@ namespace BT.API.HOME.Controllers
             return Ok(dataResult);
         }
 
+        /// <summary>
+        /// Lấy thông tin user theo số điện thoại
+        /// </summary>
+        /// <param name="sodienthoai"></param>
+        /// <param name="unitcode2"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IHttpActionResult> GetUserByPhone(string sodienthoai, string unitcode2)
         {
@@ -548,6 +615,7 @@ namespace BT.API.HOME.Controllers
                                 dataResult.DienThoai = reader["DIENTHOAI"].ToString();
                                 dataResult.DiaChi = reader["DIACHI"].ToString();
                                 dataResult.MaDonVi = reader["UNITCODE"].ToString();
+                                dataResult.MaKH = reader["MAKH"].ToString();
                             }
                         }
                     }
@@ -560,6 +628,11 @@ namespace BT.API.HOME.Controllers
             return Ok(dataResult);
         }
 
+        /// <summary>
+        /// Thanh toán
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("CheckOut")]
         public async Task<IHttpActionResult> CheckOut(ObjectCartModel data)
@@ -583,11 +656,11 @@ namespace BT.API.HOME.Controllers
                     command.Parameters.Add("SOPHIEU", OracleDbType.NVarchar2, 50).Value = soPhieu;
                     command.Parameters.Add("MAHD", OracleDbType.NVarchar2, 50).Value = soPhieu;
                     command.Parameters.Add("SOPHIEUPK", OracleDbType.NVarchar2, 50).Value = soPhieuPK;
-                    command.Parameters.Add("LOAI", OracleDbType.Decimal).Value = 10;
+                    command.Parameters.Add("LOAI", OracleDbType.Decimal).Value = 2;
                     command.Parameters.Add("NGAY", OracleDbType.Date).Value = time;
-                    command.Parameters.Add("MAKHACHHANG", OracleDbType.NVarchar2, 50).Value = data.SDTNN;
+                    command.Parameters.Add("MAKHACHHANG", OracleDbType.NVarchar2, 50).Value = "KH_" + data.SDTNN;
                     command.Parameters.Add("THANHTIENSAUVAT", OracleDbType.NVarchar2, 50).Value = data.THANHTIENSAUVAT;
-                    command.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
+                    command.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 1; //Trạng thái đơn hàng mới
                     command.Parameters.Add("TENNN", OracleDbType.NVarchar2, 50).Value = data.TENNN;
                     command.Parameters.Add("SDTNN", OracleDbType.NVarchar2, 50).Value = data.SDTNN;
                     command.Parameters.Add("DIACHINN", OracleDbType.NVarchar2, 50).Value = data.DIACHINN;
@@ -650,6 +723,11 @@ namespace BT.API.HOME.Controllers
             return Ok(dataResult);
         }
 
+        /// <summary>
+        /// Tìm kiếm mặt hàng theo key search
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("SearchByCode")]
         public async Task<IHttpActionResult> SearchByCode(RequestObjectSearch data)
@@ -732,6 +810,11 @@ namespace BT.API.HOME.Controllers
             return Ok(vattu);
         }
 
+        /// <summary>
+        /// Lấy danh sách các sản phẩm liên quan
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("GetMerchanediseRel")]
         public async Task<IHttpActionResult> GetMerchanediseRel(MerchanediseType request)
@@ -740,7 +823,7 @@ namespace BT.API.HOME.Controllers
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
             {
                 connection.Open();
-                if(connection.State == ConnectionState.Open)
+                if (connection.State == ConnectionState.Open)
                 {
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
@@ -766,10 +849,108 @@ namespace BT.API.HOME.Controllers
                                 result.Add(data);
                             }
                         }
-                    }catch(Exception ex) { }
+                    }
+                    catch (Exception ex) { }
                 }
             }
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Lấy thông tin đơn hàng chưa nhận
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IHttpActionResult> GetAllBill(string maKhachHang)
+        {
+            List<DonDatHangModel> result = new List<DonDatHangModel>();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT MAHD , NOIDUNG , THANHTIENSAUVAT ,TRANGTHAI,SOPHIEUCON ,SOPHIEUCON ,NGAY FROM NVDATHANG WHERE MAKHACHHANG = :makhachhang";
+                    command.Parameters.Add("makhachhang", OracleDbType.NVarchar2, 50).Value = maKhachHang;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            decimal sophieu, trangthai, ttien = 0;
+                            DateTime time = new DateTime();
+                            while (reader.Read())
+                            {
+                                DonDatHangModel item = new DonDatHangModel();
+                                item.MAHD = reader["MAHD"].ToString();
+                                item.NOIDUNG = reader["NOIDUNG"].ToString();
+                                decimal.TryParse(reader["TRANGTHAI"].ToString(), out trangthai);
+                                decimal.TryParse(reader["SOPHIEUCON"].ToString(), out sophieu);
+                                decimal.TryParse(reader["THANHTIENSAUVAT"].ToString(), out ttien);
+                                item.TRANGTHAI = trangthai;
+                                item.SOPHIEUCON = sophieu;
+                                item.THANHTIENSAUVAT = ttien;
+                                DateTime.TryParse(reader["NGAY"].ToString(), out time);
+                                item.NGAY = time;
+                                result.Add(item);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                        throw;
+                    }
+
+                }
+            }
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> DeleteOrder(string madonhang)
+        {
+            ObjectResult dataResult = new ObjectResult();
+            using (OracleConnection connection =new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleTransaction txn = connection.BeginTransaction(IsolationLevel.ReadCommitted);
+                    OracleCommand command = new OracleCommand();
+                    command.CommandText = @"DELETE NVDATHANG WHERE MAHD = :maHD";
+                    command.CommandType =CommandType.Text;
+                    command.Connection = connection;
+                    command.Parameters.Add("maHD", OracleDbType.NVarchar2, 50).Value = madonhang;
+                    try
+                    {
+                        int result = command.ExecuteNonQuery();
+                        if (result > 0)
+                        {
+                            OracleCommand cmd = new OracleCommand();
+                            cmd.CommandText = @"DELETE NVDATHANGCHITIET WHERE MAHD = :maHD";
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Connection = connection;
+                            cmd.Parameters.Add("maHD", OracleDbType.NVarchar2, 50).Value = madonhang;
+                            int exresult = cmd.ExecuteNonQuery();
+                            if (exresult > 0)
+                            {
+                                txn.Commit();
+                                dataResult.Result = true;
+                                dataResult.Message = "Xóa đơn hàng thành công !";
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        txn.Rollback();
+                        dataResult.Result = false;
+                        dataResult.Message = "Không xóa được đơn hàng !";
+                    }
+                }
+            }
+            return Ok(dataResult);
         }
 
         public HttpResponseMessage Put()

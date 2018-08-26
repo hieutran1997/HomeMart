@@ -13,7 +13,11 @@
 }
 #sign-out:hover{
     cursor: pointer;
+    color: #F57223 !important;
+    text-decoration: underline
 }
+
+
 nav ul{
     text-align:center;
 }

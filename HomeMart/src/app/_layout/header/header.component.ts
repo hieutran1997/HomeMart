@@ -7,6 +7,7 @@ import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { ObjectSearchDTO } from '../../model/objectSearchDTO';
 import { SearchService } from  '../../service/search.service';
 import {Router} from '@angular/router';
+import { LoginsuccesService} from '../../service/loginsucces.service';
 
 const states = [];
 
@@ -26,6 +27,7 @@ export class HeaderComponent implements OnInit {
     private cookieService:CookieService,
     private searchService : SearchService,
     private router: Router,
+    private loginSuccessService : LoginsuccesService,
   ) { }
 
   ngOnInit() {
@@ -65,11 +67,20 @@ export class HeaderComponent implements OnInit {
         }
       }
     );
+    this.loginSuccessService.loginSucces.subscribe(data=>{
+        this.checkUser = data;
+      });
   }
   redirectFB(){
     let url="https://www.facebook.com/vnxkbanbuonbanle123/";
     window.open(url, '_blank');
   }
+
+  redirectInfoPage(){
+    let url="/thong-tin-ca-nhan";
+    this.router.navigateByUrl(url);
+  }
+
   signOut(){
     this.cookieService.delete('taikhoanbanhang');
     this.checkUser = false;
