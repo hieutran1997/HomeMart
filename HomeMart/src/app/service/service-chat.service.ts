@@ -1,25 +1,20 @@
 import { Injectable } from '@angular/core';
-import { WebsocketServiceService } from '../service/websocket-service.service';
-import { Observable, Subject } from 'rxjs/Rx';
+import * as io from 'socket.io-client';
+import { Observable } from 'rxjs/Observable';
+import { logMessage } from '../model/logMessage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceChatService {
-  messages: Subject<any>;
   
-  // Our constructor calls our wsService connect method
-  constructor(private wsService: WebsocketServiceService) {
-    this.messages = <Subject<any>>wsService
-      .connect()
-      .map((response: any): any => {
-        return response;
-      })
-   }
-  
-  // Our simplified interface for sending
-  // messages back to our socket.io server
-  sendMsg(msg) {
-    this.messages.next(msg);
+  private appId = "BTSOFT";
+
+  private socket = io('http://localhost:3000');
+
+  sendMessage(data : any){
+    data.AppId =this.appId;
+    data.Receive = 'cskh';
+    this.socket.emit('send-message-person',data);
   }
 }

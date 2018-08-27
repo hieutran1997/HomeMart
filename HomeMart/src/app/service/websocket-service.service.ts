@@ -9,7 +9,7 @@ import * as Rx from 'rxjs/Rx';
 export class WebsocketServiceService {
 
   // Our socket connection
-  private socket;
+  private socket =io('http://localhost:3000');
 
   constructor() { }
 

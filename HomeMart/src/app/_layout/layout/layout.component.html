@@ -1,5 +1,51 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700">
+
 <app-header></app-header>
 <div style="margin-top: 40px;">
     <router-outlet></router-outlet>
 </div>
 <app-footer></app-footer>
+<div id="form-chat">
+    <div id="live-chat">
+		<header class="clearfix" style="height: 30px !important;">
+			<a href="#" class="chat-close"><span class="fa fa-times-circle"></span></a>
+			<h4>{{title}}</h4>
+			<span class="chat-message-counter">3</span>
+		</header>
+		<div class="chat">
+			<div class="chat-history">
+				<div class="container" *ngIf="!loginModel">
+					<div class="row">
+						<span>Quý khách chưa có thông tin vui lòng điền thông tin để nhận được trợ giúp của chúng tôi</span>
+					</div>
+					<div class="row">
+						<span>Email : </span>
+						<div class="chat-message-content clearfix"></div>
+						<input type="text" class="form-control" placeholder="Nhập email hoặc số đt" [(ngModel)]="email"/>
+					</div>
+					<div class="row" >
+						<span>Họ Tên : </span>
+						<input type="text" class="form-control" placeholder="Vui lòng nhập họ tên" [(ngModel)]="name"/>
+					</div>
+				</div>
+				<div class="chat-message clearfix" *ngFor="let item of lstYourMessage">
+					<img src="../../../assets/user.jpg" alt="" width="32" height="32">
+					<div class="chat-message-content clearfix">
+						<div style="padding: 5px 5px 5px 5px">
+							<p>{{item.message}}</p>
+						</div>
+					</div> <!-- end chat-message-content -->
+				</div> <!-- end chat-message -->
+			</div> <!-- end chat-history -->
+            <p class="chat-feedback">Your partner is typing…</p>
+			<form action="#" method="post" >
+				<fieldset>
+                    <div class="row">
+                        <input type="text" [(ngModel)]="message" [ngModelOptions]="{standalone: true}" placeholder="Nhập tin nhắn …" autofocus>
+					    <button class="btn btn-default" (click)="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+                    </div>
+				</fieldset>
+			</form>
+		</div> <!-- end chat -->
+	</div> <!-- end live-chat -->
+</div>
