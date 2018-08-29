@@ -97,11 +97,9 @@ io.on('connection', function(socket){
 		console.log(listUser[j]);
         listUser.splice(j,1);
     });
-
     socket.on('taoroom',function(data){
         
     });
-
     socket.on('send-data-to-group',function(data){
 		var d = new Date();
 		//data.time = d.getHours() + d.getMinutes() + d.getSeconds();
@@ -132,9 +130,9 @@ io.on('connection', function(socket){
     socket.on('endtypingMessage',function(data){
         io.sockets.in(data.groupName).emit('response-end-typing',data);
     });
-    
     socket.on('send-message-person',function(data){
         var d = new Date();
+        var dto;
         socket.UserName = data.Name;
         data.time = d.getHours() + d.getMinutes() + d.getSeconds();
         var object={
@@ -143,10 +141,11 @@ io.on('connection', function(socket){
             appid : data.AppId
         }
         listUserInApp.push(object);
-        console.log(listUserInApp);
+        //console.log(listUserInApp);
         listUserInApp.forEach(function(obj){
             if(data.Receive === obj.username && data.AppId === obj.appid){
-                var dto ={
+                console.log(obj,data);
+                dto ={
                     sendBy : data.SendBy,
                     contentMessage : data.ContentMessage,
                     time : convertDateNowToHour(),
@@ -172,9 +171,22 @@ io.on('connection', function(socket){
         });
         if(connected){
             messageModel.save(function(err){
-                console.log('save success !');
                 if(err){
+                    var responseStatus = {
+                        status : false,
+                        message : 'Không lưu được tin nhắn'
+                    }
+                    socket.emit('sended',responseStatus);
                     console.log(err);
+                }
+                else{
+                    var responseStatus = {
+                        status : true,
+                        message : 'Đã gửi'
+                    }
+                    socket.emit('sended',responseStatus);
+                    //io.to(socket.id).emit('sennded',responseStatus);
+                    console.log('save success !');
                 }
             });
         }

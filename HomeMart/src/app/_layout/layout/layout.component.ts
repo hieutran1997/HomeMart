@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import * as $ from 'jquery';
 import {ServiceChatService} from '../../service/service-chat.service';
 import { logMessage } from '../../model/logMessage';
@@ -8,9 +8,10 @@ import { loginModel } from '../../model/loginModel';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+  styleUrls: ['./layout.component.css'],
+  providers: [ServiceChatService]
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit  {
   cookieValue = 'UNKNOWN';
   cookie ='UNKNOWN';
   title = "Cửa hàng VNXK";
@@ -19,6 +20,7 @@ export class LayoutComponent implements OnInit {
   name;
   loginModel : loginModel =null;
   lstYourMessage = [];
+  connnection;
   constructor(
     private chatService :ServiceChatService,
     private cookieService:CookieService,
@@ -34,19 +36,23 @@ export class LayoutComponent implements OnInit {
         e.preventDefault();
         $('#live-chat').fadeOut(300);
       });
-  })
-  if(this.cookieService.check('taikhoanbanhang')){
+    })
+    this.chatService.getStatus().subscribe(data=>{
+      console.log(data);
+    })
+    if(this.cookieService.check('taikhoanbanhang')){
       this.cookie= this.cookieService.get('taikhoanbanhang')
       this.loginModel =JSON.parse(this.cookie);
     }
   }
+
   sendMessage(){
     let data;
     if(this.loginModel){
       data=  new logMessage('',this.loginModel.username,'','',this.message,'','','',this.loginModel.username);
     }
     else{
-      if(!this.email || !this.name){
+      if(!this.email || !this.name || this.message){
         alert('Vui lòng điền đủ thông tin !');
         return;
       }

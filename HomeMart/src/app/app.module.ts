@@ -34,6 +34,9 @@ import { ContactComponent } from './_layout/contact/contact.component';
 import { SearchDetailComponent } from './_layout/search-detail/search-detail.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { InfoCustomComponent } from './_layout/info-custom/info-custom.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -82,6 +85,7 @@ import { InfoCustomComponent } from './_layout/info-custom/info-custom.component
     MatNativeDateModule,
     SlickCarouselModule,
     NgbModule.forRoot(),
+    SocketIoModule.forRoot(config) 
   ],
   providers: [CookieService,{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro},CommonServiceService],
   bootstrap: [AppComponent]
