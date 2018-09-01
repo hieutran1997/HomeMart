@@ -33,8 +33,10 @@ export class LayoutComponent implements OnInit  {
         $('.chat-message-counter').fadeToggle(300, 'swing');
       });
       $('.chat-close').on('click', function(e) {
-        e.preventDefault();
-        $('#live-chat').fadeOut(300);
+        // e.preventDefault();
+        // $('#live-chat').fadeOut(300);
+        $('.chat').slideToggle(300, 'swing');
+        $('.chat-message-counter').fadeToggle(300, 'swing');
       });
     })
     this.chatService.getStatus().subscribe(data=>{
@@ -43,6 +45,10 @@ export class LayoutComponent implements OnInit  {
     if(this.cookieService.check('taikhoanbanhang')){
       this.cookie= this.cookieService.get('taikhoanbanhang')
       this.loginModel =JSON.parse(this.cookie);
+      var objDTO = {
+        UserName : this.loginModel.username,
+      }
+      this.chatService.connectedSocket(objDTO);
     }
   }
 

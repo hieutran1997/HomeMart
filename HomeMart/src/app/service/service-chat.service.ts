@@ -15,6 +15,11 @@ export class ServiceChatService implements OnInit {
 
   constructor(private socket: Socket) { }
 
+  connectedSocket(data){
+    data.AppId =this.appId;
+    this.socket.emit('custommer-join-web-size',data);
+  }
+
   sendMessage(data : any){
     data.AppId =this.appId;
     data.Receive = 'cskh';

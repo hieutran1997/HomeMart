@@ -11,7 +11,8 @@ var logMessage = new mongoose.Schema({
     Receive:String,
     Email:String,
     Name:String,
-    Status : Boolean
+    Status : Boolean,
+    IndexMsg : Number
 },{collection:'tblLogMessage'});
 
 module.exports = logMessage;
