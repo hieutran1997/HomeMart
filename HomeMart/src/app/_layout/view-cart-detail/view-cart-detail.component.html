@@ -59,7 +59,7 @@
           </div>
           <br/>
           <br/>
-          <button (click)="CheckOut(modalCheckLogin)" class="btn btn-primary">Xác nhận giỏ hàng</button>
+          <button (click)="openConfirm(modalConfirm)" class="btn btn-primary">Xác nhận giỏ hàng</button>
         </mat-card-content>
       </mat-card>
     </div>
@@ -105,3 +105,32 @@
         </div>
     </div>
 </ng-template>
+
+
+<ng-template #modalConfirm let-c="close" let-d="dismiss">
+    <div class="modal-header" style="text-align: center">
+      <h4>Bạn có đồng ý thanh toán !</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="vattuSelected">
+          <p>Bạn có tất cả {{vattuSelected.tongSoLuong}} sản phẩm </p>
+          <p>Với tổng tiền : {{vattuSelected.tongTien | number}} đ</p>
+      </div>
+      <div *ngIf="!vattuSelected">
+          <p>Bạn có tất cả 0 sản phẩm </p>
+          <p>Với tổng tiền : 0 đ</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col align-self-center">
+              <button class="btn btn-primary" (click)="CheckOut(modalCheckLogin);c('Save click')">Đồng ý</button>
+              <button class="btn btn-warning" (click)="d('Cross click')">Không</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+

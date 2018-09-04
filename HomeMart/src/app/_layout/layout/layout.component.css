@@ -157,9 +157,9 @@ p { margin: 0; }
 	float: left;
 }
 
-.chat-message-content {
+/* .chat-message-content {
 	margin-left: 56px;
-}
+} */
 
 .chat-time {
 	float: right;
@@ -176,4 +176,10 @@ div.chat-message-content {
     border-radius: 8px;
     background-color: dodgerblue;
     color: #fff;
+}
+div.chat-message-content-cskh {
+    border: 2px;
+    border-radius: 8px;
+    background-color: #ccc;
+    color: black;
 }

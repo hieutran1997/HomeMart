@@ -10,6 +10,7 @@ var indexOfMessage = require('./Model/indexOfMessage');
 var listUser = [];
 var listUserInApp = [];
 var listUserCSKH = [];
+var listUserEmployees = [];
 var listMessage = [];
 var connected = false;
 
@@ -110,7 +111,7 @@ io.on('connection', function(socket){
     });
     //sự kiện disconnect 
     socket.on('disconnect', function () { 
-        console.log('dis',socket.id);
+        //console.log('dis',socket.id);
         var j = -1;
         for(var i =0 ; i < listUser.length ; i ++){
             if(listUser[i].id === socket.id){
@@ -119,20 +120,20 @@ io.on('connection', function(socket){
                 break;
             }
         }
-        // for(var i =0 ; i < listUserInApp.length ; i ++){
-        //     if(listUserInApp[i].id === socket.id){
-        //         j = i;
-        //         listUserInApp.splice(j,1);
-        //         break;
-        //     }
-        // }
-        // for(var i =0 ; i < listUserCSKH.length ; i ++){
-        //     if(listUserCSKH[i].id === socket.id){
-        //         j = i;
-        //         listUserCSKH.splice(j,1);
-        //         break;
-        //     }
-        // }
+        for(var i =0 ; i < listUserInApp.length ; i ++){
+            if(listUserInApp[i].id === socket.id){
+                j = i;
+                listUserInApp.splice(j,1);
+                break;
+            }
+        }
+        for(var i =0 ; i < listUserCSKH.length ; i ++){
+            if(listUserCSKH[i].id === socket.id){
+                j = i;
+                listUserCSKH.splice(j,1);
+                break;
+            }
+        }
     });
     socket.on('taoroom',function(data){
         
@@ -167,7 +168,6 @@ io.on('connection', function(socket){
     socket.on('endtypingMessage',function(data){
         io.sockets.in(data.groupName).emit('response-end-typing',data);
     });
-
     socket.on('custommer-join-web-size',function(req){
         if(listUserInApp){
             var object={
@@ -186,13 +186,12 @@ io.on('connection', function(socket){
                 });
                 listUserCSKH.forEach(function(obj){
                     if(obj.AppId === req.AppId){
-                        console.log('obj' , obj.id);
                         io.to(obj.id).emit('response-get-list-custom-online',objectResult);
                     }
                 })
             }
         }
-    })
+    });
     //Khách hàng nt đến cskh
     socket.on('send-message-person',function(data){
         var d = new Date();
@@ -200,22 +199,23 @@ io.on('connection', function(socket){
         socket.UserName = data.Name;
         data.time = d.getHours() + d.getMinutes() + d.getSeconds();
         //Th người dùng k có tk
-        var object={
-            username: data.Name,
-            id : socket.id,
-            appid : data.AppId
-        }
-        listUserInApp.push(object);
+        // var object={
+        //     username: data.Name,
+        //     id : socket.id,
+        //     appid : data.AppId
+        // }
+        // listUserInApp.push(object);
         //console.log(listUserInApp);
         //Nếu cskh đang online thì gửi
         if(listUserCSKH){
             listUserCSKH.forEach(function(obj){
                 dto ={
-                    sendBy : data.SendBy,
-                    contentMessage : data.ContentMessage,
-                    time : convertDateNowToHour(),
-                    datetime : convertDateNow(),
-                    id : socket.id,
+                    SendBy : data.SendBy,
+                    ContentMessage : data.ContentMessage,
+                    Time : convertDateNowToHour(),
+                    DateTime : convertDateNow(),
+                    Id : socket.id,
+                    Receive : 'cskh'
                 }
                 io.to(obj.id).emit('request-message-person',dto);
             });
@@ -303,13 +303,118 @@ io.on('connection', function(socket){
     });
     socket.on('select-message-by-name',function(data){
         if(data){
-            updatedSeenMessage(data.Name, data.AppId);
+            updatedSeenMessage(data.Name, data.AppId , data.CSKH,socket);
+            
+            listUserCSKH.forEach(function(obj){
+                io.to(obj.id).emit('response-update-status',true);
+            });
             getMessageOfCustomSend(data.Name,data.CSKH,data.AppId).then(function(res){
                 socket.emit('response-select-message-by-name',res);
             });
         }
     });
-
+    socket.on('reply-message-custommer',function(data){
+        for(var i =0 ; i < listUserInApp.length ; i ++){
+            if(listUserInApp[i].username === data.Receive){
+                io.to(listUserInApp[i].id).emit('send-reply-message-custommer',data);
+            }
+        }
+        var room = 'cskh,'+data.Receive;
+        indexOfMessageModel.findOne({Room : room,AppId : data.AppId}).then(function(docs){
+            var index = 0;
+            if(docs){//nếu đã có room thì update index
+                docs.Index_Last += 1;
+                index = docs.Index_Last;
+                docs.save(function(err){
+                    console.log(err);
+                });
+            }else{ // chưa có thì tạo room
+                var indexOfMessageInsert = new indexOfMessageModel({
+                    Room : room,
+                    Index_Last : 1,
+                    AppId : data.AppId
+                });
+                index = 1;
+                indexOfMessageInsert.save(function(err){
+                    console.log(err);
+                });
+            }
+            var messageModel = new logMessageModel({
+                Room:'',
+                SendBy:data.SendBy,
+                DateTime:convertDateNow(),
+                Time:convertDateNowToHour(),
+                Lesson:'',
+                ContentMessage:data.ContentMessage,
+                AppId:data.AppId,
+                Receive :data.Receive,
+                Email: '',
+                Status: false,
+                IndexMsg : index
+            });
+            if(connected){
+                messageModel.save(function(err){
+                    if(err){
+                        var responseStatus = {
+                            status : false,
+                            message : 'Không lưu được tin nhắn'
+                        }
+                        socket.emit('sended',responseStatus);
+                        console.log(err);
+                    }
+                    else{
+                        var responseStatus = {
+                            status : true,
+                            message : 'Đã gửi'
+                        }
+                        socket.emit('sended',responseStatus);
+                        //io.to(socket.id).emit('sennded',responseStatus);
+                        console.log('save success !');
+                    }
+                });
+            }
+        });
+    });
+    socket.on('get-message-not-seen',function(data){
+        logMessageModel.countDocuments({ AppId: data.AppId, Receive: data.Receive,SendBy:data.SendBy , Status: false}).then(function(result){
+            socket.emit('response-get-message-not-seen',result);
+        });
+    });
+    socket.on('update-seen-message',function(data){
+        logMessageModel.find({AppId : data.AppId , SendBy:'cskh',Receive:data.Username , Status: false}).then(function(messages){
+            messages.forEach(function(obj){
+                obj.Status = true;
+                obj.save(function(err){
+                    console.log(err);
+                });
+            })
+        });
+    }); 
+    socket.on('get-all-message-for-custommer',function(data){
+        getMessageOfCustomSend(data.Custommer,data.CSKH,data.AppId).then(function(docs){
+            socket.emit('response-get-all-message-for-custommer',docs);
+        });
+    });
+    socket.on('emit-check-out',function(appid){
+        listUserCSKH.forEach(function(obj){
+            if(obj.AppId === appid){
+                io.to(obj.id).emit('response-emit-check-out',true);
+            }
+        })
+        listUserEmployees.forEach(function(obj){
+            if(obj.AppId === appid){
+                io.to(obj.id).emit('response-emit-check-out',true);
+            }
+        })
+    })
+    socket.on('employee-connected',function(obj){
+        var obj = {
+            id : socket.id,
+            AppId : data.AppId
+        };
+        console.log(obj);
+        listUserEmployees.push(obj);
+    });
 });
 
 //Lấy tin nhắn của 
@@ -345,17 +450,30 @@ function getIndexOfLastMessage(custom , cskh , appid){
 }
 
 //cập nhật lại trạng thái tin nhắn của khách hàng khi được cskh xem
-function updatedSeenMessage(sendBy , appid){
+function updatedSeenMessage(sendBy , appid , receive ,socket){
     logMessageModel.find({AppId : appid , SendBy:sendBy , Status: false}).then(function(messages){
         messages.forEach(function(obj){
             obj.Status = true;
             obj.save(function(err){
-                console.log(err);
+                if(!err){
+                    var obj = {
+                        AppId : appid,
+                        Receive :receive
+                    }
+                    getMessageNotSeen(obj).then(function(count){
+                        socket.emit('count-message-not-seen', count);
+                    })
+                    return true;
+                }
+                else{
+                    console.log(err);
+                    return false;
+                }
             });
         });
     });
 }
 
-http.listen(3000, function(){
+http.listen(3000,'http://btsoftvn.com', function(){
  // console.log('listening on *:3000');
 });

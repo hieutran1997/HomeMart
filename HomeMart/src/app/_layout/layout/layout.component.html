@@ -8,12 +8,12 @@
 <div id="form-chat">
     <div id="live-chat">
 		<header class="clearfix" style="height: 30px !important;">
-			<a href="#" class="chat-close"><span class="fa fa-times-circle"></span></a>
+			<a href="#" class="chat-close"><span class="fa fa-angle-down"></span></a>
 			<h4>{{title}}</h4>
-			<span class="chat-message-counter">3</span>
+			<span class="chat-message-counter" *ngIf="countMessage>0">{{countMessage}}</span>
 		</header>
 		<div class="chat">
-			<div class="chat-history">
+			<div ngx-auto-scroll lock-y-offset="10" observe-attributes class="chat-history" (click)="updateSeenMessage()">
 				<div class="container" *ngIf="!loginModel">
 					<div class="row">
 						<span>Quý khách chưa có thông tin vui lòng điền thông tin để nhận được trợ giúp của chúng tôi</span>
@@ -29,16 +29,38 @@
 					</div>
 				</div>
 				<div class="chat-message clearfix" *ngFor="let item of lstYourMessage">
-					<img src="../../../assets/user.jpg" alt="" width="32" height="32">
-					<div class="chat-message-content clearfix">
-						<div style="padding: 5px 5px 5px 5px">
-							<p>{{item.message}}</p>
+					<div *ngIf="item.SendBy!=='cskh'">
+						<!-- <img src="../../../assets/user.jpg" alt="" width="32" height="32"> -->
+						<div style="text-align: left;font-weight: bold">
+								<span>Bạn</span>
+							</div>
+						<div class="chat-message-content clearfix">
+							<div style="padding: 5px 5px 5px 5px">
+								<p style="font-size:13px">{{item.ContentMessage}}</p>
+							</div>
+							<div style="text-align: right;padding-right: 15px;" >
+								<span style="font-size:10px;font-style:italic">{{displayDate(item) | date:'dd-MM-yyyy HH:mm'}}</span>
+							</div>
+						</div> <!-- end chat-message-content -->
+					</div>
+					<div *ngIf="item.SendBy=='cskh'">
+						<!-- <img src="../../../assets/user.jpg" alt="" width="32" height="32"> -->
+						<div style="text-align: right;font-weight: bold">
+							<span>Chăm sóc khách hàng</span>
 						</div>
-					</div> <!-- end chat-message-content -->
+						<div class="chat-message-content-cskh clearfix">
+							<div style="padding: 5px 5px 5px 5px">
+								<p>{{item.ContentMessage}}</p>
+							</div>
+							<div style="text-align: right;padding-right: 15px;" >
+									<span style="font-size:10px;font-style:italic">{{displayDate(item) | date:'dd-MM-yyyy HH:mm'}}</span>
+								</div>
+						</div> <!-- end chat-message-content -->
+					</div>
 				</div> <!-- end chat-message -->
 			</div> <!-- end chat-history -->
-            <p class="chat-feedback">Your partner is typing…</p>
-			<form action="#" method="post" >
+            <!-- <p class="chat-feedback">Your partner is typing…</p> -->
+			<form>
 				<fieldset>
                     <div class="row">
                         <input type="text" [(ngModel)]="message" [ngModelOptions]="{standalone: true}" placeholder="Nhập tin nhắn …" autofocus>

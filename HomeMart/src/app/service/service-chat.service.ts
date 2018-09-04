@@ -1,8 +1,6 @@
 import { Injectable , OnInit , Output ,EventEmitter} from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs/Observable';
-import { logMessage } from '../model/logMessage';
-import { Subject } from 'rxjs/Subject';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +24,48 @@ export class ServiceChatService implements OnInit {
     //this.socket.emit('send-message-person',data);
     this.socket.emit('send-message-person',data);
   }
+
+  getAllMessage(data:String){
+    var obj = {
+      Custommer : data,
+      CSKH : 'cskh',
+      AppId : this.appId
+    }
+    this.socket.emit('get-all-message-for-custommer',obj);
+  }
+
+  updateSeenMessage(data:String){
+    var obj = {
+      Username : data,
+      AppId : this.appId
+    }
+    this.socket.emit('update-seen-message' , obj);
+  }
+
+  getMessageNotSeen(data:any){
+    this.socket.emit('get-message-not-seen',data);
+  }
+
+  resGetAllMessage(){
+    return this.socket.fromEvent<any>('response-get-all-message-for-custommer');
+  }
+
+  resGetMessageNotSeen<Number>(){
+    return this.socket.fromEvent<Number>('response-get-message-not-seen');
+  }
+
+  getMessageNew(){
+    let observable = new Observable(observer => {
+      this.socket.on('send-reply-message-custommer', (data) => {
+        observer.next(data);    
+      });
+      return () => {
+        this.socket.disconnect();
+      };  
+    })     
+    return observable;
+  }
+
   getStatus() {
     let observable = new Observable(observer => {
       this.socket.on('sended', (data) => {
