@@ -5,9 +5,13 @@ import { Injectable ,Output,EventEmitter} from '@angular/core';
 })
 export class LoginsuccesService {
   @Output() loginSucces: EventEmitter<Boolean> = new EventEmitter();
+  @Output() logoutSucces : EventEmitter<Boolean> = new EventEmitter();
   constructor() { }
 
   loginSuccesed(){
     this.loginSucces.emit(true);
+  }
+  logout(){
+    this.logoutSucces.emit(true);
   }
 }

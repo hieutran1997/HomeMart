@@ -168,6 +168,8 @@ io.on('connection', function(socket){
     socket.on('endtypingMessage',function(data){
         io.sockets.in(data.groupName).emit('response-end-typing',data);
     });
+
+    //Bán hàng
     socket.on('custommer-join-web-size',function(req){
         if(listUserInApp){
             var object={
@@ -190,6 +192,12 @@ io.on('connection', function(socket){
                     }
                 })
             }
+        }
+        if(listUserCSKH.length>0){
+            socket.emit('check-cskh-online',true);
+        }
+        else{
+            socket.emit('check-cskh-online',false);
         }
     });
     //Khách hàng nt đến cskh
@@ -289,6 +297,7 @@ io.on('connection', function(socket){
         var objectResult = [];
         if(listUserInApp.length > 0 ){
             listUserInApp.forEach(function(obj){
+                io.to(obj.id).emit('check-cskh-online',true);
                 if(obj.appid === data.AppId){
                     objectResult.push(obj);
                 }
@@ -412,8 +421,30 @@ io.on('connection', function(socket){
             id : socket.id,
             AppId : data.AppId
         };
-        console.log(obj);
         listUserEmployees.push(obj);
+    });
+    socket.on('typing-message-customer',function(data){
+        if(listUserCSKH.length > 0){
+            listUserCSKH.forEach(function(obj){
+                if(obj.AppId == data.AppId){
+                    io.to(obj.id).emit('custom-is-typing',data);
+                }
+            })
+        }
+    });
+    socket.on('typing-message-cskh',function(data){
+        listUserInApp.forEach(function(obj){
+            if(obj.appid == data.AppId && obj.username==data.UserName){
+                io.to(obj.id).emit('cskh-is-typing',data);
+            }
+        });
+    });
+    socket.on('end-typing-message-cskh',function(data){
+        listUserInApp.forEach(function(obj){
+            if(obj.appid == data.AppId && obj.username==data.UserName){
+                io.to(obj.id).emit('cskh-is-end-typing',data);
+            }
+        });
     });
 });
 
@@ -474,6 +505,6 @@ function updatedSeenMessage(sendBy , appid , receive ,socket){
     });
 }
 
-http.listen(3000,'http://btsoftvn.com', function(){
+http.listen(3000, function(){
  // console.log('listening on *:3000');
 });

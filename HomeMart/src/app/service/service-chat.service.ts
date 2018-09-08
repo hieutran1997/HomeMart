@@ -46,6 +46,15 @@ export class ServiceChatService implements OnInit {
     this.socket.emit('get-message-not-seen',data);
   }
 
+  
+  typingMessage(){
+    var obj = {
+      AppId :this.appId
+    }
+    this.socket.emit('typing-message-customer',obj);
+  }
+
+
   resGetAllMessage(){
     return this.socket.fromEvent<any>('response-get-all-message-for-custommer');
   }
@@ -77,5 +86,13 @@ export class ServiceChatService implements OnInit {
     })     
     return observable;
   }  
- 
+  checkCSKHOnline(){
+    return this.socket.fromEvent<boolean>('check-cskh-online');
+  }
+  getTypingEvent(){
+    return this.socket.fromEvent('cskh-is-typing');
+  }
+  getEndTyping(){
+    return this.socket.fromEvent('cskh-is-end-typing');
+  }
 }

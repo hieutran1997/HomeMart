@@ -8,8 +8,9 @@
 <div id="form-chat">
     <div id="live-chat">
 		<header class="clearfix" style="height: 30px !important;">
-			<a href="#" class="chat-close"><span class="fa fa-angle-down"></span></a>
-			<h4>{{title}}</h4>
+			<a href="#" class="chat-close"><span class="fa fa-angle-down" ></span></a>
+			<h4>{{title}} &nbsp;&nbsp;&nbsp; <span class="fa fa-circle fa-sm" *ngIf='CskhOnline' style="color:chartreuse;font-size: 0.7rem;"></span></h4>
+			
 			<span class="chat-message-counter" *ngIf="countMessage>0">{{countMessage}}</span>
 		</header>
 		<div class="chat">
@@ -59,11 +60,11 @@
 					</div>
 				</div> <!-- end chat-message -->
 			</div> <!-- end chat-history -->
-            <!-- <p class="chat-feedback">Your partner is typing…</p> -->
+            <p class="chat-feedback" *ngIf="cskhtyping">Chăm sóc khách hàng đang nhập…</p>
 			<form>
 				<fieldset>
                     <div class="row">
-                        <input type="text" [(ngModel)]="message" [ngModelOptions]="{standalone: true}" placeholder="Nhập tin nhắn …" autofocus>
+                        <input type="text" [(ngModel)]="message" [ngModelOptions]="{standalone: true}" (input)="onchange(event)" placeholder="Nhập tin nhắn …" autofocus>
 					    <button class="btn btn-default" (click)="sendMessage()"><i class="fa fa-paper-plane"></i></button>
                     </div>
 				</fieldset>

@@ -77,16 +77,6 @@ p { margin: 0; }
 	padding: 10px 24px;
 }
 
-#live-chat h4:before {
-	background: lawngreen;
-	border-radius: 50%;
-	content: "";
-	display: inline-block;
-	height: 8px;
-	margin: 0 8px 0 0;
-	width: 8px;
-}
-
 #live-chat h4 {
 	font-size: 14px;
 }

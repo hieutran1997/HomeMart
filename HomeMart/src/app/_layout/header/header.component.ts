@@ -84,6 +84,7 @@ export class HeaderComponent implements OnInit {
   signOut(){
     this.cookieService.delete('taikhoanbanhang');
     this.checkUser = false;
+    this.loginSuccessService.logout();
   }
   public model: any;
 

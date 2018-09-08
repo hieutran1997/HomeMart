@@ -39,9 +39,9 @@
                   <input matInput placeholder="Chọn tỉnh , thành phố" formControlName="TinhTP" required>
                 </mat-form-field>
                 <div>
-                  <button class="btn btn-default" matStepperPrevious>Back</button>
+                  <button class="btn btn-default" matStepperPrevious>Quay lại</button>
                   &nbsp;&nbsp;
-                  <button  [disabled]="!secondFormGroup.valid" class="btn btn-primary" matStepperNext>Next</button>
+                  <button  [disabled]="!secondFormGroup.valid" class="btn btn-primary" matStepperNext>Tiếp theo</button>
                 </div>
               </form>
             </mat-step>
@@ -56,7 +56,7 @@
                     <input matInput type="password" placeholder="Nhập lại mật khẩu" formControlName="NhapLaiMatKhau" required>
                   </mat-form-field>
                   <div>
-                    <button class="btn btn-default" matStepperPrevious>Back</button>
+                    <button class="btn btn-default" matStepperPrevious>Quay lại</button>
                     &nbsp;&nbsp;
                     <button  [disabled]="!lastFormGroup.valid" class="btn btn-primary" (click)="save()">Đăng ký</button>
                   </div>

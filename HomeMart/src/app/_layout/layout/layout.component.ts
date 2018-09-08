@@ -5,6 +5,7 @@ import { logMessage } from '../../model/logMessage';
 import { CookieService } from 'ngx-cookie-service';
 import { loginModel } from '../../model/loginModel';
 import {NgxAutoScroll} from "ngx-auto-scroll";
+import { LoginsuccesService} from '../../service/loginsucces.service';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -24,9 +25,12 @@ export class LayoutComponent implements OnInit  {
   lstYourMessage = [];
   countMessage = 0;
   connnection;
+  CskhOnline :boolean = false;
+  cskhtyping : boolean = false;
   constructor(
     private chatService :ServiceChatService,
     private cookieService:CookieService,
+    private loginSuccessService : LoginsuccesService,
   ) { }
 
   public forceScrollDown(): void {
@@ -46,24 +50,50 @@ export class LayoutComponent implements OnInit  {
         $('.chat-message-counter').fadeToggle(300, 'swing');
       });
     })
+    this.loginSuccessService.loginSucces.subscribe(data=>{
+      if(data){
+        this.khachHangConnected();
+      }
+    });
+    this.loginSuccessService.logoutSucces.subscribe(data=>{
+      if(data){
+        this.lstYourMessage = [];
+        this.loginModel = null;
+      }
+    })
     this.chatService.getStatus().subscribe(data=>{
       console.log(data);
     });
     this.chatService.getMessageNew().subscribe(data=>{
       this.countMessage +=1;
-      console.log(this.countMessage);
       this.lstYourMessage.push(data);
     });
     this.chatService.resGetMessageNotSeen<number>().subscribe(data=>{
       this.countMessage = data;
-      console.log(this.countMessage);
     });
     this.chatService.resGetAllMessage().subscribe(data=>{
-      //console.log(data);
       this.lstYourMessage = data;
     });
+    this.chatService.checkCSKHOnline().subscribe(data=>{
+      this.CskhOnline = data;
+    });
+    this.chatService.getTypingEvent().subscribe(data=>{
+      if(data){
+        this.cskhtyping = true;
+      }
+    });
+    this.chatService.getEndTyping().subscribe(data=>{
+      if(data){
+        this.cskhtyping= false;
+      }
+    })
     if(this.cookieService.check('taikhoanbanhang')){
-      this.cookie= this.cookieService.get('taikhoanbanhang')
+      this.khachHangConnected();
+    }
+  }
+
+  khachHangConnected(){
+    this.cookie= this.cookieService.get('taikhoanbanhang')
       this.loginModel =JSON.parse(this.cookie);
       var objDTO = {
         UserName : this.loginModel.username,
@@ -76,7 +106,6 @@ export class LayoutComponent implements OnInit  {
       this.chatService.connectedSocket(objDTO);
       this.chatService.getMessageNotSeen(objGetMessage);
       this.chatService.getAllMessage(this.loginModel.username);
-    }
   }
 
   sendMessage(){
@@ -106,5 +135,9 @@ export class LayoutComponent implements OnInit  {
   displayDate(item) {
     var date = new Date(item.DateTime + ' ' + item.Time);
     return date;
+  }
+
+  onchange(){
+    this.chatService.typingMessage();
   }
 }
