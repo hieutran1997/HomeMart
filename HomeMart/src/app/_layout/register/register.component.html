@@ -36,7 +36,15 @@
                 </mat-form-field>
                 &nbsp;&nbsp;
                 <mat-form-field>
-                  <input matInput placeholder="Chọn tỉnh , thành phố" formControlName="TinhTP" required>
+                  <mat-select placeholder="Chọn tỉnh / thành phố" formControlName="TinhTP" (selectionChange)="selectedCity()" required>
+                    <mat-option *ngFor="let item of cities" [value]="item.City_Id">{{item.City_Name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                &nbsp;&nbsp;
+                <mat-form-field>
+                  <mat-select placeholder="Chọn Quận / huyện" formControlName="QuanHuyen" required>
+                    <mat-option *ngFor="let item of districts" [value]="item.Districts_Id">{{item.Districts_Name}}</mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <div>
                   <button class="btn btn-default" matStepperPrevious>Quay lại</button>

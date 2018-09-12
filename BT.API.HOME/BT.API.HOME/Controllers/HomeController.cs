@@ -5,10 +5,12 @@ using System.Configuration;
 using System.Data;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Runtime.Remoting.Messaging;
 using BT.API.HOME.Models;
 using OracleInternal.Secure.Network;
 using System.Threading.Tasks;
+using static BT.API.HOME.Models.AddressModel;
 
 namespace BT.API.HOME.Controllers
 {
@@ -480,14 +482,15 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.CommandType = CommandType.Text;
-                    command.CommandText = @"INSERT INTO DM_KHACHHANG (ID,MAKH,TENKH,TENKHAC,DIACHI,TRANGTHAI,DIENTHOAI,EMAIL,NGAYSINH,I_CREATE_DATE,UNITCODE)
-                                            VALUES (:ID,:MAKH,:TENKH,:TENKHAC,:DIACHI,:TRANGTHAI,:DIENTHOAI,:EMAIL,:NGAYSINH,:CREATEDATE,:UNITCODE)";
+                    command.CommandText = @"INSERT INTO DM_KHACHHANG (ID,MAKH,TENKH,TENKHAC,DIACHI,TINHTHANHPHO,QUANHUYEN,TRANGTHAI,DIENTHOAI,EMAIL,NGAYSINH,I_CREATE_DATE,UNITCODE)
+                                            VALUES (:ID,:MAKH,:TENKH,:TENKHAC,:DIACHI,:TINH,:QUANHUYEN,:TRANGTHAI,:DIENTHOAI,:EMAIL,:NGAYSINH,:CREATEDATE,:UNITCODE)";
                     command.Parameters.Add("ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid();
                     command.Parameters.Add("MAKH", OracleDbType.NVarchar2, 50).Value = "KH_" + obj.DienThoai;
                     command.Parameters.Add("TENKH", OracleDbType.NVarchar2, 500).Value = obj.TenKH;
                     command.Parameters.Add("TENKHAC", OracleDbType.NVarchar2, 500).Value = obj.TenKhac;
                     command.Parameters.Add("DIACHI", OracleDbType.NVarchar2, 500).Value = obj.DiaChi;
-                    //command.Parameters.Add("TINH", OracleDbType.NVarchar2, 50).Value = obj.TinhTP;
+                    command.Parameters.Add("TINH", OracleDbType.NVarchar2, 50).Value = obj.TinhTP;
+                    command.Parameters.Add("QUANHUYEN", OracleDbType.NVarchar2, 50).Value = obj.QuanHuyen;
                     command.Parameters.Add("TRANGTHAI", OracleDbType.Decimal).Value = 10;
                     command.Parameters.Add("DIENTHOAI", OracleDbType.NVarchar2, 50).Value = obj.DienThoai;
                     command.Parameters.Add("EMAIL", OracleDbType.NVarchar2, 100).Value = obj.Email;
@@ -899,7 +902,7 @@ namespace BT.API.HOME.Controllers
                     }
                     catch (Exception ex)
                     {
-                        
+
                         throw;
                     }
 
@@ -908,11 +911,16 @@ namespace BT.API.HOME.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Xóa đơn hàng
+        /// </summary>
+        /// <param name="madonhang"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IHttpActionResult> DeleteOrder(string madonhang)
         {
             ObjectResult dataResult = new ObjectResult();
-            using (OracleConnection connection =new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
             {
                 connection.Open();
                 if (connection.State == ConnectionState.Open)
@@ -920,7 +928,7 @@ namespace BT.API.HOME.Controllers
                     OracleTransaction txn = connection.BeginTransaction(IsolationLevel.ReadCommitted);
                     OracleCommand command = new OracleCommand();
                     command.CommandText = @"DELETE NVDATHANG WHERE MAHD = :maHD";
-                    command.CommandType =CommandType.Text;
+                    command.CommandType = CommandType.Text;
                     command.Connection = connection;
                     command.Parameters.Add("maHD", OracleDbType.NVarchar2, 50).Value = madonhang;
                     try
@@ -953,6 +961,131 @@ namespace BT.API.HOME.Controllers
             return Ok(dataResult);
         }
 
+        /// <summary>
+        /// Lấy ra danh sách các thành phố trong db
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IHttpActionResult> GetAddressCity()
+        {
+            List<AddressModel.City> list = new List<AddressModel.City>();
+            using (OracleConnection connection =
+                new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT CITY_ID,CITY_NAME FROM DM_THANHPHO";
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                AddressModel.City city = new AddressModel.City();
+                                city.City_Id = reader["CITY_ID"].ToString();
+                                city.City_Name = reader["CITY_NAME"].ToString();
+                                list.Add(city);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            return Ok(list);
+        }
+
+        /// <summary>
+        /// Lấy ra danh sách quận huyện của thành phố/tỉnh
+        /// </summary>
+        /// <param name="cityid"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IHttpActionResult> GetDistrictsByCityId(string cityid)
+        {
+            List<AddressModel.Districts> list = new List<AddressModel.Districts>();
+            using (OracleConnection connection =
+                new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT * FROM DM_TINHHUYEN WHERE CITY_ID = :cityid";
+                    command.Parameters.Add("cityid", OracleDbType.NVarchar2, 10).Value = cityid;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                AddressModel.Districts district = new AddressModel.Districts();
+                                district.Districts_Id = reader["DISTRICTS_ID"].ToString();
+                                district.Districts_Name = reader["DISTRICTS_NAME"].ToString();
+                                list.Add(district);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+            }
+            return Ok(list);
+        }
+
+        /// <summary>
+        /// Lấy thông tin địa chỉ của khách hàng
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="madonvi"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IHttpActionResult> GetAddress(string sdt, string madonvi)
+        {
+            ResultAddress diachi = new ResultAddress();
+            using (OracleConnection connection =
+                new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText =
+                        @"SELECT kh.DIACHI,tp.CITY_NAME,qh.DISTRICTS_NAME FROM DM_KHACHHANG kh LEFT JOIN DM_THANHPHO tp ON kh.TINHTHANHPHO = tp.CITY_ID INNER JOIN DM_TINHHUYEN qh ON kh.QUANHUYEN = qh.DISTRICTS_ID
+                            WHERE kh.DIENTHOAI = :sdt AND kh.UNITCODE= :madonvi";
+                    command.Parameters.Add("sdt", OracleDbType.Varchar2, 12).Value = sdt;
+                    command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = madonvi;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                diachi.Address = reader["DIACHI"].ToString();
+                                diachi.City_Name = reader["CITY_NAME"].ToString();
+                                diachi.Districts_Name = reader["DISTRICTS_NAME"].ToString();
+                            }
+                        }
+                    }
+                    catch (Exception) { }
+                }
+
+                return Ok(diachi);
+            }
+        }
         public HttpResponseMessage Put()
         {
             return new HttpResponseMessage()

@@ -36,8 +36,10 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { InfoCustomComponent } from './_layout/info-custom/info-custom.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import {NgxAutoScrollModule} from "ngx-auto-scroll";
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 import { ToastrModule } from 'ngx-toastr';
+import {MatSelectModule} from '@angular/material/select';
+const config: SocketIoConfig = { url: 'http://btsoftvn.com:3000', options: {} };
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,7 +89,8 @@ import { ToastrModule } from 'ngx-toastr';
     NgbModule.forRoot(),
     SocketIoModule.forRoot(config) ,
     NgxAutoScrollModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatSelectModule
   ],
   providers: [CookieService,{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro},CommonServiceService],
   bootstrap: [AppComponent],

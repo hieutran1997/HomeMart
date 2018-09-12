@@ -7,6 +7,8 @@ import { loginModel } from '../model/loginModel';
 import { ObjectCartModel } from '../model/ObjectCartDTO';
 import { ObjectSearchDTO } from '../model/objectSearchDTO';
 import { donHangModel } from '../model/donHangModel';
+import { City,Districts,AddressModel } from '../model/AddressModel';
+import { objectResult } from '../model/objectResult';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ import { donHangModel } from '../model/donHangModel';
 
 export class CommonServiceService {
   madonvi:string = 'DV1-CH1';
-  host:string = 'http://btsoftvn.com:50595/';
+  host:string = 'http://localhost:50595/';
   makho :string= 'DV1-CH1-KBL';
 
   constructor(
@@ -122,7 +124,19 @@ export class CommonServiceService {
     return this._http.get<donHangModel>(this.host+'api/home/GetAllBill?maKhachHang='+maKhachHang);
   }
 
-  deleteOrder(maDonHang:string){
-    return this._http.get(this.host+'api/home/DeleteOrder?madonhang='+maDonHang);
+  deleteOrder<objectResult>(maDonHang:string){
+    return this._http.get<objectResult>(this.host+'api/home/DeleteOrder?madonhang='+maDonHang);
+  }
+
+  getAddress(sodienthoai:string){
+    return this._http.get<AddressModel>(this.host+'/api/home/GetAddress?sdt='+sodienthoai+'&madonvi='+this.madonvi);
+  }
+
+  getAllProvince(){
+    return this._http.get<Array<City>[]>(this.host+'/api/home/GetAddressCity');
+  }
+
+  getDistrictsByCityId(cityid : string){
+    return this._http.get<Array<Districts>[]>(this.host+'/api/home/GetDistrictsByCityId?cityid='+cityid);
   }
 }

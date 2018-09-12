@@ -5,6 +5,8 @@ import { CookieService } from 'ngx-cookie-service';
 import {loginModel} from '../../model/loginModel';
 import { khachHangModel } from '../../model/khachHangModel';
 import { donHangModel } from '../../model/donHangModel';
+import { objectResult } from '../../model/objectResult';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-info-custom',
@@ -25,6 +27,7 @@ export class InfoCustomComponent implements OnInit {
     private commonService :CommonServiceService,
     private modalService : NgbModal,
     private cookieService : CookieService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -49,8 +52,20 @@ export class InfoCustomComponent implements OnInit {
   }
 
   DeleteOrder(){
-    this.commonService.deleteOrder(this.orderSelected.MAHD).subscribe(res=>{
-      console.log(res);
+    this.commonService.deleteOrder<objectResult>(this.orderSelected.MAHD).subscribe(res=>{
+        if(res){
+            if(res.Result===true){
+                this.toastr.success('Đã xóa đơn hàng !');
+                let index = this.lstOrder.indexOf(this.orderSelected);
+                this.lstOrder.splice(index,1);
+            }
+            else{
+                this.toastr.warning('Không xóa được !');
+            }
+        }
+        else{
+            this.toastr.warning('Không xóa được !');
+        }
     });
   }
 

@@ -5,6 +5,7 @@ import { objectResult } from '../../model/objectResult';
 import { Router } from '@angular/router';
 import { LoginsuccesService} from '../../service/loginsucces.service';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
     private router:Router,
     private cookieService :CookieService,
     private loginSuccessService : LoginsuccesService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -26,7 +28,7 @@ export class LoginComponent implements OnInit {
   
   Login(){
     if(!this.user || !this.password){
-      alert('Vui lòng nhập lại thông tin tài khoản');
+      this.toastr.warning('Vui lòng nhập lại thông tin tài khoản');
       return;
     }
     else{

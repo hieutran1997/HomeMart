@@ -64,7 +64,7 @@
 			<form>
 				<fieldset>
                     <div class="row">
-                        <input type="text" [(ngModel)]="message" [ngModelOptions]="{standalone: true}" (input)="onchange(event)" placeholder="Nhập tin nhắn …" autofocus>
+                        <input type="text" [(ngModel)]="message" [ngModelOptions]="{standalone: true}" (input)="onchange()" placeholder="Nhập tin nhắn …" autofocus>
 					    <button class="btn btn-default" (click)="sendMessage()"><i class="fa fa-paper-plane"></i></button>
                     </div>
 				</fieldset>

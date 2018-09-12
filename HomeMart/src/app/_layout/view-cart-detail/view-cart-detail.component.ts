@@ -14,6 +14,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { donHangModel } from '../../model/donHangModel';
 import { ToastrService } from 'ngx-toastr';
 import { CheckOutService } from '../../service/check-out.service';
+import { AddressModel } from '../../model/AddressModel';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-view-cart-detail',
   templateUrl: './view-cart-detail.component.html',
@@ -34,6 +36,11 @@ export class ViewCartDetailComponent implements OnInit {
   maKH:string;
   orderSelected : donHangModel;
   isLoaddingOrder = false;
+  address:AddressModel;
+  formAddress: FormGroup;
+  cities = [];
+  districts = [];
+  addresRecieve = '';
 
   constructor(
     private cookieService : CookieService,
@@ -42,10 +49,17 @@ export class ViewCartDetailComponent implements OnInit {
     private modalService : NgbModal,
     private router: Router,
     private toastr: ToastrService,
-    private checkout : CheckOutService
+    private checkout : CheckOutService,
+    private _formBuilder: FormBuilder,
   ) { }
 
   ngOnInit() {
+    this.formAddress = this._formBuilder.group({
+      DiaChi: ['', Validators.required],
+      TinhTP: ['',Validators.required],
+      QuanHuyen: ['',Validators.required]
+    });
+    this.getProvince();
     if(this.cookieService.check('taikhoanbanhang')){
       this.cookie= this.cookieService.get('taikhoanbanhang')
       this.loginModel =JSON.parse(this.cookie);
@@ -54,10 +68,11 @@ export class ViewCartDetailComponent implements OnInit {
         this.TenKH = this.khachHang.TenKH;
         this.maKH = data.MaKH;
         this.isLoaddingOrder= true;
-        this.commonService.getAllOrder<Array<donHangModel>>(this.maKH).subscribe(res=>{
-          this.isLoaddingOrder= false;
-          this.lstOrder = res;
-        });
+        this.getAddress();
+        // this.commonService.getAllOrder<Array<donHangModel>>(this.maKH).subscribe(res=>{
+        //   this.isLoaddingOrder= false;
+        //   this.lstOrder = res;
+        // });
       })
     }
     if(this.cookieService.check('vattutronggiohang')){
@@ -83,6 +98,32 @@ export class ViewCartDetailComponent implements OnInit {
     })
   }
 
+  getProvince(){
+    this.commonService.getAllProvince().subscribe(data=>{
+      if(data){
+        this.cities = data;
+        this.formAddress.value.QuanHuyen = null;
+      }
+    })
+  }
+
+  selectedCity(){
+    this.commonService.getDistrictsByCityId(this.formAddress.value.TinhTP).subscribe(res=>{
+      if(res){
+        this.districts = res;
+      }
+    })
+  }
+
+  getAddress(){
+    this.commonService.getAddress(this.khachHang.DienThoai).subscribe(res=>{
+      if(res){
+        this.address = res;
+        this.addresRecieve = this.address.Address + ', quận(huyện) '+ this.address.Districts_Name + ' ,tỉnh(tp) '+this.address.City_Name;
+      }
+    })
+  }
+
   open(modal,item){
     this.itemSelect = item;
     this.modalService.open(modal,{ centered: true , backdrop : 'static'});
@@ -90,7 +131,25 @@ export class ViewCartDetailComponent implements OnInit {
 
   openConfirm(modal){
     this.modalService.open(modal,{ centered: true , backdrop : 'static'});
-    
+  }
+
+  SaveNewAddress(){
+    if(this.formAddress.status !=='VALID'){
+      this.toastr.warning('Địa chỉ không hợp lệ !');
+      return;
+    }
+    else{
+      this.toastr.success('Đổi địa chỉ thành công !');
+      let cityid = this.formAddress.value.TinhTP;
+      let objCity = this.cities.find(function(item){
+        return item.City_Id == cityid;
+      });
+      let districtid = this.formAddress.value.QuanHuyen;
+      let objDistrict = this.districts.find(function(item){
+        return item.Districts_Id == districtid;
+      });
+      this.addresRecieve = this.formAddress.value.DiaChi + ', quận(huyện) '+ objDistrict.Districts_Name + ' ,tỉnh(tp) '+ objCity.City_Name;
+    }
   }
 
   DeleteItem(){
@@ -103,6 +162,10 @@ export class ViewCartDetailComponent implements OnInit {
     this.cookieService.delete('vattutronggiohang');
     this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
     this.viewCartService.changedCartView(this.vattuSelected);
+  }
+
+  ChangeAddress(modal){
+    this.modalService.open(modal,{ backdrop : 'static'});
   }
 
   SubtractionItem(item){
@@ -177,7 +240,7 @@ export class ViewCartDetailComponent implements OnInit {
             Detail.push(objectDetail);
           });
           this.DataDTO = new ObjectCartModel(Detail);
-          this.DataDTO.DIACHINN = this.khachHang.DiaChi;
+          this.DataDTO.DIACHINN = this.addresRecieve;
           this.DataDTO.TENNN = this.khachHang.TenKH;
           this.DataDTO.UNITCODE = this.khachHang.MaDonVi;
           this.DataDTO.SDTNN = this.khachHang.DienThoai;

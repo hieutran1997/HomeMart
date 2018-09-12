@@ -14,6 +14,7 @@ namespace BT.API.HOME.Models
         public string DienThoai { get; set; }
         public string DiaChi { get; set; }
         public string TinhTP { get; set; }
+        public string QuanHuyen { get; set; }
         public string MatKhau { get; set; }
         public string MaDonVi { get; set; }
         public string MaKH { get; set; }
