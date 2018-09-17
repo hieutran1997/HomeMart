@@ -2,13 +2,7 @@ import { Injectable } from '@angular/core';
 import { VatTuDTO} from '../_layout/home/vattumodel';
 import {HttpClient,HttpParams } from '@angular/common/http';
 import {PageEvent} from '@angular/material';
-import { khachHangModel } from '../model/khachHangModel';
-import { loginModel } from '../model/loginModel';
-import { ObjectCartModel } from '../model/ObjectCartDTO';
-import { ObjectSearchDTO } from '../model/objectSearchDTO';
-import { donHangModel } from '../model/donHangModel';
-import { City,Districts,AddressModel } from '../model/AddressModel';
-import { objectResult } from '../model/objectResult';
+import {khachHangModel ,loginModel ,ObjectCartModel,City,Districts,AddressModel, NewsModel } from '../model';
 
 @Injectable({
   providedIn: 'root'
@@ -137,6 +131,12 @@ export class CommonServiceService {
   }
 
   getDistrictsByCityId(cityid : string){
-    return this._http.get<Array<Districts>[]>(this.host+'/api/home/GetDistrictsByCityId?cityid='+cityid);
+    return this._http.get<Array<Districts>>(this.host+'/api/home/GetDistrictsByCityId?cityid='+cityid);
+  }
+  getNews(type :string){
+    return this._http.get<Array<NewsModel>>(this.host+'api/home/GetNews?unitcodefornews='+this.madonvi+'&type='+type);
+  }
+  getImageCover(){
+    return this._http.get<Array<NewsModel>>(this.host+'api/home/GetNews?unitcodefornews='+this.madonvi);
   }
 }

@@ -1,15 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CommonServiceService } from '../../service/common-service.service';
+import { NewsModel } from '../../model';
 @Component({
   selector: 'app-shipping',
   templateUrl: './shipping.component.html',
   styles: []
 })
 export class ShippingComponent implements OnInit {
-
-  constructor() { }
+  htmlStr: string ='';
+  title : string ='';
+  news:Array<NewsModel>;
+  constructor(
+    private _service : CommonServiceService,
+  ) { }
 
   ngOnInit() {
+    this._service.getNews('Shipping').subscribe(res=>{
+      this.news= res;
+      this.htmlStr = this.news[0].Content;
+      this.title = this.news[0].Title;
+    });
   }
 
 }

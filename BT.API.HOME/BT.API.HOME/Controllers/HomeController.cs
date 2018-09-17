@@ -1086,6 +1086,94 @@ namespace BT.API.HOME.Controllers
                 return Ok(diachi);
             }
         }
+
+        /// <summary>
+        /// Lấy danh sách tin tức
+        /// </summary>
+        /// <param name="unitcodefornews"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IHttpActionResult> GetNews(string unitcodefornews , string type)
+        {
+            List<NewsModel> results = new List<NewsModel>();
+             
+            using (OracleConnection connection =
+                new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT t.TENLOAITINTUC,t.TIEUDE,t.NOIDUNG,t.IMAGECOVER FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='"+ type + "' AND t.I_STATE='isUsed' ORDER BY t.I_CREATE_DATE DESC";
+                    command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                NewsModel news = new NewsModel();
+                                news.Title = reader["TIEUDE"].ToString();
+                                news.Content = reader["NOIDUNG"].ToString();
+                                news.Type = reader["TENLOAITINTUC"].ToString();
+                                results.Add(news);
+                            }
+                        }
+                    }
+                    catch (Exception) { }
+                }
+
+                return Ok(results);
+            }
+        }
+
+        /// <summary>
+        /// Hàm lấy ảnh bìa trang chính
+        /// </summary>
+        /// <param name="unitcodefornews"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IHttpActionResult> GetImageCover(string unitcodefornews)
+        {
+            List<NewsModel> results = new List<NewsModel>();
+
+            using (OracleConnection connection =
+                new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT t.TIEUDE,t.TENLOAITINTUC,t.NOIDUNG,t.IMAGECOVER FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='ImgCover' AND t.I_STATE='isUsed' ORDER BY t.I_CREATE_DATE DESC";
+                    command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                NewsModel news = new NewsModel();
+                                news.Title = reader["TIEUDE"].ToString();
+                                news.Content = reader["NOIDUNG"].ToString();
+                                news.Type = reader["TENLOAITINTUC"].ToString();
+                                news.Image = (byte[])reader["IMAGECOVER"];
+                                results.Add(news);
+                            }
+                        }
+                    }
+                    catch (Exception) { }
+                }
+
+                return Ok(results);
+            }
+        }
+
         public HttpResponseMessage Put()
         {
             return new HttpResponseMessage()

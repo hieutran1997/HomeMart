@@ -43,6 +43,9 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/');
           this.loginSuccessService.loginSuccesed();
         }
+        else if(data.Result===false){
+          this.toastr.warning('Tài khoản hoặc mật khẩu không chính xác vui lòng kiểm tra lại !');
+        }
       });
     }
   }

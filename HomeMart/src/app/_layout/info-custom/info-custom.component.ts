@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonServiceService } from '../../service/common-service.service';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
-import {loginModel} from '../../model/loginModel';
-import { khachHangModel } from '../../model/khachHangModel';
-import { donHangModel } from '../../model/donHangModel';
-import { objectResult } from '../../model/objectResult';
+import {loginModel ,khachHangModel ,donHangModel ,objectResult} from '../../model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -34,6 +31,7 @@ export class InfoCustomComponent implements OnInit {
     if(this.cookieService.check('taikhoanbanhang')){
       this.cookie= this.cookieService.get('taikhoanbanhang')
       this.loginModel =JSON.parse(this.cookie);
+      console.log(loginModel);
       this.commonService.getUserByPhone<khachHangModel>(this.loginModel.username).subscribe(data=>{
         this.khachHang= data;
         this.TenKH = this.khachHang.TenKH;
