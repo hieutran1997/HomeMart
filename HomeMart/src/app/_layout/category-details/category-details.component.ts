@@ -1,6 +1,5 @@
 import { Component, OnInit ,OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 import { CommonServiceService } from '../../service/common-service.service';
 import {PageEvent} from '@angular/material';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
@@ -13,11 +12,13 @@ import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-category-details',
+  inputs: ['maNhom','categoryName'],
   templateUrl: './category-details.component.html',
   styleUrls: ['./category-details.component.css'],
   providers: [NgbRatingConfig] 
 })
 export class CategoryDetailsComponent implements OnInit,OnDestroy {
+  maNhom: string|null = null;
   maloaivattu: string='';
   pageEvent: PageEvent = new PageEvent();
   page : any;
@@ -40,7 +41,6 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   itemSelect : VatTu;
   constructor(
     private route: ActivatedRoute,
-    private location: Location,
     private commonService : CommonServiceService,
     private router: Router,
     config: NgbRatingConfig,
@@ -59,8 +59,19 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
    }
 
   ngOnInit() {
-    this.maloaivattu= this.route.snapshot.paramMap.get('maloaivattu');
-    this.filterData(null,this.maloaivattu);
+    if(this.route.snapshot.paramMap.get('maloaivattu')){
+      this.maloaivattu= this.route.snapshot.paramMap.get('maloaivattu');
+      
+    }else{
+      if(this.maNhom){
+        this.maloaivattu = this.maNhom;
+      }else{
+        this.maloaivattu = 'MN000001';
+      }
+    }
+    if(this.maloaivattu){
+      this.filterData(null,this.maloaivattu,this.orderBy,this.sortType);
+    }
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);   
@@ -101,8 +112,8 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   })}
     
   display(item:string){
-    if(item.length >50){
-      return item.substring(0,50)+' ...';
+    if(item.length >30){
+      return item.substring(0,30)+' ...';
     }
     else{
       return item;

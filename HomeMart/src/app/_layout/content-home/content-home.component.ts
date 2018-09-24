@@ -42,9 +42,7 @@ export class ContentHomeComponent implements OnInit {
     private cookieService: CookieService ,
     private viewCartService: ViewCartService,
     private commonService :CommonServiceService,
-    private route: ActivatedRoute,
     private router: Router,
-    private location: Location,
     config: NgbRatingConfig,
     private modalService : NgbModal,
   ) { 
@@ -60,11 +58,10 @@ export class ContentHomeComponent implements OnInit {
     else{
       this.vattuSelected = new CartModel([],0,0);
     }
-
   }
   display(item:string){
-    if(item.length >50){
-      return item.substring(0,50)+' ...';
+    if(item.length >40){
+      return item.substring(0,40)+' ...';
     }
     else{
       return item;

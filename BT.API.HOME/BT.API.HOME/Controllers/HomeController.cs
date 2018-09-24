@@ -215,7 +215,7 @@ namespace BT.API.HOME.Controllers
                     OracleCommand cmd = new OracleCommand();
                     cmd.Connection = connection;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.TITLE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar , vt.MANHOMVATTU, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='" + madonvi + "' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
+                    cmd.CommandText = @"SELECT vt.MAVATTU , vt.TENVATTU,vt.MASIZE ,vt.MADONVI, vt.GIABANLEVAT,vt.TENNHACUNGCAP ,vt.Avatar , vt.MANHOMVATTU, vt.PATH_IMAGE , vt.IMAGE , xnt.TONCUOIKYSL  FROM V_VATTU_GIABAN vt LEFT JOIN " + table_XNT + " xnt ON vt.MAVATTU = xnt.MAVATTU WHERE vt.MADONVI ='" + madonvi + "' AND xnt.MAKHO ='DV1-CH1-KBL' AND vt.MAVATTU = :mavattu";
                     cmd.Parameters.Add("mavattu", OracleDbType.NVarchar2, 50).Value = mavattu;
                     try
                     {
@@ -1164,6 +1164,49 @@ namespace BT.API.HOME.Controllers
                                 news.Type = reader["TENLOAITINTUC"].ToString();
                                 news.Image = (byte[])reader["IMAGECOVER"];
                                 results.Add(news);
+                            }
+                        }
+                    }
+                    catch (Exception) { }
+                }
+
+                return Ok(results);
+            }
+        }
+
+        /// <summary>
+        /// Hàm lấy chi tiết tin tức
+        /// </summary>
+        /// <param name="unitcodefornews"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IHttpActionResult> GetNewsDetailsByTitle(string unitcodefornews ,string title)
+        {
+            NewsModel results = new NewsModel();
+
+            using (OracleConnection connection =
+                new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT t.TENLOAITINTUC,t.TIEUDE,t.NOIDUNG,t.IMAGECOVER FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.TIEUDE=:title AND t.I_STATE='isUsed'";
+                    command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                    command.Parameters.Add("title", OracleDbType.NVarchar2, 500).Value = title;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                results.Title = reader["TIEUDE"].ToString();
+                                results.Content = reader["NOIDUNG"].ToString();
+                                results.Type = reader["TENLOAITINTUC"].ToString();
                             }
                         }
                     }

@@ -10,7 +10,7 @@ import {khachHangModel ,loginModel ,ObjectCartModel,City,Districts,AddressModel,
 
 export class CommonServiceService {
   madonvi:string = 'DV1-CH1';
-  host:string = 'http://localhost:50595/';
+  host:string = 'http://btsoftvn.com:50595/';
   makho :string= 'DV1-CH1-KBL';
 
   constructor(
@@ -29,7 +29,7 @@ export class CommonServiceService {
         defaultOrder = order;
         defaultSortType = sorttype;
       }
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize=12&pagenumber=1&order='+defaultOrder+'&sorttype='+defaultSortType);
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanedise?pagesize=6&pagenumber=1&order='+defaultOrder+'&sorttype='+defaultSortType);
     }
   }
   getListMerchanediseByCategory(event? :PageEvent,manhom?:string,order?:string ,sorttype?:string){
@@ -44,7 +44,7 @@ export class CommonServiceService {
         defaultOrder = order;
         defaultSortType = sorttype;
       }
-      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize=12&pagenumber=1&merchanedisetype='+manhom+'&order='+defaultOrder+'&sorttype='+defaultSortType);
+      return this._http.get<VatTuDTO>(this.host+'api/home/GetListMerchanediseByCategory?pagesize=6&pagenumber=1&merchanedisetype='+manhom+'&order='+defaultOrder+'&sorttype='+defaultSortType);
     }
   }
   getDataDetail<VatTuDetail>(mavattu :string){
@@ -137,6 +137,9 @@ export class CommonServiceService {
     return this._http.get<Array<NewsModel>>(this.host+'api/home/GetNews?unitcodefornews='+this.madonvi+'&type='+type);
   }
   getImageCover(){
-    return this._http.get<Array<NewsModel>>(this.host+'api/home/GetNews?unitcodefornews='+this.madonvi);
+    return this._http.get<Array<NewsModel>>(this.host+'api/home/GetImageCover?unitcodefornews='+this.madonvi);
+  }
+  getNewsDetailByTitle(title :string){
+    return this._http.get<NewsModel>(this.host+'api/home/GetNewsDetailsByTitle?unitcodefornews='+this.madonvi+'&title='+title);
   }
 }

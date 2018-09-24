@@ -38,6 +38,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import {NgxAutoScrollModule} from "ngx-auto-scroll";
 import { ToastrModule } from 'ngx-toastr';
 import {MatSelectModule} from '@angular/material/select';
+import { NewsComponent } from './_layout/news/news.component';
 const config: SocketIoConfig = { url: 'http://btsoftvn.com:3000', options: {} };
 
 @NgModule({
@@ -61,6 +62,7 @@ const config: SocketIoConfig = { url: 'http://btsoftvn.com:3000', options: {} };
     ContactComponent,
     SearchDetailComponent,
     InfoCustomComponent,
+    NewsComponent,
   ],
   imports: [
     BrowserModule,

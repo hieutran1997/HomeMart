@@ -1,5 +1,4 @@
-﻿ 
-<mat-card id="cartParent">
+﻿<mat-card id="cartParent">
     <mat-card-title>
         <div class="row">
             <div class="col-md-6">{{categoryName}} </div>
@@ -11,9 +10,7 @@
                             Sắp xếp</button>
                         <!-- Missing tag added below -->
                         <div class="dropdown-menu" aria-labelledby="sortMenu" ngbDropdownMenu>
-                            <button class="dropdown-item" 
-                                    *ngFor="let sortOrder of sortOrders" 
-                                    (click)="ChangeSortOrder(sortOrder)">{{sortOrder}}
+                            <button class="dropdown-item" *ngFor="let sortOrder of sortOrders" (click)="ChangeSortOrder(sortOrder)">{{sortOrder}}
                             </button>
                         </div>
                     </div>
@@ -25,23 +22,18 @@
             </div>
         </div>
     </mat-card-title>
-    <mat-card-content  *ngIf="isLoading">
+    <mat-card-content *ngIf="isLoading">
         <br/>
         <div class="row">
             <div class="col-md-5"></div>
             <div class="col align-self-center">
-                <app-looping-rhombuses-spinner
-                [animationDuration]="2500"
-                [rhombusSize]="15"
-                [color]="'#4286f4'"
-                ></app-looping-rhombuses-spinner>
-                  
+                <app-looping-rhombuses-spinner [animationDuration]="2500" [rhombusSize]="15" [color]="'#4286f4'"></app-looping-rhombuses-spinner>
             </div>
             <div class="col-md-4"></div>
         </div>
         <br/>
     </mat-card-content>
-    <mat-card-content  class="container" *ngIf="!isLoading">
+    <mat-card-content class="container" *ngIf="!isLoading">
         <div *ngIf="lstVatTu.length===0" style="text-align: center;">
             <span style="font-size:20px; ">Không có sản phần nào thuộc nhóm hàng này </span>
         </div>
@@ -51,22 +43,28 @@
                 <mat-card id="imageNew" style="margin-top: 15px;">
                     <mat-card-content>
                         <div class="text-center">
-                            <a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}" title="{{item.TenVatTu}}"><img src="data:image/JPEG;base64,{{item.Avatar}}" class="img-fluid" style="padding-top:20px;max-height: 90px!important " width="150" alt="{{item.TenVatTu}}"></a>
+                            <a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}" title="{{item.TenVatTu}}"><img src="data:image/JPEG;base64,{{item.Avatar}}"
+                                    class="img-fluid" style="padding-top:20px;max-height: 90px!important " width="150" alt="{{item.TenVatTu}}"></a>
                         </div>
                     </mat-card-content>
                     <mat-card-footer style="text-align: left !important;min-width: 30px;margin-right: 0px;margin-left: 0px;font-size: 1.2em;padding-top:20px; ">
-                        <div class="row" style="height: 52px;"> 
-                            <span style="color:  rgb(66, 132, 255) !important;font-size: 14px;text-align: left !important; padding-left: 20px; padding-top: 10px;padding-right: 15px" (click)="redirectDetail(item)" id="tenVatTu">{{item.MaVatTu}} - {{display(item.TenVatTu)}}</span>
+                        <div class="row" style="height: 52px;">
+                            <span style="color:  rgb(66, 132, 255) !important;font-size: 14px;text-align: left !important; padding-left: 20px; padding-top: 10px;padding-right: 15px"
+                                (click)="redirectDetail(item)" id="tenVatTu">{{item.MaVatTu}} - {{display(item.TenVatTu)}}</span>
                         </div>
                         <div class="row">
                             <div class="col-md-9">
-                                <span id="monney" style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;color: #F57223; font-weight: bold">{{item.DonGia | number}} ₫</span>
+                                <span id="monney" style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;color: #F57223; font-weight: bold">{{item.DonGia
+                                    | number}} ₫</span>
                                 <br/>
-                                <span style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;font-size: 14px">Tồn:&nbsp;<span class="badge badge-light" style="color: #F57223 !important ;font-size: 14px">{{item.SoTon}}</span> </span>
+                                <span style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;font-size: 14px">Tồn:&nbsp;<span
+                                        class="badge badge-light" style="color: #F57223 !important ;font-size: 14px">{{item.SoTon}}</span>
+                                    </span>
                             </div>
-                            <div class="col-md-3" >
-                                <span style="padding-top:50px;padding-right:50px;"><img  src="/assets/cartNew.png" (click)="addToCart(item);open(modalCart,item)" id="pointer" title="Thêm vào giỏ hàng"/></span> 
-                             </div>
+                            <div class="col-md-3">
+                                <span style="padding-top:50px;padding-right:50px;"><img src="/assets/cartNew.png" (click)="addToCart(item);open(modalCart,item)"
+                                        id="pointer" title="Thêm vào giỏ hàng" /></span>
+                            </div>
                         </div>
                         <div class="row" style="font-size: 15px;margin-left: 30%;">
                             <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
@@ -77,86 +75,89 @@
         </div>
         <!-- chọn show danh sách -->
         <div class="container" *ngIf="viewer=='list'">
-                <div class="row" *ngFor="let item of lstVatTu">
-                    <div class="col-md-3" style="text-align: center;">
-                        <a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}"  title="{{item.TenVatTu}}">
-                            <img src="data:image/JPEG;base64,{{item.Avatar}}" class="img-fluid" style="max-height: 90px!important;" alt="{{item.TenVatTu}}">
-                        </a>
+            <div class="row" *ngFor="let item of lstVatTu">
+                <div class="col-md-3" style="text-align: center"><a routerLink="/chi-tiet-hang-hoa/{{item.MaVatTu}}" title="{{item.TenVatTu}}"><img
+                            src="data:image/JPEG;base64,{{item.Avatar}}" class="img-thumbnail" id="zoomList" alt="{{item.TenVatTu}}"></a></div>
+                <div class="col" style="margin-top: 30px;">
+                    <span style="font-size: 1.3em;color:  rgb(66, 132, 255) !important">{{item.MaVatTu}} - {{item.TenVatTu}}</span>
+                    <br/>
+                    <span id="monney" *ngIf="item.DonGiaKhuyenMai===0" style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;color: #F57223; font-weight: bold">{{item.DonGia
+                        | number}} ₫</span>
+                    <div *ngIf="item.DonGiaKhuyenMai!==0">
+                        <span id="monney" style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;color: red; font-weight: bold;text-decoration: line-through;">{{item.DonGia
+                            | number}} ₫</span>
+                        &nbsp;&nbsp;
+                        <span id="monney" style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;color: #F57223; font-weight: bold">{{item.DonGiaKhuyenMai
+                            | number}} ₫</span>
                     </div>
-                    <div class="col">
-                        <span style="color:  rgb(66, 132, 255) !important;font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;" (click)="redirectDetail(item)" id="tenVatTu">{{item.MaVatTu}} - {{item.TenVatTu}}</span>
+                    <br/>
+                    <span style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;font-size: 14px">Tồn:&nbsp;<span
+                            class="badge badge-light" style="color: #F57223 !important">{{item.SoTon}}</span> </span>
+                    <div class="row" style="font-size: 14px;margin-left: 1%;">
+                        <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
+                    </div>
+                    <button (click)="addToCart(item)" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-footer>
+        <mat-paginator style="font-size: 16px" [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[9,12,18]"
+            [showFirstLastButtons]="true" (page)="getServerData($event)">
+        </mat-paginator>
+    </mat-card-footer>
+</mat-card>
+
+
+
+<ng-template #modalCart let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6" style="border-right: solid 1px dimgray">
+                <span style="color: darkgreen;font-weight: bold">Đã thêm {{itemSelect.SoLuong}} hàng vào giỏ hàng</span>
+                <br/><br/>
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="data:image/JPEG;base64,{{itemSelect.Avatar}}" height="100px;" width="130px" alt="{{itemSelect.TenVatTu}}">
+                    </div>
+                    <div class="col-md-8">
+                        <span style="font-size: 13px" (click)="redirectDetail(itemSelect)"> {{itemSelect.MaVatTu}} - {{display(itemSelect.TenVatTu)}}</span>
                         <br/>
-                        <span id="monney" style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;color: #F57223; font-weight: bold">{{item.DonGia | number}} ₫</span>
-                        <br/>
-                        <span style="font-size: 14px;text-align: left !important; padding-left: 10px; padding-top: 10px;font-size: 14px">Tồn:&nbsp;<span class="badge badge-light" style="color: #F57223 !important">{{item.SoTon}}</span> </span>
-                        <div class="row" style="font-size: 15px;margin-left: 1%;">
-                            <ngb-rating [rate]="item.selectFavorite"></ngb-rating>
-                        </div>
-                        <button (click)="addToCart(item)" style="background-color: #F57223" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                        <span id="monney" style="color: #F57223;">{{itemSelect.DonGia | number}} ₫</span>
                     </div>
                 </div>
             </div>
-    </mat-card-content>
-    <mat-card-footer> 
-        <mat-paginator style="font-size: 16px" [length]="length"
-                        [pageIndex]="pageIndex"
-                        [pageSize]="pageSize"
-                        [pageSizeOptions]="[9,12,18]"
-                        [showFirstLastButtons]="true"
-                        (page)="getServerData($event)">
-        </mat-paginator>
-    </mat-card-footer>
-  </mat-card>
-
-
-  
-<ng-template #modalCart let-c="close" let-d="dismiss">
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6" style="border-right: solid 1px dimgray">
-                    <span style="color: darkgreen;font-weight: bold">Đã thêm {{itemSelect.SoLuong}} hàng vào giỏ hàng</span>
-                    <br/><br/>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <img src="data:image/JPEG;base64,{{itemSelect.Avatar}}" height="100px;" width="130px" alt="{{itemSelect.TenVatTu}}">
-                        </div>
-                        <div class="col-md-8">
-                            <span style="font-size: 13px" (click)="redirectDetail(itemSelect)"> {{itemSelect.MaVatTu}}  - {{display(itemSelect.TenVatTu)}}</span>
-                            <br/>
-                            <span id="monney" style="color: #F57223;">{{itemSelect.DonGia | number}} ₫</span>
-                        </div>
+            <div class="col-md-6">
+                <span><strong>Giỏ hàng của tôi</strong> ( {{vattuSelected.tongSoLuong}} sản phẩm)</span>
+                <br/>
+                <div class="row">
+                    <div class="col align-self-start">
+                        <span>Tạm tính</span>
+                    </div>
+                    <div class="col align-self-end">
+                        {{vattuSelected.tongTien | number}} ₫
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <span><strong>Giỏ hàng của tôi</strong> ( {{vattuSelected.tongSoLuong}} sản phẩm)</span>
-                    <br/>
-                    <div class="row">
-                       <div class="col align-self-start"> 
-                           <span>Tạm tính</span>
-                        </div>
-                       <div class="col align-self-end">
-                            {{vattuSelected.tongTien | number}} ₫
-                        </div>
+                <hr/>
+                <div class="row">
+                    <div class="col align-self-start">
+                        <strong>Tổng cộng</strong>
                     </div>
-                    <hr/>
-                    <div class="row">
-                        <div class="col align-self-start"> 
-                            <strong>Tổng cộng</strong>
-                            </div>
-                        <div class="col align-self-end">
-                            <strong>{{vattuSelected.tongTien | number}} ₫</strong>
-                        </div>
+                    <div class="col align-self-end">
+                        <strong>{{vattuSelected.tongTien | number}} ₫</strong>
                     </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col align-self-center">
-                            <button (click)="goToCart();d('Cross click')" style="background-color: #F57223" class="btn">Đi đến giỏ hàng</button>
-                        </div>
-                        <div class="col align-self-center">
-                            <button (click)="d('Cross click')" style="background-color: #F57223" class="btn">Tiếp tục mua hàng</button>
-                        </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col align-self-center">
+                        <button (click)="goToCart();d('Cross click')" style="background-color: #F57223" class="btn">Đi đến
+                            giỏ hàng</button>
+                    </div>
+                    <div class="col align-self-center">
+                        <button (click)="d('Cross click')" style="background-color: #F57223" class="btn">Tiếp tục mua hàng</button>
                     </div>
                 </div>
             </div>
         </div>
-    </ng-template>
+    </div>
+</ng-template>

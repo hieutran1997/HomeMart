@@ -1,4 +1,4 @@
-import { Component, OnInit,enableProdMode } from '@angular/core';
+import { Component, OnInit,enableProdMode ,ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {VatTu,VatTuDTO,VatTuDetail} from '../home/vattumodel';
@@ -10,6 +10,7 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gal
 import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
 import {Router,NavigationEnd} from '@angular/router';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgxAutoScroll} from "ngx-auto-scroll";
 
 enableProdMode();
 
@@ -20,6 +21,7 @@ enableProdMode();
   providers: [NgbRatingConfig] 
 })
 export class DetailMerchandiseComponent implements OnInit {
+  @ViewChild(NgxAutoScroll) ngxAutoScroll: NgxAutoScroll;
   lstMerchansediseOld : Array<string>;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
@@ -48,9 +50,13 @@ export class DetailMerchandiseComponent implements OnInit {
       if (e instanceof NavigationEnd ) {
         let url:string = e.urlAfterRedirects; 
         let mavt = url.split('/');
+        window.scrollTo(0, 0);
         this.filterData(mavt[mavt.length-1]);
       }
     });
+  }
+  public forceScrollDown(): void {
+    this.ngxAutoScroll.forceScrollDown();
   }
 
   ngOnInit() {
@@ -59,31 +65,9 @@ export class DetailMerchandiseComponent implements OnInit {
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
       this.vattuSelected =JSON.parse(this.cookieValue);
-      //this.cookieService.delete('vattutronggiohang');
     }
 
     this.galleryOptions = [
-      // {
-      //     width: '500px',
-      //     height: '400px',
-      //     thumbnailsColumns: 4,
-      //     imageAnimation: NgxGalleryAnimation.Slide
-      // },
-      // // max-width 800
-      // {
-      //     breakpoint: 800,
-      //     width: '100%',
-      //     height: '600px',
-      //     imagePercent: 80,
-      //     thumbnailsPercent: 20,
-      //     thumbnailsMargin: 20,
-      //     thumbnailMargin: 20
-      // },
-      // // max-width 400
-      // {
-      //     breakpoint: 400,
-      //     preview: false
-      // },
       { "previewZoom": true, "previewRotate": true },
       { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
       { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 }
@@ -104,6 +88,7 @@ export class DetailMerchandiseComponent implements OnInit {
     this.isLoading = true;
    this.commonService.getDataDetail<VatTuDetail>(mavattu).subscribe(
       data =>{
+        console.log(data);
         this.lstMerchansediseOld = [];
         if(data){
           this.vattu = data;

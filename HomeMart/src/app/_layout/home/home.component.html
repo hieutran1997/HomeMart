@@ -1,16 +1,17 @@
-<div class="container">
+<div class="container" *ngIf="!isViewContent">
     <app-ngbd-carousel-config></app-ngbd-carousel-config>
 </div>
-<div class="container">
+<div class="container" [ngStyle]="{'padding-top':isViewContent ? '30px' : '0px' }">
     <div class="row">
         <div class="col-lg-3">
             <mat-card>
                 <div *ngFor="let item of lstSideBar">
                     <span style="font-size: 20px;">{{item.TenLoaiVatTu}}</span>
                     <hr/>
-                    <ul id="sideBar"  style="list-style-image: url('../../../assets/iconLi.gif');">
+                    <ul id="sideBar" style="list-style-image: url('../../../assets/iconLi.gif');">
                         <li *ngFor="let subItem of item.ListNhomVatTu" class="list">
-                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" (click)="changeCategory(subItem)" *ngIf="maloaivattu!==subItem.MANHOMVATTU" id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{subItem.TENNHOMVATTU}}</a>
+                            <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" (click)="changeCategory(subItem)" *ngIf="maloaivattu!==subItem.MANHOMVATTU"
+                                id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{subItem.TENNHOMVATTU}}</a>
                             <a routerLink="/loai-hang/{{subItem.MANHOMVATTU}}" *ngIf="maloaivattu===subItem.MANHOMVATTU" id="menuSidebar" style="color: #F57223 !important;font-size: 13.5px;padding: 5px;">{{subItem.TENNHOMVATTU}}</a>
                         </li>
                     </ul>
@@ -21,10 +22,20 @@
                     <hr/>
                 </div>
             </mat-card>
+            <br/>
+            <mat-card>
+                <span style="font-size: 20px;">Danh sách tin</span>
+                <hr/>
+                <ul id="sideBar" style="list-style-image: url('../../../assets/iconLi.gif');">
+                    <li *ngFor="let item of news" class="list">
+                        <a routerLink="/tin-tuc/{{item.Title}}"  id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{item.Title}}</a>
+                    </li>
+                </ul>
+            </mat-card>
         </div>
         <div class="col-lg-9">
             <app-content-home *ngIf="!isViewContent"></app-content-home>
-            <app-category-details  *ngIf="isViewContent"></app-category-details>
+            <app-category-details *ngIf="isViewContent"></app-category-details>
         </div>
     </div>
 </div>

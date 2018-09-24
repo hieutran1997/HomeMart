@@ -1,28 +1,28 @@
 <mat-card id="cartParent">
   <mat-card-title>
       <div class="row">
-          <div class="col-md-6">Sản phẩm mới</div>
-          <div class="col-md-2"></div>
-          <div class="col-md-2" style="text-align: right">
-              <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-                  <div ngbDropdown class="d-inline-block">
-                      <button class="btn btn-outline-primary" id="sortMenu" ngbDropdownToggle>
-                          Sắp xếp</button>
-                      <!-- Missing tag added below -->
-                      <div class="dropdown-menu" aria-labelledby="sortMenu" ngbDropdownMenu>
-                          <button class="dropdown-item" 
-                                  *ngFor="let sortOrder of sortOrders" 
-                                  (click)="ChangeSortOrder(sortOrder)">{{sortOrder}}
-                          </button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-2">
-              <button class="btn btn-outline-primary" (click)="viewer='list'"><span class="fa fa-list-ul"></span></button>
-              <button class="btn btn-outline-primary" (click)="viewer='table'"><span class="fa fa-table"></span></button>
-          </div>
-      </div>
+        <div class="col-md-6">Sản phẩm mới</div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2" style="text-align: right">
+            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                <div ngbDropdown class="d-inline-block">
+                    <button class="btn btn-outline-primary" id="sortMenu" ngbDropdownToggle>
+                        Sắp xếp</button>
+                    <!-- Missing tag added below -->
+                    <div class="dropdown-menu" aria-labelledby="sortMenu" ngbDropdownMenu>
+                        <button class="dropdown-item" 
+                                *ngFor="let sortOrder of sortOrders"
+                                (click)="ChangeSortOrder(sortOrder)">{{sortOrder}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-primary" (click)="viewer='list'"><span class="fa fa-list-ul"></span></button>
+            <button class="btn btn-outline-primary" (click)="viewer='table'"><span class="fa fa-table"></span></button>
+        </div>
+    </div>
   </mat-card-title>
   <br/>
   <mat-card-content  *ngIf="isLoading">
@@ -106,12 +106,17 @@
       <mat-paginator  style="font-size: 16px"   [length]="length"
                       [pageIndex]="pageIndex"
                       [pageSize]="pageSize"
-                      [pageSizeOptions]="[9,12,18]"
+                      [pageSizeOptions]="[3,6,9]"
                       [showFirstLastButtons]="true"
                       (page)="getServerData($event)">
       </mat-paginator>
   </mat-card-footer>
 </mat-card>
+
+<app-category-details maNhom="MN000001" categoryName="Váy đầm"></app-category-details>
+
+<app-category-details maNhom="MN000002" categoryName="Áo"></app-category-details>
+<!-- modal -->
 <ng-template #modalCart let-c="close" let-d="dismiss">
     <div class="modal-body">
         <div class="row">

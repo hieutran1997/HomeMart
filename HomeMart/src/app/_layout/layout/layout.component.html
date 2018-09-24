@@ -7,8 +7,8 @@
 <app-footer></app-footer>
 <div id="form-chat">
     <div id="live-chat">
-		<header class="clearfix" style="height: 30px !important;">
-			<a href="#" class="chat-close"><span class="fa fa-angle-down" ></span></a>
+		<header class="clearfix" style="height: 30px !important;" (click)="OpenFormChat($event)">
+			<span class="chat-close"><span class="fa fa-angle-down"></span></span>
 			<h4>{{title}} &nbsp;&nbsp;&nbsp; <span class="fa fa-circle fa-sm" *ngIf='CskhOnline' style="color:chartreuse;font-size: 0.7rem;"></span></h4>
 			
 			<span class="chat-message-counter" *ngIf="countMessage>0">{{countMessage}}</span>

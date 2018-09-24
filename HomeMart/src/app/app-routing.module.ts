@@ -12,6 +12,7 @@ import {ShippingComponent} from './_layout/shipping/shipping.component';
 import { ContactComponent } from './_layout/contact/contact.component';
 import { SearchDetailComponent } from './_layout/search-detail/search-detail.component';
 import { InfoCustomComponent } from './_layout/info-custom/info-custom.component';
+import { NewsComponent } from './_layout/news/news.component';
 
 const routes: Routes = [
     {
@@ -29,7 +30,8 @@ const routes: Routes = [
         { path:'dang-nhap',component : LoginComponent },
         { path:'dang-ky', component:RegisterComponent},
         { path:'tim-kiem/:tukhoa',component:SearchDetailComponent},
-        { path:'thong-tin-ca-nhan',component:InfoCustomComponent}
+        { path:'thong-tin-ca-nhan',component:InfoCustomComponent},
+        { path:'tin-tuc/:title', component:NewsComponent},
       ]
     },
 ];

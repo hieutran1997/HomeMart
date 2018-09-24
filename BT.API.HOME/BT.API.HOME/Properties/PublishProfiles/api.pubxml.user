@@ -16,7 +16,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/26/2018 10:30:06</publishTime>
     </File>
     <File Include="bin/BT.API.HOME.dll">
-      <publishTime>08/26/2018 17:36:00</publishTime>
+      <publishTime>09/24/2018 23:58:51</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>08/26/2018 10:30:06</publishTime>
@@ -112,7 +112,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/26/2018 10:30:06</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/26/2018 17:36:01</publishTime>
+      <publishTime>09/12/2018 23:56:14</publishTime>
     </File>
   </ItemGroup>
 </Project>
