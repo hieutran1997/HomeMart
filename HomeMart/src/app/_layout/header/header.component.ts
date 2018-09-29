@@ -124,7 +124,6 @@ export class HeaderComponent implements OnInit {
           children : []
         });
         this.listMenu = arrTemp;
-        console.log('1',this.listMenu);
       });
   }
 }

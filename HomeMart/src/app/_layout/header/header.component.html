@@ -15,10 +15,10 @@
         <li *ngFor="let item of listMenu;index as i">
           <div class="dropdown">
               <a class="nav-link dropbtn" *ngIf="i < listMenu.length-1" routerLink="/{{item.url}}" style="border-right: solid 1px coral;">
-                <span id="menuBar" style="font-size: 13.5px;">{{item.title}} </span>
+                <span id="menuBar">{{item.title}} </span>
               </a>
               <a class="nav-link dropbtn" *ngIf="i==listMenu.length-1" routerLink="/{{item.url}}" style="border-right: none;">
-                <span id="menuBar" style="font-size: 13.5px;">{{item.title}} </span>
+                <span id="menuBar">{{item.title}} </span>
               </a>
               
                 <div class="dropdown-content">

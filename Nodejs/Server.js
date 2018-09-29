@@ -416,7 +416,7 @@ io.on('connection', function(socket){
             }
         })
     })
-    socket.on('employee-connected',function(obj){
+    socket.on('employee-connected',function(data){
         var obj = {
             id : socket.id,
             AppId : data.AppId
