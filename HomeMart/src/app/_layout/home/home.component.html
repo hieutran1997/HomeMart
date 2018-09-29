@@ -3,7 +3,7 @@
 </div>
 <div class="container" [ngStyle]="{'padding-top':isViewContent ? '30px' : '0px' }">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-3" id="sideBarView">
             <mat-card>
                 <div *ngFor="let item of lstSideBar">
                     <span style="font-size: 20px;">{{item.TenLoaiVatTu}}</span>

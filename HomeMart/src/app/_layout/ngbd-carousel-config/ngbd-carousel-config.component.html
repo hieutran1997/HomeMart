@@ -1,25 +1,55 @@
-<ngb-carousel *ngIf="images">
-    <ng-template ngbSlide *ngFor="let image of images">
-      <img src="data:image/JPEG;base64,{{image.Image}}" alt="{{image.Title}}">
-      <div class="carousel-caption">
-        <h4>{{image.Title}}</h4>
-        <p>{{image.Content}}</p>
-      </div>
-    </ng-template>
-  </ngb-carousel>
+<style>
+  .table-wrapper-scroll-y {
+    display: block;
+    max-height: 200px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+</style>
 
-  <ngb-carousel *ngIf="isLoading">
+<div class="row">
+  <div class="col-md-9">
+    <ngb-carousel *ngIf="images">
+      <ng-template ngbSlide *ngFor="let image of images">
+        <img src="data:image/JPEG;base64,{{image.Image}}" alt="{{image.Title}}">
+        <div class="carousel-caption">
+          <h4>{{image.Title}}</h4>
+          <p>{{image.Content}}</p>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+
+    <ngb-carousel *ngIf="isLoading">
       <br/>
       <div class="row">
-          <div class="col-md-5"></div>
-          <div class="col align-self-center">
-              <app-looping-rhombuses-spinner
-                [animationDuration]="2500"
-                [rhombusSize]="15"
-                [color]="'#4286f4'"
-              ></app-looping-rhombuses-spinner>
-          </div>
-          <div class="col-md-4"></div>
+        <div class="col-md-5"></div>
+        <div class="col align-self-center">
+          <app-looping-rhombuses-spinner [animationDuration]="2500" [rhombusSize]="15" [color]="'#4286f4'"></app-looping-rhombuses-spinner>
+        </div>
+        <div class="col-md-4"></div>
       </div>
       <br/>
-  </ngb-carousel>
+    </ngb-carousel>
+  </div>
+  <div class="col-md-3">
+    <div class="table-wrapper-scroll-y">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Tin tức</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of news">
+            <td>
+              <div style="display: inline;">
+                <img src="../../../assets/iconLi.gif" /> &nbsp;
+                <a routerLink="/tin-tuc/{{item.Title}}" id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{item.Title}}</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

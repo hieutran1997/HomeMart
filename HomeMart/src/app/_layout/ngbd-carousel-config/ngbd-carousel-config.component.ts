@@ -3,7 +3,6 @@ import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient} from '@angular/common/http';
 import { NewsModel } from '../../model';
 import { CommonServiceService } from '../../service/common-service.service';
-
 @Component({
   selector: 'app-ngbd-carousel-config',
   templateUrl: './ngbd-carousel-config.component.html',
@@ -13,6 +12,7 @@ import { CommonServiceService } from '../../service/common-service.service';
 export class NgbdCarouselConfig  implements OnInit {
   images: Array<NewsModel>;
   isLoading : Boolean = false;
+  news = new Array<NewsModel>();
   constructor(
     config: NgbCarouselConfig, 
     private _http: HttpClient,
@@ -28,6 +28,11 @@ export class NgbdCarouselConfig  implements OnInit {
   //tỷ lệ 1903x400
   ngOnInit() {
     this.isLoading = true;
+    this._service.getNews("News").subscribe(data => {
+      if(data){
+        this.news = data;
+      }
+    });
     this._service.getImageCover().subscribe(images =>{this.isLoading = false;this.images = images;} );
   }
   

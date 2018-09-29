@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoaiVatTu } from '../../model/LoaiVatTu';
+import { LoaiVatTu ,NhomVatTu , sideBarShow} from '../../model';
 import {CommonServiceService} from '../../service/common-service.service';
 import { CookieService } from 'ngx-cookie-service';
 import {Observable} from 'rxjs';
@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
   lstLoaiVatTu : Array<LoaiVatTu>;
   checkUser : boolean = false;
   listMenu = new Array();
+  lstNhomVatTu: Array<NhomVatTu>;
   constructor(
     private commonService : CommonServiceService,
     private cookieService:CookieService,
@@ -47,24 +48,10 @@ export class HeaderComponent implements OnInit {
     this.commonService.getAllMerchanediseType<Array<LoaiVatTu>>().subscribe(
       data=>{
         this.lstLoaiVatTu = data;
-        arrTemp.push({
-          Title : 'Trang chủ',
-          url: '/'
-        });
         if(this.lstLoaiVatTu){
-          this.lstLoaiVatTu.forEach(function(obj){
-            arrTemp.push({
-              Title : obj.TenLoaiVatTu,
-              url: '/loai-hang/'+obj.MaLoaiVatTu
-            });
-          });
-
-          arrTemp.push({
-            Title : 'Giới thiệu',
-            url: '/gioi-thieu'
-          });
-          this.listMenu = arrTemp;
+          this.getGroupMerchandise();
         }
+
       }
     );
     this.loginSuccessService.loginSucces.subscribe(data=>{
@@ -97,9 +84,47 @@ export class HeaderComponent implements OnInit {
     );
   searchData(data){
     this.router.navigateByUrl('/tim-kiem/'+data);
-    // this.commonService.searchByCode<Array<ObjectSearchDTO>>(data).subscribe(result=>{
-    //   this.lstSearch = result;
-    //   this.searchService.searchByCode(this.lstSearch);
-    // });
+  }
+
+  getGroupMerchandise(){
+    let arrTemp = new Array();
+    arrTemp.push({
+      title : 'Trang chủ',
+      url: '/',
+      children : []
+    });
+    this.commonService
+      .getAllGroupMerchanedise<Array<NhomVatTu>>()
+      .subscribe(res => {
+        this.lstNhomVatTu = res;
+        for (let i = 0; i < this.lstLoaiVatTu.length; i++) {
+          let temp = new sideBarShow();
+          temp.MaLoaiVatTu = this.lstLoaiVatTu[i].MaLoaiVatTu;
+          temp.TenLoaiVatTu = this.lstLoaiVatTu[i].TenLoaiVatTu;
+          let obj = {
+            title : this.lstLoaiVatTu[i].TenLoaiVatTu,
+            url: '/loai-hang/'+this.lstLoaiVatTu[i].MaLoaiVatTu,
+            children : []
+          }
+          if (this.lstNhomVatTu) {
+            for (let j = 0; j < this.lstNhomVatTu.length; j++) {
+              if (temp.MaLoaiVatTu === this.lstNhomVatTu[j].MALOAIVATTU) {
+                obj.children.push({
+                  title : this.lstNhomVatTu[j].TENNHOMVATTU,
+                  url: '/loai-hang/'+this.lstNhomVatTu[j].MANHOMVATTU,
+                });
+              }
+            }
+            arrTemp.push(obj);
+          }
+        }
+        arrTemp.push({
+          title : 'Giới thiệu',
+          url: '/gioi-thieu',
+          children : []
+        });
+        this.listMenu = arrTemp;
+        console.log('1',this.listMenu);
+      });
   }
 }

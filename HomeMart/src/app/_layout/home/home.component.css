@@ -55,3 +55,9 @@ li a:hover{
 ul li ul {
     display: none;
 } 
+
+@media screen and (max-width: 600px) {
+    #sideBarView{
+        display: none !important;
+    }
+}

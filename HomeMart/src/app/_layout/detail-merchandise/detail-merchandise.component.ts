@@ -132,18 +132,15 @@ export class DetailMerchandiseComponent implements OnInit {
               this.cookieService.set('lstMerchansediseOld',temp,10);
             }
           }
-          // this.galleryImages.push({
-          //   small: this.vattu.Avartar,
-          //   medium: this.vattu.Avartar,
-          //   big: this.vattu.Avartar
-          // });
           this.galleryImages= [];
-          for(let i = 0 ; i < this.vattu.HinhAnhs.length ; i++){
-            this.galleryImages.push({
-              small: 'http://btsoftvn.com:8080'+this.vattu.HinhAnhs[i],
-              medium: 'http://btsoftvn.com:8080'+this.vattu.HinhAnhs[i],
-              big: 'http://btsoftvn.com:8080'+this.vattu.HinhAnhs[i]
-            });
+          if(this.vattu.HinhAnhs){
+            for(let i = 0 ; i < this.vattu.HinhAnhs.length ; i++){
+              this.galleryImages.push({
+                small: 'http://btsoftvn.com:8080'+this.vattu.HinhAnhs[i],
+                medium: 'http://btsoftvn.com:8080'+this.vattu.HinhAnhs[i],
+                big: 'http://btsoftvn.com:8080'+this.vattu.HinhAnhs[i]
+              });
+            }
           }
         }
       }
