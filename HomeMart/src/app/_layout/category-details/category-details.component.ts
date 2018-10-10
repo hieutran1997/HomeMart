@@ -54,6 +54,11 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
         let url:string = e.urlAfterRedirects; 
         let manhomhang = url.split('/');
         this.filterData(null,manhomhang[manhomhang.length-1]);
+        this.commonService.getTitleOfCategory(manhomhang[manhomhang.length-1]).subscribe((result) => {
+          if(result){
+            this.categoryName = result;
+          }
+        });
       }
     });
    }
@@ -61,7 +66,6 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
   ngOnInit() {
     if(this.route.snapshot.paramMap.get('maloaivattu')){
       this.maloaivattu= this.route.snapshot.paramMap.get('maloaivattu');
-      
     }else{
       if(this.maNhom){
         this.maloaivattu = this.maNhom;
@@ -71,6 +75,11 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     }
     if(this.maloaivattu){
       this.filterData(null,this.maloaivattu,this.orderBy,this.sortType);
+      this.commonService.getTitleOfCategory(this.maloaivattu).subscribe((result) => {
+        if(result){
+          this.categoryName = result;
+        }
+      });
     }
     if(this.cookieService.check('vattutronggiohang')){
       this.cookieValue = this.cookieService.get('vattutronggiohang');
@@ -79,9 +88,6 @@ export class CategoryDetailsComponent implements OnInit,OnDestroy {
     else{
       this.vattuSelected = new CartModel([],0,0);
     }
-    this.viewCartService.category.subscribe(data=>{
-      this.categoryName = data;
-    });
   }
 
   ngOnDestroy() {

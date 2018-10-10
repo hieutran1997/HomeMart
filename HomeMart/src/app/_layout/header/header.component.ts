@@ -122,7 +122,12 @@ export class HeaderComponent implements OnInit {
           title : 'Giới thiệu',
           url: '/gioi-thieu',
           children : []
-        });
+        },{
+          title : 'Tin tức',
+          url: '/tin-tuc',
+          children : []
+        }
+        );
         this.listMenu = arrTemp;
       });
   }

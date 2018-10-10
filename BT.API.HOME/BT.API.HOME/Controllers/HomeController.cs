@@ -6,6 +6,7 @@ using System.Data;
 using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using BT.API.HOME.Models;
 using OracleInternal.Secure.Network;
@@ -106,7 +107,6 @@ namespace BT.API.HOME.Controllers
             }
             return Ok(vattu);
         }
-
 
         /// <summary>
         /// Lấy dánh sách các mặt hàng dựa theo loại 
@@ -295,6 +295,53 @@ namespace BT.API.HOME.Controllers
             }
             return Ok(lstMerchanediseType);
         }
+
+        [Route("GetTitleOfCategory")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetTitleOfCategory(string code, string madonvi)
+        {
+            string results = "";
+            using (OracleConnection connection =
+                new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    if (code.Length > 3)
+                    {
+                        command.CommandText = @"SELECT TENNHOMVT FROM DM_NHOMVATTU WHERE MANHOMVTU = '" + code + "' AND UNITCODE = '" + madonvi + "'";
+                    }
+                    else
+                    {
+                        command.CommandText = @"SELECT TENLOAIVT FROM DM_LOAIVATTU WHERE MALOAIVATTU = '" + code + "' AND UNITCODE = '" + madonvi + "'";
+                    }
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                if (code.Length > 3)
+                                {
+                                    results = reader["TENNHOMVT"].ToString();
+                                }
+                                else
+                                {
+                                    results = reader["TENLOAIVT"].ToString();
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception) { }
+                }
+                return Ok(results);
+            }
+        }
+
 
         /// <summary>
         /// Lấy danh sách các nhóm hàng hóa
@@ -1107,8 +1154,83 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.CommandType = CommandType.Text;
-                    command.CommandText = @"SELECT t.TENLOAITINTUC,t.TIEUDE,t.NOIDUNG,t.IMAGECOVER FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='"+ type + "' AND t.I_STATE='isUsed' ORDER BY t.I_CREATE_DATE DESC";
+                    if (type != "News")
+                    {
+                        command.CommandText = @"SELECT t.TENLOAITINTUC,t.TIEUDE,t.TOMTAT,t.NOIDUNG,t.IMAGECOVER,t.I_CREATE_DATE FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='" + type + "' AND t.I_STATE='isUsed' ORDER BY t.I_CREATE_DATE DESC";
+                        command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                        try
+                        {
+                            OracleDataReader reader = command.ExecuteReader();
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    NewsModel news = new NewsModel();
+                                    news.Title = reader["TIEUDE"].ToString();
+                                    news.Summary = reader["TOMTAT"].ToString();
+                                    news.Content = reader["NOIDUNG"].ToString();
+                                    news.Type = reader["TENLOAITINTUC"].ToString();
+                                    DateTime createDate = DateTime.MinValue;
+                                    DateTime.TryParse(reader["I_CREATE_DATE"].ToString(), out createDate);
+                                    news.CreateDate = createDate;
+                                    results.Add(news);
+                                }
+                            }
+                        }
+                        catch (Exception) { }
+                    }
+                    else
+                    {
+                        command.CommandText = @"SELECT t.ID,t.TIEUDE,t.TOMTAT,t.IMAGECOVER,t.I_CREATE_DATE FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='" + type + "' AND t.I_STATE='isUsed' AND  rownum <= 5 ORDER BY t.I_CREATE_DATE DESC";
+                        command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                        try
+                        {
+                            OracleDataReader reader = command.ExecuteReader();
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    NewsModel news = new NewsModel();
+                                    news.ID = reader["ID"].ToString();
+                                    news.Title = reader["TIEUDE"].ToString();
+                                    news.Summary = reader["TOMTAT"].ToString();
+                                    DateTime createDate = DateTime.MinValue;
+                                    DateTime.TryParse(reader["I_CREATE_DATE"].ToString(), out createDate);
+                                    news.CreateDate = createDate;
+                                    results.Add(news);
+                                }
+                            }
+                        }
+                        catch (Exception) { }
+                    }
+                    
+                }
+
+                return Ok(results);
+            }
+        }
+        [HttpGet]
+        public async Task<IHttpActionResult> GetNewsPaging(decimal pagenumber, decimal pagesize, string unitcodefornews, string type)
+        {
+            List<NewsModel> results = new List<NewsModel>();
+            NewsPaging listNews = new NewsPaging(results);
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    decimal P_PAGENUMBER = pagenumber;
+                    decimal P_PAGESIZE = pagesize;
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.InitialLONGFetchSize = 1000;
+                    command.CommandText = string.Format(
+                        @"SELECT * FROM ( SELECT a.*, rownum r__ FROM (SELECT t.ID,t.TIEUDE,t.TOMTAT,t.IMAGECOVER,t.I_CREATE_DATE FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='" +
+                        type + "' AND t.I_STATE='isUsed' ORDER BY t.I_CREATE_DATE DESC) a WHERE rownum < ((" +
+                        P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " +
+                        P_PAGESIZE + ") + 1)");
                     command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                    command.CommandType = CommandType.Text;
                     try
                     {
                         OracleDataReader reader = command.ExecuteReader();
@@ -1117,18 +1239,41 @@ namespace BT.API.HOME.Controllers
                             while (reader.Read())
                             {
                                 NewsModel news = new NewsModel();
+                                news.ID = reader["ID"].ToString();
                                 news.Title = reader["TIEUDE"].ToString();
-                                news.Content = reader["NOIDUNG"].ToString();
-                                news.Type = reader["TENLOAITINTUC"].ToString();
+                                news.Summary = reader["TOMTAT"].ToString();
+                                DateTime createDate = DateTime.MinValue;
+                                DateTime.TryParse(reader["I_CREATE_DATE"].ToString(), out createDate);
+                                news.CreateDate = createDate;
                                 results.Add(news);
                             }
                         }
+                        OracleCommand cmd = new OracleCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='" +
+                                          type + "' AND t.I_STATE='isUsed'";
+                        cmd.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                        OracleDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            decimal totalitem = 0;
+                            while (dataReader.Read())
+                            {
+                                decimal.TryParse(dataReader["TOTALITEM"].ToString(), out totalitem);
+                                listNews.ItemTotal = totalitem;
+                                listNews.PageSize = pagesize;
+                                listNews.PageNumber = pagenumber;
+                            }
+                        }
                     }
-                    catch (Exception) { }
-                }
+                    catch (Exception ex)
+                    {
 
-                return Ok(results);
+                    }
+                }
             }
+            return Ok(listNews);
         }
 
         /// <summary>
@@ -1182,7 +1327,7 @@ namespace BT.API.HOME.Controllers
         /// <param name="title"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IHttpActionResult> GetNewsDetailsByTitle(string unitcodefornews ,string title)
+        public async Task<IHttpActionResult> GetNewsDetailsById(string unitcodefornewsdetails ,string id)
         {
             NewsModel results = new NewsModel();
 
@@ -1195,9 +1340,9 @@ namespace BT.API.HOME.Controllers
                     OracleCommand command = new OracleCommand();
                     command.Connection = connection;
                     command.CommandType = CommandType.Text;
-                    command.CommandText = @"SELECT t.TENLOAITINTUC,t.TIEUDE,t.NOIDUNG,t.IMAGECOVER FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.TIEUDE=:title AND t.I_STATE='isUsed'";
-                    command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
-                    command.Parameters.Add("title", OracleDbType.NVarchar2, 500).Value = title;
+                    command.CommandText = @"SELECT t.ID,t.TENLOAITINTUC,t.TIEUDE,t.NOIDUNG,t.IMAGECOVER,t.I_CREATE_DATE,t.TAGS FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.ID=:id AND t.I_STATE='isUsed'";
+                    command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornewsdetails;
+                    command.Parameters.Add("id", OracleDbType.NVarchar2, 500).Value = id;
                     try
                     {
                         OracleDataReader reader = command.ExecuteReader();
@@ -1205,9 +1350,14 @@ namespace BT.API.HOME.Controllers
                         {
                             while (reader.Read())
                             {
+                                DateTime createDate = DateTime.MinValue;
+                                DateTime.TryParse(reader["I_CREATE_DATE"].ToString(), out createDate);
+                                results.CreateDate = createDate;
                                 results.Title = reader["TIEUDE"].ToString();
                                 results.Content = reader["NOIDUNG"].ToString();
                                 results.Type = reader["TENLOAITINTUC"].ToString();
+                                results.Tags = reader["TAGS"].ToString();
+                                results.ID = reader["ID"].ToString();
                             }
                         }
                     }
@@ -1216,6 +1366,136 @@ namespace BT.API.HOME.Controllers
 
                 return Ok(results);
             }
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> GetNewsInvolve(string unitcodefornewsdetails, string tags, string id)
+        {
+            List<NewsModel> results = new List<NewsModel>();
+            using (OracleConnection connection =
+                new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    var lstTags = tags.Split(',');
+                    string filterTags = "";
+                    if (lstTags.Count() > 0)
+                    {
+                        filterTags += " AND ";
+                    }
+                    for (int i = 0; i < lstTags.Count(); i++)
+                    {
+                        if (i == 0)
+                        {
+                            filterTags += "( t.TAGS like '%" + lstTags[i] + "%'";
+                        }
+                        else
+                        {
+                            
+                            filterTags += "OR t.TAGS like '%" + lstTags[i] + "%'";
+                        }
+                        if (i == lstTags.Count() - 1)
+                        {
+                            filterTags += " )";
+                        }
+                    }
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.CommandType = CommandType.Text;
+                    command.CommandText = @"SELECT t.ID,t.TENLOAITINTUC,t.TIEUDE,t.TOMTAT,t.I_CREATE_DATE,t.TAGS FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.ID <> :id AND t.I_STATE='isUsed' "+ filterTags + " AND ROWNUM <= 5 ORDER BY I_CREATE_DATE";
+                    command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornewsdetails;
+                    command.Parameters.Add("id", OracleDbType.NVarchar2, 500).Value = id;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                NewsModel temp = new NewsModel();
+                                DateTime createDate = DateTime.MinValue;
+                                DateTime.TryParse(reader["I_CREATE_DATE"].ToString(), out createDate);
+                                temp.CreateDate = createDate;
+                                temp.Title = reader["TIEUDE"].ToString();
+                                temp.Tags = reader["TAGS"].ToString();
+                                temp.ID = reader["ID"].ToString();
+                                temp.Summary = reader["TOMTAT"].ToString();
+                                results.Add(temp);
+                            }
+                        }
+                    }
+                    catch (Exception) { }
+                }
+                return Ok(results);
+            }
+        }
+        
+        [HttpGet]
+        public async Task<IHttpActionResult> GetNewsPagingByTags(decimal pagenumber, decimal pagesize, string unitcodefornews, string type , string tags)
+        {
+            List<NewsModel> results = new List<NewsModel>();
+            NewsPaging listNews = new NewsPaging(results);
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["HomeConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    decimal P_PAGENUMBER = pagenumber;
+                    decimal P_PAGESIZE = pagesize;
+                    OracleCommand command = new OracleCommand();
+                    command.Connection = connection;
+                    command.InitialLONGFetchSize = 1000;
+                    command.CommandText = string.Format(
+                        @"SELECT * FROM ( SELECT a.*, rownum r__ FROM (SELECT t.ID,t.TIEUDE,t.TOMTAT,t.IMAGECOVER,t.I_CREATE_DATE FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='" +
+                        type + "' AND t.I_STATE='isUsed' AND t.TAGS like '%"+tags+"%' ORDER BY t.I_CREATE_DATE DESC) a WHERE rownum < ((" +
+                        P_PAGENUMBER + " * " + P_PAGESIZE + ") + 1 )  )  WHERE r__ >= (((" + P_PAGENUMBER + "-1) * " +
+                        P_PAGESIZE + ") + 1)");
+                    command.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                    command.CommandType = CommandType.Text;
+                    try
+                    {
+                        OracleDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                NewsModel news = new NewsModel();
+                                news.ID = reader["ID"].ToString();
+                                news.Title = reader["TIEUDE"].ToString();
+                                news.Summary = reader["TOMTAT"].ToString();
+                                DateTime createDate = DateTime.MinValue;
+                                DateTime.TryParse(reader["I_CREATE_DATE"].ToString(), out createDate);
+                                news.CreateDate = createDate;
+                                results.Add(news);
+                            }
+                        }
+                        OracleCommand cmd = new OracleCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = @"SELECT COUNT(*) TOTALITEM FROM DM_TINTUC t WHERE t.UNITCODE = :madonvi AND t.LOAITINTUC='" +
+                                          type + "' AND t.TAGS like '%" + tags + "%' AND t.I_STATE='isUsed'";
+                        cmd.Parameters.Add("madonvi", OracleDbType.Varchar2, 10).Value = unitcodefornews;
+                        OracleDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            decimal totalitem = 0;
+                            while (dataReader.Read())
+                            {
+                                decimal.TryParse(dataReader["TOTALITEM"].ToString(), out totalitem);
+                                listNews.ItemTotal = totalitem;
+                                listNews.PageSize = pagesize;
+                                listNews.PageNumber = pagenumber;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            return Ok(listNews);
         }
 
         public HttpResponseMessage Put()

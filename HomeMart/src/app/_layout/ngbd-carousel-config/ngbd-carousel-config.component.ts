@@ -35,5 +35,9 @@ export class NgbdCarouselConfig  implements OnInit {
     });
     this._service.getImageCover().subscribe(images =>{this.isLoading = false;this.images = images;} );
   }
-  
+  convertTitle(item){
+    let titleUrl = item.replace(/ /g,"_");
+    titleUrl = this._service.cleanAccents(titleUrl);
+    return titleUrl;
+  }
 }

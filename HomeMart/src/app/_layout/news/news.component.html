@@ -1,3 +1,9 @@
+<style>
+    #tags:hover{
+        cursor: pointer;
+        color: red;
+    }
+</style>
 <div class="container" style="padding:30px 0px 20px 0px">
     <div class="row">
         <div class="col-md-3">
@@ -6,34 +12,80 @@
                 <hr/>
                 <ul id="sideBar" style="list-style-image: url('../../../assets/iconLi.gif');">
                     <li *ngFor="let item of lstNews" class="list">
-                        <a routerLink="/tin-tuc/{{item.Title}}"  id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{item.Title}}</a>
+                        <a routerLink="/tin-tuc/{{convertTitle(item.Title)}}/{{item.ID}}" id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{item.Title}}</a>
                     </li>
                 </ul>
             </mat-card>
+            <br/>
+            <mat-card>
+                <span style="font-size: 20px;">Bài viết liên quan</span>
+                <hr/>
+                <ul id="sideBar" style="list-style-image: url('../../../assets/iconLi.gif');">
+                    <li *ngFor="let item of lstNewsInvolve" class="list">
+                        <a routerLink="/tin-tuc/{{convertTitle(item.Title)}}/{{item.ID}}" id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{item.Title}}</a>
+                    </li>
+                </ul>
+            </mat-card>
+            <br/>
+            <mat-card>
+                <span style="font-size: 20px;">Tags</span>
+                <hr/>
+                <span *ngFor="let item of listTags" class="list">
+                    <span id="tags" (click)="selectTags(item)">&nbsp; {{item}},</span>
+                </span>
+            </mat-card>
         </div>
         <div class="col-md-9">
-           <mat-card>
-              <mat-card-title>{{title}}</mat-card-title>
-              <hr/>
-              <mat-card-content  *ngIf="isLoading">
-                  <br/>
-                  <div class="row">
-                      <div class="col-md-5"></div>
-                      <div class="col align-self-center">
-                          <app-looping-rhombuses-spinner
-                          [animationDuration]="2500"
-                          [rhombusSize]="15"
-                          [color]="'#F57223'"
-                          ></app-looping-rhombuses-spinner>
-                      </div>
-                      <div class="col-md-4"></div>
-                  </div>
-                  <br/>
+            <mat-card *ngIf="!isListNews">
+                <mat-card-title>
+                    <h1>{{title}}</h1>
+                </mat-card-title>
+                <hr/>
+                <mat-card-content *ngIf="isLoading">
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-5"></div>
+                        <div class="col align-self-center">
+                            <app-looping-rhombuses-spinner [animationDuration]="2500" [rhombusSize]="15" [color]="'#F57223'"></app-looping-rhombuses-spinner>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <br/>
                 </mat-card-content>
                 <mat-card-content class="container" *ngIf="!isLoading">
+                    <div class="row" style="font-size:15px;">
+                        <div class="col-md-10">
+                            <a routerLink="/">Trang chủ</a> &nbsp;&nbsp;>&nbsp;&nbsp;<a routerLink="/tin-tuc">Tin tức</a> &nbsp;&nbsp;>&nbsp;&nbsp; {{title}}
+                        </div>
+                        <div class="col-md-2" style="float: right !important;">{{CreateDate}}</div>
+                    </div>
+                    <br/>
                     <div [innerHTML]="htmlStr"></div>
                 </mat-card-content>
-           </mat-card>
+            </mat-card>
+            <mat-card *ngIf="isListNews">
+                <mat-card-title>
+                    <h1>Tin tức</h1>
+                </mat-card-title>
+                <hr/>
+                <mat-card-content class="container">
+                    <div *ngFor="let item of lstNewsPaging" class="list">
+                        <a routerLink="/tin-tuc/{{convertTitle(item.Title)}}/{{item.ID}}" id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{item.Title}}</a>
+                        <br/>
+                        <p>{{item.Summary}}</p>
+                        <hr/>
+                    </div>
+                </mat-card-content>
+                <mat-card-footer> 
+                        <mat-paginator  style="font-size: 13px"   [length]="length"
+                                        [pageIndex]="pageIndex"
+                                        [pageSize]="pageSize"
+                                        [pageSizeOptions]="[3,6,9]"
+                                        [showFirstLastButtons]="true"
+                                        (page)="getServerData($event)">
+                        </mat-paginator>
+                    </mat-card-footer>
+            </mat-card>
         </div>
     </div>
 </div>

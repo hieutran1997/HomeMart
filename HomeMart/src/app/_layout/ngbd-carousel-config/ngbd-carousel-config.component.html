@@ -1,7 +1,7 @@
 <style>
   .table-wrapper-scroll-y {
     display: block;
-    max-height: 200px;
+    max-height: 400px;
     overflow-y: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
   }
@@ -36,7 +36,7 @@
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th scope="col">Tin tức</th>
+            <th scope="col"><a routerLink="/tin-tuc">Tin tức</a></th>
           </tr>
         </thead>
         <tbody>
@@ -44,7 +44,7 @@
             <td>
               <div style="display: inline;">
                 <img src="../../../assets/iconLi.gif" /> &nbsp;
-                <a routerLink="/tin-tuc/{{item.Title}}" id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{item.Title}}</a>
+                <a routerLink="/tin-tuc/{{convertTitle(item.Title)}}/{{item.ID}}" id="menuSidebar" style="font-size: 13.5px; padding: 5px;">{{item.Title}}</a>
               </div>
             </td>
           </tr>

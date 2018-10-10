@@ -106,4 +106,10 @@ export class HomeComponent implements OnInit {
   changeCategory(item) {
     this.viewCartService.changeCategory(item.TENNHOMVATTU);
   }
+
+  convertTitle(item){
+    let titleUrl = item.replace(/ /g,"_");
+    titleUrl = this.commonService.cleanAccents(titleUrl);
+    return titleUrl;
+  }
 }

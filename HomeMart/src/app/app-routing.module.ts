@@ -31,7 +31,8 @@ const routes: Routes = [
         { path:'dang-ky', component:RegisterComponent},
         { path:'tim-kiem/:tukhoa',component:SearchDetailComponent},
         { path:'thong-tin-ca-nhan',component:InfoCustomComponent},
-        { path:'tin-tuc/:title', component:NewsComponent},
+        { path:'tin-tuc/:title/:id', component:NewsComponent},
+        { path:'tin-tuc', component:NewsComponent},
       ]
     },
 ];

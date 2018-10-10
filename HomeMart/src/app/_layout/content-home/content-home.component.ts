@@ -1,4 +1,4 @@
-import { Component, OnInit,EventEmitter, Input, Output, ViewEncapsulation,Injectable  } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation,Injectable  } from '@angular/core';
 import {VatTu,VatTuDTO} from '../home/vattumodel';
 import {PageEvent} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
@@ -6,8 +6,7 @@ import {CartModel,VatTuCart} from '../../model/cartModel';
 import {ViewCartService} from '../view-cart.service';
 import {CommonServiceService} from '../../service/common-service.service';
 import { NhomVatTu } from '../../model/nhomVatTu';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -43,7 +42,7 @@ export class ContentHomeComponent implements OnInit {
     private viewCartService: ViewCartService,
     private commonService :CommonServiceService,
     private router: Router,
-    config: NgbRatingConfig,
+    private config: NgbRatingConfig,
     private modalService : NgbModal,
   ) { 
     config.max = 5;
@@ -94,6 +93,7 @@ export class ContentHomeComponent implements OnInit {
     this.pageEvent = event;
     this.filterData(event,this.orderBy,this.sortType);
   }
+  
   addToCart(item){
     let lstVatTuCart :Array<VatTuCart> = [];
     let vattu : VatTu = null;
@@ -137,7 +137,6 @@ export class ContentHomeComponent implements OnInit {
         // property doesn't exist on either object
           return 0; 
       }
-  
       const varA = (typeof a[key] === 'string') ? 
         a[key].toUpperCase() : a[key];
       const varB = (typeof b[key] === 'string') ? 
@@ -161,7 +160,6 @@ export class ContentHomeComponent implements OnInit {
         // this.lstVatTu.sort(this.compareValues('TenVatTu','desc'));
         this.orderBy = 'vt.TENVATTU';
         this.sortType = 'DESC';
-        
       }
       else{
         this.sortAsc = true;

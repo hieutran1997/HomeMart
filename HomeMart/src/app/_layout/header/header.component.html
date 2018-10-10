@@ -1,11 +1,11 @@
-<div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: white;height: 50px;">
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: white;padding-top: 0px;padding-bottom: 0px;">
     <div class="row">
       <button class="navbar-toggler" type="button" data-toggle="collapse" style="border:none">
         <app-ngbd-popover-config></app-ngbd-popover-config>
       </button>
     </div>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo03" style="padding: 10px 15px 15px 30px;">
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03" style="padding: 0px 0px 0px 30px;border-bottom-style: outset;">
       <ul class="navbar-nav mr-auto mt-1 mt-lg-0">
         <li class="nav-item">
           <button (click)="redirectFB()" mat-mini-fab style="background-color: royalblue">
@@ -14,13 +14,12 @@
         </li>
         <li *ngFor="let item of listMenu;index as i">
           <div class="dropdown">
-              <a class="nav-link dropbtn" *ngIf="i < listMenu.length-1" routerLink="/{{item.url}}" style="border-right: solid 1px coral;">
+              <a class="nav-link dropbtn" *ngIf="i < listMenu.length-1" routerLink="/{{item.url}}" style="border-right: solid 1px coral;height: 45px;">
                 <span id="menuBar">{{item.title}} </span>
               </a>
               <a class="nav-link dropbtn" *ngIf="i==listMenu.length-1" routerLink="/{{item.url}}" style="border-right: none;">
                 <span id="menuBar">{{item.title}} </span>
               </a>
-              
                 <div class="dropdown-content">
                   <div *ngFor="let subitem of item.children;index as i">
                     <a id="menuBar"  routerLink="/{{subitem.url}}">{{subitem.title}}</a>
