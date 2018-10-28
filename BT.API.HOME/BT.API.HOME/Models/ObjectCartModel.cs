@@ -17,6 +17,7 @@ namespace BT.API.HOME.Models
         public decimal SOPHIEUCON { get; set; }
         public decimal SOLUONG { get; set; }
         public List<DetailsCart> Details { get; set; }
+        public string TYPECUSTOMER { get; set; }
     }
 
     public class DetailsCart

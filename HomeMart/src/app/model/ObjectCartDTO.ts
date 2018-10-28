@@ -8,8 +8,9 @@ export class ObjectCartModel
     public  DIACHINN :string;
     public  UNITCODE :string;
     public  SOPHIEUCON :number;
-    public  SOLUONG : number
-    public  Details :Array<DetailsCart>
+    public  SOLUONG : number;
+    public  Details :Array<DetailsCart>;
+    public  TYPECUSTOMER :string;
     constructor( dataDetail:Array<DetailsCart>){
         this.Details = dataDetail;
     }

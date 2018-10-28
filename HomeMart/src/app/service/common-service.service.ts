@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { VatTuDTO } from "../_layout/home/vattumodel";
 import { HttpClient } from "@angular/common/http";
 import { PageEvent } from "@angular/material";
+import { CookieService } from 'ngx-cookie-service';
 import {
   khachHangModel,
   loginModel,
@@ -17,12 +18,21 @@ import {
   providedIn: "root"
 })
 export class CommonServiceService {
+  cookieValue = 'UNKNOWN';
+  cookie ='UNKNOWN';
   madonvi: string = "DV1-CH1";
   host: string = "http://btsoftvn.com:50595/";
   //host: string = "http://localhost:50595/";
   makho: string = "DV1-CH1-KBL";
-
-  constructor(private _http: HttpClient) {}
+  typecustomer = 'KH_BANLE';
+  loginModel : loginModel =null;
+  constructor(private _http: HttpClient,private cookieService :CookieService) {
+    if(this.cookieService.check('taikhoanbanhang')){
+      this.cookie= this.cookieService.get('taikhoanbanhang')
+      this.loginModel =JSON.parse(this.cookie);
+      this.typecustomer = this.loginModel.type;
+    }
+  }
 
   getDataPaging(event?: PageEvent, order?: string, sorttype?: string) {
     if (event) {
@@ -36,7 +46,7 @@ export class CommonServiceService {
           "&order=" +
           order +
           "&sorttype=" +
-          sorttype
+          sorttype+"&typecustomer="+this.typecustomer
       );
     } else {
       let defaultOrder = "vt.TENVATTU";
@@ -50,7 +60,7 @@ export class CommonServiceService {
           "api/home/GetListMerchanedise?pagesize=6&pagenumber=1&order=" +
           defaultOrder +
           "&sorttype=" +
-          defaultSortType
+          defaultSortType+"&typecustomer="+this.typecustomer
       );
     }
   }
@@ -73,7 +83,7 @@ export class CommonServiceService {
           "&order=" +
           order +
           "&sorttype=" +
-          sorttype
+          sorttype+"&typecustomer="+this.typecustomer
       );
     } else {
       let defaultOrder = "vt.TENVATTU";
@@ -89,7 +99,7 @@ export class CommonServiceService {
           "&order=" +
           defaultOrder +
           "&sorttype=" +
-          defaultSortType
+          defaultSortType+"&typecustomer="+this.typecustomer
       );
     }
   }
@@ -99,8 +109,7 @@ export class CommonServiceService {
         "api/home/GetDetailMerchanedise?mavattu=" +
         mavattu +
         "&madonvi=" +
-        this.madonvi +
-        ""
+        this.madonvi +"&typecustomer="+this.typecustomer
     );
   }
   getAllMerchanediseType<LoaiVatTu>() {
@@ -119,7 +128,7 @@ export class CommonServiceService {
         "api/home/GetMerchanediseByCode?mavattuselect=" +
         mavattu +
         "&madonvi=" +
-        this.madonvi
+        this.madonvi+"&typecustomer="+this.typecustomer
     );
   }
   getListMerchanediseKhuyenMai<VatTuDTO>(event?: PageEvent) {
@@ -164,16 +173,11 @@ export class CommonServiceService {
         this.madonvi
     );
   }
-  getUserByPhone<khachHangModel>(phone?: string) {
-    return this._http.get<khachHangModel>(
-      this.host +
-        "api/home/GetUserByPhone?sodienthoai=" +
-        phone +
-        "&unitcode2=" +
-        this.madonvi
-    );
+  getUserByPhone<khachHangModel>(phone:string){
+    return this._http.get<khachHangModel>(this.host+"/api/home/GetUserByPhone/"+phone+"/"+this.madonvi);
   }
   checkOut<objectResult>(data?: ObjectCartModel) {
+    data.TYPECUSTOMER = this.typecustomer;
     return this._http.post<objectResult>(this.host + "api/home/CheckOut", data);
   }
   searchByCode(event?: PageEvent, code?: string) {
@@ -183,7 +187,8 @@ export class CommonServiceService {
         pagesize: 12,
         keysearch: code,
         order: "vt.TENVATTU",
-        sorttype: "ASC"
+        sorttype: "ASC",
+        typecustomer: this.typecustomer
       };
       return this._http.post<VatTuDTO>(
         this.host + "api/home/SearchByCode",
@@ -195,7 +200,8 @@ export class CommonServiceService {
         pagesize: event.pageSize,
         keysearch: code,
         order: "vt.TENVATTU",
-        sorttype: "ASC"
+        sorttype: "ASC",
+        typecustomer: this.typecustomer
       };
       return this._http.post<VatTuDTO>(
         this.host + "api/home/SearchByCode",
@@ -203,28 +209,25 @@ export class CommonServiceService {
       );
     }
   }
-
   getMerchanediseRel(maloaivattu: string) {
     let obj = {
       MaLoaiVatTu: maloaivattu,
       TenLoaiVatTu: "",
-      UnitCode: this.madonvi
+      UnitCode: this.madonvi,
+      TypeCustomer: this.typecustomer
     };
     return this._http.post<any>(this.host + "api/home/GetMerchanediseRel", obj);
   }
-
   getAllOrder<donHangModel>(maKhachHang: string) {
     return this._http.get<donHangModel>(
       this.host + "api/home/GetAllBill?maKhachHang=" + maKhachHang
     );
   }
-
   deleteOrder<objectResult>(maDonHang: string) {
     return this._http.get<objectResult>(
       this.host + "api/home/DeleteOrder?madonhang=" + maDonHang
     );
   }
-
   getAddress(sodienthoai: string) {
     return this._http.get<AddressModel>(
       this.host +
@@ -234,13 +237,11 @@ export class CommonServiceService {
         this.madonvi
     );
   }
-
   getAllProvince() {
     return this._http.get<Array<City>[]>(
       this.host + "/api/home/GetAddressCity"
     );
   }
-
   getDistrictsByCityId(cityid: string) {
     return this._http.get<Array<Districts>>(
       this.host + "/api/home/GetDistrictsByCityId?cityid=" + cityid

@@ -29,7 +29,7 @@
                 <td style="width: 30%;">
                   <div class="row">
                     <button class="btn btn-default" (click)="SubtractionItem(item)"><span class="fa fa fa-minus-circle"></span></button>
-                    <input [(ngModel)]="item.SoLuong" (ngModelChange)="ChangedQuatity(item)" class="form-control" style="width: 50px !important"/>
+                    <input [(ngModel)]="item.SoLuong" type="number" (ngModelChange)="ChangedQuatity(item,item.SoLuong)" class="form-control" style="width: 70px !important"/>
                     <button class="btn btn-default" (click)="PlusItem(item)"><span class="fa fa-plus-circle"></span></button>
                   </div>
                   </td>

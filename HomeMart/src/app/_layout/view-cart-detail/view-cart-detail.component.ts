@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { CartModel } from '../../model/cartModel';
+import { CartModel,VatTuCart } from '../../model/cartModel';
 import { VatTu,VatTuDTO } from '../home/vattumodel';
 import { CommonServiceService } from '../../service/common-service.service';
 import { viewDetailCart } from '../../model/viewDetailCart';
@@ -69,10 +69,6 @@ export class ViewCartDetailComponent implements OnInit {
         this.maKH = data.MaKH;
         this.isLoaddingOrder= true;
         this.getAddress();
-        // this.commonService.getAllOrder<Array<donHangModel>>(this.maKH).subscribe(res=>{
-        //   this.isLoaddingOrder= false;
-        //   this.lstOrder = res;
-        // });
       })
     }
     if(this.cookieService.check('vattutronggiohang')){
@@ -169,7 +165,11 @@ export class ViewCartDetailComponent implements OnInit {
   }
 
   SubtractionItem(item){
-    item.SoLuong --;
+    if(item.SoLuong > 0){
+      item.SoLuong --;
+    }else{
+      return;
+    }
     this.vattuSelected.tongSoLuong = this.vattuSelected.tongSoLuong - 1;
     this.vattuSelected.tongTien = this.vattuSelected.tongTien - item.GiaBanLeVat;
     this.vattuSelected.arrVatTuSelected.forEach(function(obj){
@@ -181,29 +181,34 @@ export class ViewCartDetailComponent implements OnInit {
     this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
     this.viewCartService.changedCartView(this.vattuSelected);
   }
-  ChangedQuatity(item){
-    let giaBanOld = 0;
-    let soLuongOld = 0;
+  ChangedQuatity(item,soluong){
+    if(soluong > item.TonKho){
+      soluong = item.TonKho;
+    }
+    this.vattuSelected = new CartModel(null,0,0);
+    let listTemp = [];
+    let giaBan = 0;
+    let soLuong = 0;
     this.lstViewVatTu.forEach(function(obj){
-      if(obj.MaVatTu === item.MaVatTu){
-        giaBanOld = obj.SoLuong*obj.GiaBanLeVat;
-        soLuongOld = obj.SoLuong;
-      }
+      let dataTemp = new VatTuCart(obj.MaVatTu,obj.SoLuong);
+      listTemp.push(dataTemp);
+      giaBan += obj.SoLuong*obj.GiaBanLeVat;
+      soLuong += obj.SoLuong;
     });
+    this.vattuSelected.arrVatTuSelected = listTemp;
     //cập nhật lại cart
-    this.vattuSelected.tongSoLuong = this.vattuSelected.tongSoLuong + item.SoLuong - soLuongOld;
-    this.vattuSelected.tongTien = this.vattuSelected.tongTien + item.GiaBanLeVat*item.SoLuong - giaBanOld;
-    this.vattuSelected.arrVatTuSelected.forEach(function(obj){
-      if(obj.MaVatTu === item.MaVatTu){ //cập nhật lại số lượng trong cart
-        obj.SoLuong = item.SoLuong;
-      }
-    });
+    this.vattuSelected.tongSoLuong = soLuong;
+    this.vattuSelected.tongTien = giaBan;
     this.cookieService.delete('vattutronggiohang');
     this.cookieService.set( 'vattutronggiohang', JSON.stringify(this.vattuSelected),10);
     this.viewCartService.changedCartView(this.vattuSelected);
   }
   PlusItem(item){
-    item.SoLuong ++;
+    if(item.SoLuong < item.TonKho){
+      item.SoLuong ++;
+    }else{
+      return;
+    }
     this.vattuSelected.tongSoLuong = this.vattuSelected.tongSoLuong + 1;
     this.vattuSelected.tongTien = this.vattuSelected.tongTien + item.GiaBanLeVat;
     this.vattuSelected.arrVatTuSelected.forEach(function(obj){
@@ -221,7 +226,6 @@ export class ViewCartDetailComponent implements OnInit {
       if(this.vattuSelected){
         if(this.vattuSelected.arrVatTuSelected.length === 0){
           this.toastr.warning('Quý khách vui lòng chọn hàng thanh toán !');
-          //this.ngxNotificationService.sendMessage('Quý khách vui lòng chọn hàng thanh toán !', 'danger', 'center');
           return;
         }
         else{
@@ -249,16 +253,14 @@ export class ViewCartDetailComponent implements OnInit {
           this.DataDTO.SOLUONG = tongsoluong;
           this.DataDTO.THANHTIENSAUVAT = tongtien;
           if(this.DataDTO){
-            this.commonService.checkOut<objectResult>(this.DataDTO).subscribe(result=>{
+            this.commonService.checkOut<objectResult<string>>(this.DataDTO).subscribe(result=>{
                 if(result.Result){
                   this.isLoaddingOrder = true;
                   this.toastr.success('Đặt hàng thành công ! Vui lòng chờ liên hệ từ chúng tôi');
                   this.checkout.emitCheckout();
-                  //this.ngxNotificationService.sendMessage("Đặt hàng thành công ! Vui lòng chờ liên hệ từ chúng tôi ", 'success', 'center');
                   this.commonService.getAllOrder<Array<donHangModel>>(this.maKH).subscribe(res=>{
                     this.isLoaddingOrder = false;
                     this.lstOrder = res;
-                    
                   });
                   this.cookieService.delete('vattutronggiohang');//refresh cart
                   this.vattuSelected = new CartModel([],0,0);
@@ -269,8 +271,6 @@ export class ViewCartDetailComponent implements OnInit {
           }
         }
       }else{
-        //this.ngxNotificationService.sendMessage('Quý khách vui lòng chọn hàng thanh toán !', 'danger', 'center');
-        //alert("Quý khách vui lòng chọn hàng thanh toán !");
         this.toastr.warning('Quý khách vui lòng chọn hàng thanh toán !');
         return;
       }

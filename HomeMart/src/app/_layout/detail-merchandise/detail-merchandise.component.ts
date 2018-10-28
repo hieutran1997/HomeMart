@@ -76,6 +76,7 @@ export class DetailMerchandiseComponent implements OnInit {
     this.galleryImages = [
     ];
   }
+
   display(item:string){
     if(item.length >50){
       return item.substring(0,50)+' ...';
@@ -84,11 +85,17 @@ export class DetailMerchandiseComponent implements OnInit {
       return item;
     }
   }
+
+  typeChange(quantity){
+    if(this.vattu.SoTon < quantity){
+      this.soLuong = this.vattu.SoTon;
+    }
+  }
+
   filterData(mavattu){
     this.isLoading = true;
    this.commonService.getDataDetail<VatTuDetail>(mavattu).subscribe(
       data =>{
-        console.log(data);
         this.lstMerchansediseOld = [];
         if(data){
           this.vattu = data;
@@ -194,13 +201,16 @@ export class DetailMerchandiseComponent implements OnInit {
     if(info === 'giam'){
       if(this.soLuong > 0){
         this.soLuong--;
-      }
-      else{
+      }else{
         return;
       }
     }
     else{
-      this.soLuong++;
+      if(this.soLuong < this.vattu.SoTon){
+        this.soLuong++;
+      } else{
+        return;
+      }
     }
   }
   open(modal,item){

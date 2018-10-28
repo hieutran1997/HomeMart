@@ -4,4 +4,5 @@ export class viewDetailCart{
     public Avatar :Array<number>;
     public SoLuong:number;
     public GiaBanLeVat : number;
+    public TonKho:number;
 }

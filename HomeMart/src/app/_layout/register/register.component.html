@@ -7,7 +7,7 @@
               <form [formGroup]="firstFormGroup">
                 <ng-template matStepLabel>Thông tin cá nhân</ng-template>
                   <mat-form-field>
-                    <input matInput placeholder="Nhập họ tên" formControlName="TenKH" required>
+                    <input matInput placeholder="Nhập họ tên" formControlName="TenKH" minlength="10" required>
                   </mat-form-field>
                   &nbsp;&nbsp;
                   <mat-form-field>
@@ -17,17 +17,24 @@
                   </mat-form-field>
                   &nbsp;&nbsp;
                   <mat-form-field>
-                    <input matInput placeholder="Địa chỉ email" formControlName="Email">
+                    <input matInput placeholder="Địa chỉ email" email="true"  formControlName="Email">
                   </mat-form-field>
                   &nbsp;&nbsp;
                   <mat-form-field>
-                    <input matInput placeholder="Nhập số điện thoại" formControlName="SoDienThoai" required>
+                    <input matInput placeholder="Nhập số điện thoại" #soDienThoai formControlName="SoDienThoai" [(ngModel)]="SoDienThoai" on-focusout="changeNumberPhone($event,SoDienThoai)" maxlength="11" minlength="10"  required>
+                  </mat-form-field>
+                  &nbsp;&nbsp;
+                  <mat-checkbox formControlName="RegisForDistribution" >Đăng ký thành nhà phân phối</mat-checkbox>
+                  <br/>
+                  <mat-form-field [hidden]="!RegisForDistribution">
+                    <input matInput placeholder="Nhập tên cửa hàng, đại lý" formControlName="StoredName">
                   </mat-form-field>
                 <div>
                   <button class="btn btn-primary" matStepperNext [disabled]="!firstFormGroup.valid">Tiếp theo</button>
                 </div>
               </form>
             </mat-step>
+            
             <mat-step [stepControl]="secondFormGroup">
               <form [formGroup]="secondFormGroup">
                 <ng-template matStepLabel>Địa chỉ</ng-template>

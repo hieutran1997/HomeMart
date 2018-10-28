@@ -206,7 +206,7 @@ export class ContentHomeComponent implements OnInit {
     
   open(modal,item){
     this.itemSelect = item;
-    this.modalService.open(modal,{ centered: true,size: 'lg'});
+    this.modalService.open(modal,{ centered: true,size: 'sm'});
   }
 
   goToCart(){

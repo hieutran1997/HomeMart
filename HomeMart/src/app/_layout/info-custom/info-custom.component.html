@@ -60,7 +60,7 @@
                 {{convertStatus(item.TRANGTHAI)}}
                 </td>
               <td style="width: 5%;">
-                <button type="button" class="close" aria-label="Close" (click)="openFromDeleteOrder(modalDeleteOrder,item)" title="Xóa bỏ">
+                <button type="button" [hidden]="item.TRANGTHAI>3" class="close" aria-label="Close" (click)="openFromDeleteOrder(modalDeleteOrder,item)" title="Xóa bỏ">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </td>

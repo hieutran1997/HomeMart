@@ -446,6 +446,13 @@ io.on('connection', function(socket){
             }
         });
     });
+	socket.on('register-succes',function(appid){
+		listUserCSKH.forEach(function(obj){
+            if(obj.AppId === appid){
+                io.to(obj.id).emit('response-register-succes',true);
+            }
+        })
+	});
 });
 
 //Lấy tin nhắn của 

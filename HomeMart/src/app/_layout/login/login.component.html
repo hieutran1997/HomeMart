@@ -7,15 +7,34 @@
             <span id="reauth-email" class="reauth-email"></span>
             <input type="text" id="inputUser" class="form-control" [(ngModel)] = "user" [ngModelOptions]="{standalone: true}" placeholder="Nhập số điện thoại" required autofocus>
             <input type="password" id="inputPassword" [(ngModel)] = "password" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mật khẩu" required>
-            <div id="remember" class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> Nhớ
-                </label>
-            </div>
             <button class="btn btn-lg btn-primary btn-block btn-signin" (click)="Login()" type="submit">Đăng nhập</button>
         </form><!-- /form -->
-        <a href="#" class="forgot-password">
+        <span (click)="reset(resetPassWord)" class="forgot-password">
             Đặt lại mật khẩu
-        </a>
+        </span>
     </div><!-- /card-container -->
 </div><!-- /container -->
+
+<!-- modal -->
+<ng-template #resetPassWord let-c="close" let-d="dismiss">
+    <div class="modal-header">Đặt lại mật khẩu</div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <input type="password" id="passwordOld" class="form-control" [(ngModel)] = "passwordOld" [ngModelOptions]="{standalone: true}" placeholder="Nhập mật khẩu hiện tại" required autofocus>
+            </div>
+            <br/>
+            <div class="row">
+                <input type="password" id="passwordNew" [(ngModel)] = "passwordNew" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Mật khẩu mới" required>
+            </div>
+            <br/>
+            <div class="row">
+                <input type="password" id="passwordConfirm" [(ngModel)] = "passwordConfirm" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Nhập lại mật khẩu" required>
+            </div>
+            <br/>
+            <div class="row">
+                <button class="btn btn-lg btn-primary btn-block btn-signin" (click)="Save()" type="submit">Đổi mật khẩu</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

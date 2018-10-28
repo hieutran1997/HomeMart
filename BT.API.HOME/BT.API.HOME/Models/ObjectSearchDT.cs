@@ -17,5 +17,6 @@ namespace BT.API.HOME.Models
         public string keysearch { get; set; }
         public string order { get; set; }
         public string sorttype { get; set; }
+        public string typecustomer { get; set; }
     }
 }

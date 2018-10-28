@@ -6,13 +6,13 @@ import { Router } from '@angular/router';
 import { LoginsuccesService} from '../../service/loginsucces.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
   user:string;
   password:string;
   constructor(
@@ -21,9 +21,14 @@ export class LoginComponent implements OnInit {
     private cookieService :CookieService,
     private loginSuccessService : LoginsuccesService,
     private toastr: ToastrService,
+    private modalService : NgbModal,
   ) { }
 
   ngOnInit() {
+  }
+
+  reset(modal){
+    this.modalService.open(modal,{ centered: true,size: 'lg'});
   }
   
   Login(){
@@ -35,10 +40,12 @@ export class LoginComponent implements OnInit {
       let obj:loginModel = {
         username:this.user,
         password:this.password,
-        unitcode:""
+        unitcode:"",
+        type:""
       }
-      this.commonService.login<objectResult>(obj).subscribe(data=>{
+      this.commonService.login<objectResult<string>>(obj).subscribe(data=>{
         if(data.Result){
+          obj.type= data.Data;
           this.cookieService.set('taikhoanbanhang', JSON.stringify(obj),10);
           this.router.navigateByUrl('/');
           this.loginSuccessService.loginSuccesed();
@@ -49,5 +56,4 @@ export class LoginComponent implements OnInit {
       });
     }
   }
-
 }

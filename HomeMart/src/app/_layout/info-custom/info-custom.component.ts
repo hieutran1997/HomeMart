@@ -50,7 +50,7 @@ export class InfoCustomComponent implements OnInit {
   }
 
   DeleteOrder(){
-    this.commonService.deleteOrder<objectResult>(this.orderSelected.MAHD).subscribe(res=>{
+    this.commonService.deleteOrder<objectResult<string>>(this.orderSelected.MAHD).subscribe(res=>{
         if(res){
             if(res.Result===true){
                 this.toastr.success('Đã xóa đơn hàng !');

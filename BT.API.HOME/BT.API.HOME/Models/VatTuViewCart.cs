@@ -11,5 +11,6 @@ namespace BT.API.HOME.Models
         public byte[] Avatar { get; set; }
         public decimal GiaBanLeVat { get; set; }
         public decimal SoLuong { get; set; }
+        public decimal TonKho { get; set; }
     }
 }

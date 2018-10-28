@@ -41,6 +41,9 @@
     <br/>
   </mat-card-content>
   <mat-card-content class="container" *ngIf="!isLoading">
+    <div *ngIf="lstVatTu.length===0" style="text-align: center;">
+        <span style="font-size:20px; ">Không có sản phần nào thuộc nhóm hàng này </span>
+    </div>
     <!-- chọn show bảng -->
       <div class="row" *ngIf="viewer=='table'">
           <div class="col-md-4" *ngFor="let item of lstVatTu">

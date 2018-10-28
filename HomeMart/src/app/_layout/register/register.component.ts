@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild,ElementRef} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonServiceService } from '../../service/common-service.service';
 import { khachHangModel } from '../../model/khachHangModel';
@@ -6,16 +6,20 @@ import { objectResult } from '../../model/objectResult';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+  @ViewChild("soDienThoai") sdt : ElementRef;
   isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   lastFormGroup: FormGroup;
+  SoDienThoai :string;
+  RegisForDistribution:string;
   cities = [];
   districts = [];
   constructor(
@@ -26,13 +30,17 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    var emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
     this.getProvince();
     this.firstFormGroup = this._formBuilder.group({
       TenKH: ['', Validators.required],
       NgaySinh:['', Validators.nullValidator],
-      Email:['',Validators.nullValidator],
-      SoDienThoai:['',Validators.pattern('[0-9]+[A-Z]?')]
+      Email:['', Validators.pattern(emailPattern)],
+      SoDienThoai:['',Validators.pattern('[0-9]+[A-Z]?')],
+      RegisForDistribution : [false,Validators.nullValidator],
+      StoredName:['',Validators.nullValidator]
     });
+    
     this.secondFormGroup = this._formBuilder.group({
       DiaChi: ['', Validators.required],
       TinhTP: ['',Validators.nullValidator],
@@ -53,8 +61,17 @@ export class RegisterComponent implements OnInit {
     })
   }
 
+  changeNumberPhone(ev,data){
+    this.commonService.getUserByPhone<khachHangModel>(data).subscribe(res=>{
+      if(res&&res.MaKH){
+        this.toastr.warning('Số điện thoại đã được đăng ký vui lòng kiểm tra lại !');
+        this.sdt.nativeElement.focus();
+        this.firstFormGroup.setErrors({ 'invalid': true });
+      }
+    })
+  }
+
   selectedCity(){
-    console.log('1',this.secondFormGroup.value.TinhTP);
     this.commonService.getDistrictsByCityId(this.secondFormGroup.value.TinhTP).subscribe(res=>{
       if(res){
         this.districts = res;
@@ -84,12 +101,21 @@ export class RegisterComponent implements OnInit {
           QuanHuyen : this.secondFormGroup.value.QuanHuyen,
           MatKhau : this.lastFormGroup.value.MatKhau,
           MaDonVi : '',
-          MaKH : ''
+          MaKH : '',
+          TenCH:this.firstFormGroup.value.StoredName,
+          NPP:this.firstFormGroup.value.RegisForDistribution
         }
-        this.commonService.register<objectResult>(obj).subscribe(data=>{
+        this.commonService.register<objectResult<string>>(obj).subscribe(data=>{
           if(data.Result){
-            alert(data.Message);
-            this.router.navigateByUrl('/dang-nhap');
+            if(data.Data === "KH_BANLE"){
+              this.toastr.success(data.Message);
+              this.router.navigateByUrl('/dang-nhap');
+            }else{
+              alert("Bạn đã đăng ký trở thành nhà phân phối, vui lòng chờ xác nhận từ chúng tôi. Giờ bạn có thể mua hàng với tư cách khách lẻ.");
+              this.router.navigateByUrl('/dang-nhap');
+            }
+          }else{
+            this.toastr.warning(data.Message);
           }
         });
       }

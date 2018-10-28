@@ -1,3 +1,6 @@
 #contentRegis{
     margin-top: 40px;
 }
+.mat-form-field--no-underline .mat-input-underline {
+    background-color: transparent;
+  }
